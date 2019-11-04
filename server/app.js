@@ -3,9 +3,16 @@ import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import mongoose from "mongoose";
 
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
+
+//This line connects mongoose to our mongoDB database
+const mongoURL = "mongodb://localhost:27017/hatchways";
+mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+  console.log("MongoDB connection", err)
+})
 
 var app = express();
 
