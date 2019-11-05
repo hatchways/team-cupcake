@@ -1,0 +1,19 @@
+POST http://localhost:3001/signup
+
+Content-Type: application/json
+{
+    "username": "Benjamin",
+    "password": "supersecret",
+    "email": "testing@123.com"
+}
+
+###
+POST http://localhost:3001/ping
+
+Content-Type: application/json
+{
+    "teamname": "testttttt"
+}
+
+###
+GET http://localhost:3001/signup 

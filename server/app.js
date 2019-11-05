@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
+import signupRouter from "./routes/signup";
 
 //This line connects mongoose to our mongoDB database
 const mongoURL = "mongodb://localhost:27017/hatchways";
@@ -29,6 +30,7 @@ app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
+app.use("/signup", signupRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
