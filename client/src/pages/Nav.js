@@ -32,7 +32,7 @@ const Nav = () => {
                     variant="outlined"
                     />
                 <ul>
-                    <NavLink to="/dashboard/profile" exact activeClassName="active"><li>Share music</li></NavLink>
+                    <NavLink to="/dashboard/profile" activeClassName="active"><li>Share music</li></NavLink>
                     <NavLink to="/dashboard/discover" activeClassName="active"><li>Discover</li></NavLink>
                     <NavLink to="/dashboard/messages" activeClassName="active"><li>Messages</li></NavLink>
                 </ul>

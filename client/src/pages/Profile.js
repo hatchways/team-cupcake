@@ -25,8 +25,8 @@ const Profile = () => {
                     </div>
                     <div className="follow-container">
                         <ul>
-                            <NavLink to="/dashboard/profile/follow" activeClassName="active"><li>Follow</li></NavLink>
-                            <NavLink to="/dashboard/profile/message" activeClassName="active"><li>Message</li></NavLink>
+                            <NavLink to="/dashboard/profile/follow" activeClassName="current"><li>Follow</li></NavLink>
+                            <NavLink to="/dashboard/profile/message" activeClassName="current"><li>Message</li></NavLink>
                         </ul>
                     </div>
                 </div>

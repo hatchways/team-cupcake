@@ -58,13 +58,17 @@ body{
 .follow-container ul a{
     text-decoration: none;
     color: #000;
-    border: 1px solid rgb(175, 175, 175);
-    padding: 10px 30px;
+    border: 1px solid rgb(226, 226, 226);
+    /* padding: 10px 30px; */
     border-radius: 3px;
+    width: 160px;
+    line-height: 3em;
+    text-align: center;
 }
-.follow-container ul a.active{
+.follow-container ul a.current{
     background: #1976d2;
     color: #fff;
+    border: none;
 }
 
 .follow-container ul a li{
