@@ -15,8 +15,8 @@ mongoose.connect(
   mongoURL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   err => {
-    if (err) return console.error(`Oh no there was an error ${err}`);
-    console.log("Connected Successfuly ...");
+    if (err) return console.error("Connection Failed !");
+    console.log("Connection Successful");
   }
 );
 
