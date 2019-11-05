@@ -5,7 +5,7 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
-import Nav from "./pages/Nav"
+import Nav from "./pages/components/Nav"
 
 import "./App.css";
 

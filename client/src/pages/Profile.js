@@ -1,10 +1,10 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
-import Follow from "./Follow";
-import Message from "./Message";
+import Follow from "./components/Follow";
+import Message from "./components/Message";
 
 import { Route, Switch } from "react-router-dom";
-import headshot from "./headshot.jpg";
+import headshot from "../img/headshot.jpg";
 import "./Profile.css"
 
 const Profile = () => {

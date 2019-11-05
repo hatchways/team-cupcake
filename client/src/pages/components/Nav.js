@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 import "./Nav.css"
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import headshot from "./headshot.jpg";
+import headshot from "../../img/headshot.jpg";
 
 const useStyles = makeStyles(theme => ({
     container: {
