@@ -18,14 +18,15 @@ nav ul a{
 }
 nav ul li{
     list-style: none;
+    cursor: pointer;
+}
+nav ul a{
     display: grid;
     place-content: center;
     border-radius: 4px;
-    cursor: pointer;
 }
-nav ul li.active{
+nav ul a.active{
     border: 1px solid rgba(179, 179, 179, 0.38);
-
 }
 nav label.MuiInputLabel-formControl{
     top: -8px;

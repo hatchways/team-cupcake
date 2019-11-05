@@ -1,0 +1,73 @@
+body{
+    width: 980px;
+    margin: auto;
+}
+.profile .profile-header{
+    /* border: 1px solid; */
+    display: grid;
+    grid-template-columns: 1.5fr 4fr 3fr;
+}
+.profile .profile-header div{
+    /* border: 1px solid; */
+}
+
+.profile .profile-header div.headshot-container{
+    /* border: 1px solid; */
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    border-radius: 100%;
+    display: grid;
+    place-self: center;
+    margin-top: 75px;
+}
+
+.profile .profile-header div.headshot-container img{
+    height: 100px;
+    margin-left: -40px;
+}
+
+.profile .name-container{
+    /* margin-top: 50px; */
+}
+
+.profile .name-container h3{
+    margin: 85px 0 0;
+}
+.profile .name-container h6{
+    margin: 3px 0 15px;
+    color: rgb(145, 145, 145);
+}
+
+.profile .name-container div{
+    font-size: .7em;
+    font-weight: bold;
+}
+
+.profile .name-container div span:first-child{
+    padding-right: 20px;
+}
+.follow-container ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 100px;
+    padding: 0;
+    place-items: center;
+}
+
+.follow-container ul a{
+    text-decoration: none;
+    color: #000;
+    border: 1px solid rgb(175, 175, 175);
+    padding: 10px 30px;
+    border-radius: 3px;
+}
+.follow-container ul a.active{
+    background: #1976d2;
+    color: #fff;
+}
+
+.follow-container ul a li{
+    list-style: none;
+
+}

@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import "./Nav.css"
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 const Nav = () => {
     const classes = useStyles();
+
     return (
         <>
             <nav>
@@ -31,12 +32,12 @@ const Nav = () => {
                     variant="outlined"
                     />
                 <ul>
-                    <li className="active"><Link>Share music</Link></li>
-                    <li><Link>Discover</Link></li>
-                    <li><Link>Messages</Link></li>
+                    <NavLink to="/dashboard/profile" exact activeClassName="active"><li>Share music</li></NavLink>
+                    <NavLink to="/dashboard/discover" activeClassName="active"><li>Discover</li></NavLink>
+                    <NavLink to="/dashboard/messages" activeClassName="active"><li>Messages</li></NavLink>
                 </ul>
                 <div className="thumbnail">
-                <img src={headshot} alt="Logo" />
+                    <img src={headshot} alt="Logo" />
                 </div>
             </nav>
         </>
