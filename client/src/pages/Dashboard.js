@@ -1,11 +1,16 @@
 import React from "react"
-// import Nav from "./Nav
+import { Route, Switch } from "react-router-dom";
+import Profile from "./Profile";
+import Nav from "../Components/Nav"
 
 const Dashboard = () => {
     return (
         <>
-            deshboard
-            
+            <Nav />
+                <Switch>
+                    {/* <Route path="/dashboard" exact component={Dashboard} /> */}
+                    <Route path="/dashboard/profile" component={Profile} />
+                </Switch>
         </>
     )
 }

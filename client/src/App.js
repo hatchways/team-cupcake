@@ -1,26 +1,25 @@
 import React from "react";
+import { Link } from "react-router-dom"
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { theme } from "./themes/theme";
+import Login from "./Components/LoginForm";
+import SignUp from "./Components/SignupForm";
 import LandingPage from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import Nav from "./pages/components/Nav"
-
 import "./App.css";
 
 function App() {
-  return (
+  return (<>
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route path="/" exact component={LandingPage} />
-        <Nav />
-        <Switch>
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/dashboard/profile" component={Profile} />
-        </Switch>
+        <Route exact path="/" exact component={Login} />
+        <Route path="/Signup" component={SignUp} />
+        <Route path="/dashboard" component={Dashboard} />
       </BrowserRouter>
     </MuiThemeProvider>
+
+    </>
   );
 }
 
