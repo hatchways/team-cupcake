@@ -1,6 +1,5 @@
 import React from "react";
 import useStyles from "../utils/formstyles";
-import logo from "../assets/instafyx2.png";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 export default function LoginForm() {
@@ -13,7 +12,11 @@ export default function LoginForm() {
       <Paper className={classes.login}>
         <div className={classes.paperdiv}>
           <h3 className={classes.formtitle}>Login in your account:</h3>
-          <img src={logo} alt="Logo" className={classes.imgCenter} />
+          <img
+            src="assets/instafyx2.png"
+            alt="Logo"
+            className={classes.imgCenter}
+          />
           <form>
             <TextField
               id="uinput"
