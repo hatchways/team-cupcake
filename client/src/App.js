@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { theme } from "./themes/theme";
 import Login from "./Components/LoginForm";
 import SignUp from "./Components/SignupForm";
-
+import SingularPost from "./Components/SingularPost";
 import "./App.css";
 
 function App() {
@@ -13,7 +13,8 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
         <Route exact path="/" component={Login} />
-        <Route path="/Signup" component={SignUp} />
+        <Route exact path="/Signup" component={SignUp} />
+        <Route path="/post" component={SingularPost} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useStyles from "../utils/formstyles";
-import logo from "../assets/instafyx2.png";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 export default function SignupForm() {
@@ -22,17 +21,16 @@ export default function SignupForm() {
     const stateClone = { ...error };
     const matches = {
       uinput: {
-        regex: /[a-z]{5}/i,
-        error: "The username must be 5 at least letters long !"
+        regex: /[a-z0-9]{5}/i,
+        error: "The username must be 5 at least characters long !"
       },
       Emailinput: {
-        regex: /.+@[a-z]+\.[a-z]{2}/i,
+        regex: /\S+@[a-z]+\.[a-z]{2}/i,
         error: "The email entered is not valid !"
       },
       passInput: {
-        regex: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{6,}$/,
-        error:
-          "The password must be at least 6 letters long and have 1 uppercase letter, 1 lowecase letter and 1 digit !"
+        regex: /.{6,}/,
+        error: "The password must be at least 6 characters long !"
       },
       confpassInput: {
         test: (val1, val2) => {
@@ -75,7 +73,11 @@ export default function SignupForm() {
       <Paper className={classes.login}>
         <div className={classes.paperdiv}>
           <h3 className={classes.formtitle}>Create a new account:</h3>
-          <img src={logo} alt="Logo" className={classes.imgCenter} />
+          <img
+            src="assets/instafyx2.png"
+            alt="Logo"
+            className={classes.imgCenter}
+          />
           <form onSubmit={e => submitForm(e)}>
             <TextField
               error={error.uinput ? true : false}
