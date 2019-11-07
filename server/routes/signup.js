@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
+const jwt = require('jsonwebtoken');
 /**
  * I have modified the Post route that registers the users.
  * I made sure to check that the passwords are the same.
@@ -17,7 +18,8 @@ router.post("/", function(req, res) {
   newUser.password = newUser.setPassword(newUser.password);
   User.create(newUser)
     .then(function(user) {
-      res.send(user);
+      const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET) // expiry?
+      res.send({user: user, accessToken: accessToken});
     })
     .catch(function(err) {
       res.status(400).send({ err });
