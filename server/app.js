@@ -15,7 +15,7 @@ import loginRouter from "./routes/login";
 const mongoURL = "mongodb://localhost:27017/hatchways";
 mongoose.connect(
   mongoURL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   err => {
     if (err) return console.error("Connection Failed !");
     console.log("Connection Successful");
