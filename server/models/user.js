@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator')
-// const bcrypt = require('bcrypt') // part of req's, not implemented, obv.
+const bcrypt = require('bcrypt') // part of req's, not implemented, obv.
 
 const UserSchema = new Schema({
     // input format should be checked by front end form too
@@ -29,12 +29,16 @@ const UserSchema = new Schema({
 });
 
 // hash password with bcrypt here
-// no need for a salt apparently
+// not sure if async method should be used.
+UserSchema.methods.setPassword = function(password) {
+    return bcrypt.hashSync(password, 10)
+}
 
-
-// helpers
-// change password
-// change email
+// Validate Password
+// not sure if async method should be used.
+UserSchema.methods.validatePassword = function(password) {
+    return bcrypt.compareSync(password, this.password)
+}
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'})
 
