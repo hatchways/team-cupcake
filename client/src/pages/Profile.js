@@ -1,9 +1,6 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
-import Follow from "../Components/Follow";
-import Message from "../Components/Message";
-
-import { Route, Switch } from "react-router-dom";
+import Following from "../Components/Following";
 import headshot from "../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png";
 import "./Profile.css"
 
@@ -25,18 +22,12 @@ const Profile = () => {
                     </div>
                     <div className="follow-container">
                         <ul>
-                            <NavLink to="/dashboard/profile/follow" activeClassName="current"><li>Follow</li></NavLink>
-                            <NavLink to="/dashboard/profile/message" activeClassName="current"><li>Message</li></NavLink>
+                            <NavLink to="/profile/follow" activeClassName="current"><li>Follow</li></NavLink>
+                            <NavLink to="/profile/message" activeClassName="current"><li>Message</li></NavLink>
                         </ul>
                     </div>
                 </div>
-
-                <div>
-                    <Switch>
-                        <Route path="/dashboard/profile/follow" component={Follow} />
-                        <Route path="/dashboard/profile/message" component={Message} />
-                    </Switch>
-                </div>
+                <Following />
             </div>
         </>
     )

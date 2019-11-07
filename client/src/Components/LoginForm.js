@@ -48,7 +48,6 @@ export default function LoginForm() {
           </form>
         </div>
       </Paper>
-      <Link to="/dashboard/profile/follow" className="dashboard-tour">Click here for a Dashboard tour</Link>
     </div>
   );
 }

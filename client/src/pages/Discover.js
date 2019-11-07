@@ -1,10 +1,10 @@
 import React from "react"
 
-const Message = () => {
+const Discover = () => {
     return (
         <>
-            message
+            discover
         </>
     )
 }
-export default Message
+export default Discover

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
-import { getAlbumData } from './MakeAPIcall';
+import { getAlbumData } from '../utils/MakeAPIcall';
 import "./Follow.css"
 
-const Follow = () => {
+const Following = () => {
     const followEndPoint = "https://api.themoviedb.org/3/movie/now_playing?api_key=eb942738a2bb8b5943c88166d66d5f7d&language=en-US&region=US&page=1"
     const [data, setData] = useState([]);
 
@@ -27,4 +27,4 @@ const Follow = () => {
         </>
     )
 }
-export default Follow
+export default Following
