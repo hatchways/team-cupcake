@@ -1,20 +1,20 @@
 {
-"name": "team-cupcake",
-"version": "1.0.0",
-"description": "",
-"main": "index.js",
-"scripts": {
+  "name": "team-cupcake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
     "start": "npm run dev --prefix server"
-},
-"repository": {
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/hatchways/team-cupcake.git"
-},
-"keywords": [],
-"author": "",
-"license": "ISC",
-"bugs": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
     "url": "https://github.com/hatchways/team-cupcake/issues"
-},
-"homepage": "https://github.com/hatchways/team-cupcake#readme"
+  },
+  "homepage": "https://github.com/hatchways/team-cupcake#readme"
 }
