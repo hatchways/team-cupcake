@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
 import Nav from "./Components/Nav";
+import SingularPost from "./Components/SingularPost";
 import "./App.css";
 
 
@@ -30,8 +31,9 @@ function App() {
 
   let notLoggedIn = (<>
     <Switch>
-      <Route path="/" exact component={Login} />
-      <Route path="/Signup" component={SignUp} />
+      <Route exact path="/" component={Login} />
+      <Route exact path="/Signup" component={SignUp} />
+      <Route path="/post" component={SingularPost} />
     </Switch>
     </>
   );

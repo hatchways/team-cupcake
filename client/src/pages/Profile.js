@@ -1,7 +1,7 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
 import Following from "../Components/Following";
-import headshot from "../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png";
+
 import "./Profile.css"
 
 const Profile = () => {
@@ -10,7 +10,7 @@ const Profile = () => {
             <div className="profile">
                 <div className="profile-header">
                     <div className="headshot-container">
-                        <img src={headshot} alt="Logo" />
+                        <img src="assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png" alt="Logo" />
                     </div>
                     <div className="name-container">
                         <h3>Jennifer</h3>

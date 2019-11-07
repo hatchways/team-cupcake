@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom"
 import "./Nav.css"
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import headshot from "../assets/Profile.png";
 
 const useStyles = makeStyles(theme => ({
     nav: {
@@ -63,7 +62,7 @@ const Nav = () => {
                     <NavLink className={classes.a} to="/messages" activeClassName="active"><li className={classes.li}>Messages</li></NavLink>
                 </ul>
                 <div className="thumbnail">
-                    <img src={headshot} alt="Logo" />
+                    <img src="./assets/Profile.png" alt="Logo" />
                 </div>
             </nav>
         </>
