@@ -2,23 +2,24 @@ var express = require("express");
 var router = express.Router();
 const User = require('../models/user')
 
-// router.post("/", function(req, res) {
-//   const username = req.body.username;
-//   const password = req.body.password;
-//   const email = req.body.email;
-//   console.log(req)
-//   console.log("Got here.");
-//   res
-//     .status(200)
-//     .send({ response: `user: ${username}, pw: ${password}, email: ${email}` });
-// });
-
 // CREATE new user
+// router.post('/', function(req, res) {
+//   User.create(req.body).then(function(user) {
+//     res.send(user)
+//   }).catch(function(err){
+//     res.send({ error: err.message }) // lots of info here and may want to reroute
+//   })
+// })
+
 router.post('/', function(req, res) {
-  User.create(req.body).then(function(user) {
-    res.send(user)
+  let new_user = new User();
+  new_user.username = req.body.username;
+  new_user.email = req.body.email;
+  new_user.password = new_user.setPassword(req.body.password)
+  new_user.save().then(function(new_user){
+    res.send({success: `user ${new_user.username} added!`})
   }).catch(function(err){
-    res.send({ error: err.message }) // lots of info here may want to reroute
+    res.send({error: err.message})
   })
 })
 
@@ -33,7 +34,7 @@ router.get("/:username", function(req, res) {
     }
     res.send(user)
   }).catch(function(err){
-    res.send({ err })
+    res.send({ err }) // likely too much information.  may want to select a key/value pair or two.
   }) 
 });
 
@@ -41,22 +42,37 @@ router.get("/:username", function(req, res) {
 router.put('/:username', function(req, res) {
   const email = req.body.email
   const password = req.body.password
+  // Might be better to use a switch, or some other logic, instead of the ifs
   if (email) {
-    //console.log(email)
-    User.findOneAndUpdate({ username: req.params.username, email: email}).then(function(){
+    User.findOneAndUpdate({ username: req.params.username, email: email }).then(function(){
       res.send({'success': 'email updated'})
+    }).catch(err => {
+      res.send({error: err})
     })
-    
-    // update email and send res
   }
   else if (password) {
-    console.log(password)
-    res.send(password)
-    // update password and send res
-  // then no email or pwd, send res "bad update request"
-  // res.send({error: "bad update request"})
+    User.findOneAndUpdate({ username: req.params.username, password: password }).then(function(){
+      res.send({'success': 'password updated'})
+    }).catch(err => {
+      res.send({error: err})
+    })
   }
+  else {
+    res.send({error: 'sorry bad update request'})
+  }
+})
 
-}) // catch update
+// DELETE user
+router.delete('/:username', function(req, res) {
+  User.findOneAndDelete({ username: req.params.username }).then(function(result){
+    //res.send({'success': `${req.params.username} deleted`})
+    if (result === null){
+      throw 'user not deleted'
+    }
+    res.send({result})
+  }).catch(err => {
+    res.send({error: err})
+  })
+})
 
 module.exports = router;
