@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import useStyles from "../styles/updateStyles";
+import isAuthenticated from "../utils/isAuthenticated";
 export default function ProfileUpdate(props) {
+  useEffect(() => {
+    if (!isAuthenticated()) props.history.push("/");
+  });
   const classes = useStyles();
   const showProfilePic = file => {
     const reader = new FileReader();

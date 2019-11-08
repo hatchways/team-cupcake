@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-export default function SignupForm() {
+export default function SignupForm(props) {
   const classes = useStyles();
   const [error, setErrors] = useState({
     userInput: "",
@@ -16,7 +16,6 @@ export default function SignupForm() {
     for (let type in form) if (form[type] && type !== "message") return true;
     return false;
   };
-
   const inputChanged = e => {
     const { id, value } = e.target;
     const stateClone = { ...error };
@@ -87,7 +86,7 @@ export default function SignupForm() {
         }
         if (res.accessToken) {
           localStorage.setItem("authToken", res.accessToken);
-          window.location.href = "/Update?welcome=true";
+          props.history.push("/update?welcome=true");
         }
       });
   };

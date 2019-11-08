@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 export default function LoginForm(props) {
   const classes = useStyles();
-  useEffect(() => {
-    props.isAuth();
-  });
   return (
     <div>
       <Typography variant="h2" className={classes.typo}>
