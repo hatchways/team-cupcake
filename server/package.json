@@ -28,6 +28,7 @@
     "@babel/register": "^7.5.5",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mocha": "^6.2.0"
   }
 }
