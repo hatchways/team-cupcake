@@ -28,7 +28,10 @@ const UserSchema = new Schema({
 });
 
 // hash password with bcrypt here
-// not sure if async method should be used.
+// Aecio notes that async method should be used.
+// hashing also in users.js PUT. 
+// Either reuse this method there or if making changes
+// ensure same change is made there.
 UserSchema.methods.setPassword = function(password) {
   return bcrypt.hashSync(password, 10);
 };
