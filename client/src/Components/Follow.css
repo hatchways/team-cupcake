@@ -1,0 +1,22 @@
+ul.album-img-wrapper{
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr) );
+    grid-gap: 10px;
+    padding-top: 40px;
+    /* border: 1px solid; */
+    padding-left: 0;
+    place-content: center;
+    place-items: center;
+}
+
+ul.album-img-wrapper li{
+    border: 1px solid rgb(224, 224, 224);
+    border-radius: 8px;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+ul.album-img-wrapper li img{
+    width: inherit;
+}

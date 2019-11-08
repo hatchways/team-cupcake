@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route } from "react-router-dom";
-
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { theme } from "./themes/theme";
+
 import Login from "./pages/LoginForm";
 import SignUp from "./pages/SignupForm";
-//import SingularPost from "./components/SingularPost";
+// import LandingPage from "./pages/Landing";
+import Profile from "./pages/Profile";
+// import ShareMusic from "./pages/ShareMusic";
+import Discover from "./pages/Discover";
+import Messages from "./pages/Messages";
+import Nav from "./Components/Nav";
 import "./App.css";
 import ProfileUpdate from "./pages/ProfileUpdate";
+
 
 function App() {
   const [auth, setAuth] = useState({
@@ -20,25 +26,32 @@ function App() {
     console.log("here");
   };
   const noAuthRoutes = (
-    <BrowserRouter>
+    <>
       <Route exact path="/" render={() => <Login isAuth={authorizeMe} />} />
       <Route
         exact
         path="/Signup"
         render={() => <SignUp isAuth={authorizeMe} />}
       />
-    </BrowserRouter>
+    </>
   );
   const authRoutes = (
-    <BrowserRouter>
-      <Route exact path="/Update" component={ProfileUpdate} />
-    </BrowserRouter>
+    <>
+      <Nav />
+      <Redirect exact from="/" to="/profile" /> 
+      <Route path="/profile" component={Profile} />
+      <Route path="/discover" component={Discover} />
+      <Route path="/messages" component={Messages} />
+      <Route exact path="/update" component={ProfileUpdate} />
+    </>
   );
   return (
     <MuiThemeProvider theme={theme}>
-      {auth.authorized ? authRoutes : noAuthRoutes}
+      <BrowserRouter>
+        {auth.authorized ? authRoutes : noAuthRoutes}
+      </BrowserRouter>
     </MuiThemeProvider>
+    </>
   );
 }
-
 export default App;
