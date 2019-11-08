@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import useStyles from "../Styles/formstyles";
+import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 export default function SignupForm() {
   const classes = useStyles();
   const [error, setErrors] = useState({
-    uinput: "",
-    Emailinput: "",
+    userInput: "",
+    emailInput: "",
     passInput: "",
     confpassInput: "",
     message: ""
   });
+  const [form, setValues] = useState({});
   const formContainError = form => {
-    for (let type in form) if (form[type]) return true;
+    for (let type in form) if (form[type] && type !== "message") return true;
     return false;
   };
 
@@ -20,11 +21,11 @@ export default function SignupForm() {
     const { id, value } = e.target;
     const stateClone = { ...error };
     const matches = {
-      uinput: {
+      userInput: {
         regex: /[a-z0-9]{5}/i,
         error: "The username must be 5 at least characters long !"
       },
-      Emailinput: {
+      emailInput: {
         regex: /\S+@[a-z]+\.[a-z]{2}/i,
         error: "The email entered is not valid !"
       },
@@ -55,15 +56,40 @@ export default function SignupForm() {
     }
     stateClone[id] = "";
     setErrors(stateClone);
+    const formData = { ...form };
+    formData[id] = value;
+    setValues(formData);
   };
 
   const submitForm = e => {
     e.preventDefault();
     if (formContainError(error)) return;
-    console.log("Call Server API");
-    /**
-     * We will call the server api to register the user here !
-     */
+    const {
+      userInput: username,
+      emailInput: email,
+      passInput: password,
+      confpassInput: passwordConfirm
+    } = form;
+    fetch("/signup/", {
+      method: "post",
+      body: JSON.stringify({ username, email, password, passwordConfirm }),
+      headers: new Headers({
+        "content-type": "application/json"
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          const formErrors = { ...error };
+          formErrors.message = res.error;
+          setErrors(formErrors);
+          return;
+        }
+        if (res.accessToken) {
+          localStorage.setItem("authToken", res.accessToken);
+          window.location.href = "/Update?welcome=true";
+        }
+      });
   };
   return (
     <div>
@@ -72,6 +98,7 @@ export default function SignupForm() {
       </Typography>
       <Paper className={classes.login}>
         <div className={classes.paperdiv}>
+          <h3 style={{ color: "red", textAlign: "center" }}>{error.message}</h3>
           <h3 className={classes.formtitle}>Create a new account:</h3>
           <img
             src="assets/instafyx2.png"
@@ -80,26 +107,26 @@ export default function SignupForm() {
           />
           <form onSubmit={e => submitForm(e)}>
             <TextField
-              error={error.uinput ? true : false}
-              helperText={error.uinput}
-              id="uinput"
+              error={error.userInput ? true : false}
+              helperText={error.userInput}
+              id="userInput"
               label="Username"
               margin="normal"
               variant="outlined"
               fullWidth
               required
-              onBlur={e => inputChanged(e)}
+              onChange={e => inputChanged(e)}
             />
             <TextField
-              error={error.Emailinput ? true : false}
-              helperText={error.Emailinput}
-              id="Emailinput"
+              error={error.emailInput ? true : false}
+              helperText={error.emailInput}
+              id="emailInput"
               label="Email"
               margin="normal"
               variant="outlined"
               fullWidth
               required
-              onBlur={e => inputChanged(e)}
+              onChange={e => inputChanged(e)}
             />
             <TextField
               error={error.passInput ? true : false}
@@ -111,7 +138,7 @@ export default function SignupForm() {
               type="password"
               fullWidth
               required
-              onBlur={e => inputChanged(e)}
+              onChange={e => inputChanged(e)}
             />
             <TextField
               error={error.confpassInput ? true : false}
@@ -123,7 +150,7 @@ export default function SignupForm() {
               type="password"
               fullWidth
               required
-              onBlur={e => inputChanged(e)}
+              onChange={e => inputChanged(e)}
             />
             <Link to="/">
               <Typography className={classes.formtitle}>

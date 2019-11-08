@@ -7,20 +7,21 @@ const User = require("../models/user");
  * I also modified the way errors are returned in the User model so we can display them clearly in the front-End.
  */
 router.post("/", function(req, res) {
+  console.log(req.body);
   if (req.body.password !== req.body.passwordConfirm)
-    return res.status(400).send({
-      err: {
-        errors: { password: { message: "The passwords don't match !" } }
-      }
+    return res.status(401).send({
+      error: "The passwords don't match !"
     });
   const newUser = new User(req.body);
   newUser.password = newUser.setPassword(newUser.password);
   User.create(newUser)
     .then(function(user) {
-      res.send(user);
+      res.send({ accessToken: "Hello", user });
     })
     .catch(function(err) {
-      res.status(400).send({ err });
+      const key = Object.keys(err.errors)[0];
+      const error = err.errors[key].message;
+      res.status(401).send({ error });
     });
 });
 /**

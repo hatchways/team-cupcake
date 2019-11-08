@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
-import Login from "./Components/LoginForm";
-import SignUp from "./Components/SignupForm";
-import SingularPost from "./Components/SingularPost";
+import Login from "./pages/LoginForm";
+import SignUp from "./pages/SignupForm";
+//import SingularPost from "./components/SingularPost";
 import "./App.css";
+import ProfileUpdate from "./pages/ProfileUpdate";
 
 function App() {
+  const [auth, setAuth] = useState({
+    authorized: false,
+    accessToken: ""
+  });
+  const authorizeMe = () => {
+    if (localStorage.getItem("authToken") && !auth.authorized)
+      setAuth({ authorized: true, accessToken: "token" });
+    console.log("here");
+  };
+  const noAuthRoutes = (
+    <BrowserRouter>
+      <Route exact path="/" render={() => <Login isAuth={authorizeMe} />} />
+      <Route
+        exact
+        path="/Signup"
+        render={() => <SignUp isAuth={authorizeMe} />}
+      />
+    </BrowserRouter>
+  );
+  const authRoutes = (
+    <BrowserRouter>
+      <Route exact path="/Update" component={ProfileUpdate} />
+    </BrowserRouter>
+  );
   return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/Signup" component={SignUp} />
-        <Route path="/post" component={SingularPost} />
-      </BrowserRouter>
+      {auth.authorized ? authRoutes : noAuthRoutes}
     </MuiThemeProvider>
   );
 }

@@ -40,7 +40,7 @@ UserSchema.methods.validatePassword = function(password) {
 };
 
 UserSchema.plugin(uniqueValidator, {
-  message: "Sorry, the {PATH} you entered is already registered !."
+  message: "Sorry, the {PATH} you entered is already registered !"
 });
 
 const User = mongoose.model("user", UserSchema);
