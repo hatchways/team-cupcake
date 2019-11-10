@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import useStyles from "../styles/updateStyles";
 import isAuthenticated from "../utils/isAuthenticated";
+import authFetch from "../utils/authFetch";
 export default function ProfileUpdate(props) {
-  useEffect(() => {
-    if (!isAuthenticated()) props.history.push("/");
-  });
   const classes = useStyles();
+  const [user, setUser] = useState({ username: "" });
+  const [formData, setData] = useState({
+    description: "",
+    photo_url: "assets/blank.png"
+  });
   const showProfilePic = file => {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -14,12 +17,22 @@ export default function ProfileUpdate(props) {
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {
+    if (!isAuthenticated()) return props.history.push("/");
+    setUser(JSON.parse(sessionStorage.getItem("credentials")));
+  }, [props.history]);
+  async function formSubmit(e) {
+    e.preventDefault();
+    const result = await authFetch("/users", formData, props, "put");
+    console.log(result);
+  }
+
   return (
     <Paper className={classes.mainContainer}>
       {props.location.search ? (
         <React.Fragment>
           <Typography variant="h4">
-            Welcome <b>{"Username"} </b>!
+            Welcome <b>{user.username} </b>!
           </Typography>
           <img
             src="assets/instafyx2.png"
@@ -41,15 +54,18 @@ export default function ProfileUpdate(props) {
         </React.Fragment>
       )}
 
-      <form method="post" encType="multipart/form-data">
+      <form encType="multipart/form-data" onSubmit={e => formSubmit(e)}>
         <TextField
           id="outlined-multiline-static"
           label="Please tell us a little about you !"
           multiline
+          name="description"
           rows="5"
           margin="normal"
           variant="outlined"
           className={classes.allTextFields}
+          value={formData.description}
+          onChange={e => setData({ ...formData, description: e.target.value })}
           required
         />
         <Typography variant="subtitle1">
@@ -60,11 +76,19 @@ export default function ProfileUpdate(props) {
             accept="image/*"
             className={classes.input}
             id="contained-button-file"
+            name="photo"
             multiple
             type="file"
-            onChange={e =>
-              e.target.files[0] ? showProfilePic(e.target.files[0]) : null
-            }
+            //value={formData.photourl}
+            onChange={e => {
+              if (e.target.files[0]) {
+                showProfilePic(e.target.files[0]);
+                setData({
+                  ...formData,
+                  photo_url: `assets/${e.target.files[0].name}`
+                });
+              }
+            }}
           />
           <label htmlFor="contained-button-file">
             <Button

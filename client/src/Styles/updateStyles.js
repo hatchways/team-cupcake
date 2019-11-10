@@ -3,8 +3,8 @@ const useStyles = makeStyles(theme => ({
   [theme.breakpoints.up("md")]: {
     mainContainer: {
       display: "flex",
-      width: "40%",
-      margin: "20px auto",
+      width: "30%",
+      margin: "10px auto",
       flexDirection: "column",
       padding: "30px",
       "& *": {},
@@ -38,10 +38,10 @@ const useStyles = makeStyles(theme => ({
   [theme.breakpoints.down("sm")]: {
     mainContainer: {
       display: "flex",
-      width: "65%",
-      margin: "20px auto",
+      width: "60%",
+      margin: "10px auto",
       flexDirection: "column",
-      padding: "30px",
+      padding: "10px",
       "& h6,h4": { textAlign: "center" },
       "& h4": {
         marginTop: "0"
@@ -55,8 +55,7 @@ const useStyles = makeStyles(theme => ({
       }
     },
     allTextFields: {
-      width: "100%",
-      textAlign: "Left"
+      width: "100%"
     },
     imageDiv: {
       display: "flex",

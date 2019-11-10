@@ -1,12 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
-const jwt = require('jsonwebtoken');
-/**
- * I have modified the Post route that registers the users.
- * I made sure to check that the passwords are the same.
- * I also modified the way errors are returned in the User model so we can display them clearly in the front-End.
- */
+const Profile = require("../models/profile");
+const jwt = require("jsonwebtoken");
 router.post("/", function(req, res) {
   console.log(req.body);
   if (req.body.password !== req.body.passwordConfirm)
@@ -17,8 +13,14 @@ router.post("/", function(req, res) {
   newUser.password = newUser.setPassword(newUser.password);
   User.create(newUser)
     .then(function(user) {
-      const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET) // expiry?
-      res.send({user: user, accessToken: accessToken});
+      const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET); // expiry?
+      Profile.create({
+        profileID: user.username,
+        description: "",
+        photo_url: "assets/blank.png"
+      }).then(() => {
+        res.send({ accessToken: accessToken, user });
+      });
     })
     .catch(function(err) {
       const key = Object.keys(err.errors)[0];

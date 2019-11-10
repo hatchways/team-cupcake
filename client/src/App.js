@@ -1,29 +1,26 @@
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { Route, BrowserRouter } from "react-router-dom";
-
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { theme } from "./themes/theme";
-
-import Login from "./pages/LoginForm";
 import SignUp from "./pages/SignupForm";
-// import LandingPage from "./pages/Landing";
 import Profile from "./pages/Profile";
-// import ShareMusic from "./pages/ShareMusic";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
-import "./App.css";
 import ProfileUpdate from "./pages/ProfileUpdate";
-
+import ProtectedRoute from "./pages/ProtectedRoute";
+import NotFound from "./pages/404";
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/Signup" component={SignUp} />
-        <Route exact path="/update" component={ProfileUpdate} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/discover" component={Discover} />
-        <Route path="/messages" component={Messages} />
+        <Switch>
+          <Route exact path="/signup" component={SignUp} />
+          <ProtectedRoute exact path="/" component={Profile} />
+          <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+          <ProtectedRoute exact path="/messages" component={Messages} />
+          <ProtectedRoute exact path="/discover" component={Discover} />
+          <Route path="*" component={NotFound} />
+        </Switch>
       </BrowserRouter>
     </MuiThemeProvider>
   );

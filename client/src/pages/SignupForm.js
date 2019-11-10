@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import isAuthenticated from "../utils/isAuthenticated";
 export default function SignupForm(props) {
   const classes = useStyles();
+  useEffect(() => {
+    if (isAuthenticated()) props.history.push("/");
+  });
   const [error, setErrors] = useState({
     userInput: "",
     emailInput: "",
@@ -85,7 +89,8 @@ export default function SignupForm(props) {
           return;
         }
         if (res.accessToken) {
-          localStorage.setItem("authToken", res.accessToken);
+          sessionStorage.setItem("authToken", res.accessToken);
+          sessionStorage.setItem("credentials", JSON.stringify(res.user));
           props.history.push("/update?welcome=true");
         }
       });
