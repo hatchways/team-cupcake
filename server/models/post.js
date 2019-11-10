@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// const User = require("./user"); // is this necessary?
 
 const PostSchema = new Schema({
   description: {
@@ -31,9 +30,12 @@ const PostSchema = new Schema({
     min: 6,
     max: 50
     // likely want to do some re here if not previously validated
+  },
+  comment_count: {
+    type: Number,
+    required: true,
+    default: 0
   }
-  // Possible added fields
-  // might want date created and/or date updated
 });
 
 // functions
