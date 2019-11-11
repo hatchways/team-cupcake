@@ -1,52 +1,28 @@
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { theme } from "./themes/theme";
-import Login from "./Components/LoginForm";
-import SignUp from "./Components/SignupForm";
-// import LandingPage from "./pages/Landing";
+import SignUp from "./pages/SignupForm";
 import Profile from "./pages/Profile";
-// import ShareMusic from "./pages/ShareMusic";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
-import Nav from "./Components/Nav";
-import SingularPost from "./Components/SingularPost";
-import "./App.css";
-
-
+import ProfileUpdate from "./pages/ProfileUpdate";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import NotFound from "./pages/404";
 function App() {
-  // when true, user logged in and will not be redirected to dashboard
-  let userLoggedIn = false;
-
-  let loggedIn = (
-    <>
-        <Nav />
-          <Switch>
-            <Redirect exact from="/" to="/profile" /> 
-            <Route path="/profile" component={Profile} />
-            <Route path="/discover" component={Discover} />
-            <Route path="/messages" component={Messages} />
-          </Switch>
-      </>
-  );
-
-  let notLoggedIn = (<>
-    <Switch>
-      <Route exact path="/" component={Login} />
-      <Route exact path="/Signup" component={SignUp} />
-      <Route path="/post" component={SingularPost} />
-    </Switch>
-    </>
-  );
-
-  return (<>
+  return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        {userLoggedIn ? loggedIn : notLoggedIn}
+        <Switch>
+          <Route exact path="/signup" component={SignUp} />
+          <ProtectedRoute exact path="/" component={Profile} />
+          <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+          <ProtectedRoute exact path="/messages" component={Messages} />
+          <ProtectedRoute exact path="/discover" component={Discover} />
+          <Route path="*" component={NotFound} />
+        </Switch>
       </BrowserRouter>
     </MuiThemeProvider>
-    </>
   );
 }
-
 export default App;
