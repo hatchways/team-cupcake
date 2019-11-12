@@ -8,17 +8,17 @@ router.post("/", function(req, res) {
     .then(function(user) {
       console.log(user);
       if (user === null) {
-        throw "{email not found}";
+        throw "{Login failed.}";
       } else {
         if (user.validatePassword(req.body.password)) {
           // might need .toString on _id
           const accessToken = jwt.sign(
-            user.username,
+            { user },
             process.env.ACCESS_TOKEN_SECRET
           ); // expiry?
-          res.status(200).send({ accessToken: accessToken, user: user });
+          res.status(200).send({ accessToken: accessToken, user });
         } else {
-          res.status(400).send({ error: "login failure." });
+          res.status(400).send({ error: "Login failed." });
         }
       }
       // if no user send err

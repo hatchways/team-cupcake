@@ -5,9 +5,8 @@ const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 
 // READ get user by username
-router.get("/:username", function(req, res) {
-  //
-  User.findOne({ username: req.params.username })
+router.get("/", function(req, res) {
+  User.findOne({ username: req.body.username })
     .then(function(user) {
       if (user === null) {
         //res.send('error: user not found')
@@ -48,12 +47,12 @@ router.get("/:username", function(req, res) {
 // })
 
 // UPDATE take two
-router.put("/:username", function(req, res) {
+router.put("/", function(req, res) {
   // could combine these into one object, but not as clear
   const messageDict = {};
   const userUpdateDict = {};
   const profileUpdateDict = {};
-  User.findOne({ username: req.params.username })
+  User.findOne({ username: req.body.username })
     .then(function(user) {
       if (user === null) {
         //res.send('error: user not found')
@@ -81,7 +80,7 @@ router.put("/:username", function(req, res) {
       }
       if (Object.keys(userUpdateDict).length > 0) {
         User.findOneAndUpdate(
-          { username: req.params.username },
+          { username: req.body.username },
           { $set: { ...userUpdateDict } }
         )
           .then(function() {
@@ -94,7 +93,7 @@ router.put("/:username", function(req, res) {
       }
       if (Object.keys(profileUpdateDict).length > 0) {
         Profile.findOneAndUpdate(
-          { profileID: req.params.username },
+          { profileID: req.body.username },
           { $set: { ...profileUpdateDict } },
           { upsert: true }
         )
