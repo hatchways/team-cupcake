@@ -3,6 +3,9 @@ const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
     // username is unique so let's use that for ID
+    /* If defaults added and not implements on User creation
+    * add setDefaultsOnInsert to users/PUT 
+    */
     profileID: {
         type: String,  // either username or email, both unique
         required: true,
@@ -17,7 +20,7 @@ const ProfileSchema = new Schema({
     },
     photo_url: {
         type: String,
-        required: False // insert dummy image by default? make one like
+        required: false // insert dummy image by default? make one like
         // likely want to do some re here if not previously validated
     }
     // Possible added fields
