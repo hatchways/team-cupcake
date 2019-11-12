@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/hatchways/team-cupcake/issues"
   },
-  "homepage": "https://github.com/hatchways/team-cupcake#readme"
+  "homepage": "https://github.com/hatchways/team-cupcake#readme",
+  "devDependencies": {
+    "request": "^2.88.0"
+  }
 }
