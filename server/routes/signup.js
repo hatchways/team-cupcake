@@ -4,7 +4,6 @@ const User = require("../models/user");
 const Profile = require("../models/profile");
 const jwt = require("jsonwebtoken");
 router.post("/", function(req, res) {
-  console.log(req.body);
   if (req.body.password !== req.body.passwordConfirm)
     return res.status(401).send({
       error: "The passwords don't match !"
