@@ -3,15 +3,21 @@ import { NavLink } from "react-router-dom"
 import "./Nav.css"
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import NavDialog from "../utils/Dialog";
 
 const useStyles = makeStyles(theme => ({
     nav: {
         display: 'grid',
-        gridTemplateColumns: '1fr 4fr 4fr 1fr',
+        gridTemplateColumns: '1fr 4fr 5fr 1fr',
+        placeContent: 'center',
         paddingLeft: '50px',
         // -webkit-box-shadow: '0px 14px 49px -27px rgba(0,0,0,0.75)',
         // -moz-box-shadow: '0px 14px 49px -27px rgba(0,0,0,0.75)',
         boxShadow: '0px 14px 49px -27px rgba(0,0,0,0.75)',
+    },
+    instafy: {
+        textDecoration: 'none',
+        color: '#000',
     },
     textField: {
         marginLeft: theme.spacing(1),
@@ -48,7 +54,8 @@ const Nav = () => {
     return (
         <>
             <nav className={classes.nav}>
-                <h2>Instafy</h2>
+                <NavLink className={classes.instafy} to="/profile"><h2>Instafy</h2></NavLink>
+
                 <TextField
                     id="outlined-basic"
                     className={classes.textField}
@@ -57,12 +64,12 @@ const Nav = () => {
                     variant="outlined"
                     />
                 <ul className={classes.ul}>
-                    <NavLink className={classes.a} to="/profile" activeClassName="active"><li className={classes.li}>Share music</li></NavLink>
-                    <NavLink className={classes.a} to="/discover" activeClassName="active"><li className={classes.li}>Discover</li></NavLink>
-                    <NavLink className={classes.a} to="/messages" activeClassName="active"><li className={classes.li}>Messages</li></NavLink>
+                    <a href="./" className={classes.a}><li className={classes.li}><NavDialog label={"Share Music"} /></li></a>
+                    <a href="./" className={classes.a}><li className={classes.li}><NavDialog label={"Discover"} /></li></a>
+                    <a href="./" className={classes.a}><li className={classes.li}><NavDialog label={"Massages"} /></li></a>
                 </ul>
                 <div className="thumbnail">
-                    <img src="./assets/Profile.png" alt="Logo" />
+                    <img src="/assets/Profile.png" alt="Logo" />
                 </div>
             </nav>
         </>
