@@ -85,7 +85,8 @@ const CommentSchema = new Schema({
   post_id: {
     type: Schema.Types.ObjectID,
     ref: "Post",
-    required: true
+    required: true,
+    index: true // assuming most queries will be done by post
   },
   like_count: {
     type: Number,
