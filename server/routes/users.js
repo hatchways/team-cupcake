@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 
 // READ get user by username
 router.get("/", function(req, res) {
-  //
   User.findOne({ username: req.body.username })
     .then(function(user) {
       if (user === null) {
