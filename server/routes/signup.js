@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require("../models/user");
 const Profile = require("../models/profile");
 const jwt = require("jsonwebtoken");
+
 router.post("/", function(req, res) {
   console.log(req.body);
   if (req.body.password !== req.body.passwordConfirm)
@@ -22,10 +23,8 @@ router.post("/", function(req, res) {
         res.send({ accessToken: accessToken, user });
       });
     })
-    .catch(function(err) {
-      const key = Object.keys(err.errors)[0];
-      const error = err.errors[key].message;
-      res.status(401).send({ error });
+    .catch(function(error) {
+      res.status(401).send({ error: error.message });
     });
 });
 /**
