@@ -18,19 +18,24 @@ const PostSchema = new Schema({
     required: true,
     index: true // most queries posts by author
   },
-  image_url: {
+  imageUrl: {
     type: String,
     required: false, // insert dummy image by default? make one like
     min: 6,
     max: 50
   },
-  music_url: {
+  musicUrl: {
     type: String,
     required: false,
     min: 6,
     max: 50
   },
-  comment_count: {
+  commentCount: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  likeCount: {
     type: Number,
     required: true,
     default: 0
