@@ -6,9 +6,8 @@ const jwt = require("jsonwebtoken");
 router.post("/", function(req, res) {
   User.findOne({ email: req.body.email })
     .then(function(user) {
-      console.log(user);
       if (user === null) {
-        throw "{Login failed.}";
+        throw "Sorry. Unrecognized username or password !";
       } else {
         if (user.validatePassword(req.body.password)) {
           // might need .toString on _id
@@ -18,7 +17,9 @@ router.post("/", function(req, res) {
           ); // expiry?
           res.status(200).send({ accessToken: accessToken, user });
         } else {
-          res.status(400).send({ error: "Login failed." });
+          res
+            .status(400)
+            .send({ error: "Sorry. Unrecognized username or password !" });
         }
       }
       // if no user send err
