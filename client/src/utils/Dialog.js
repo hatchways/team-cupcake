@@ -24,7 +24,15 @@ export default function NavDialog({ label }) {
 	};
 
 	return (
-		<div style={{ maxWidth: '120px', color: '#000' }}>
+		<div
+			style={{
+				maxWidth: '120px',
+				maxHeight: '40px',
+				color: '#000',
+				display: 'grid',
+				placeSelf: 'center'
+			}}
+		>
 			<Button onClick={handleClickOpen}>{label}</Button>
 			<Dialog
 				fullScreen={fullScreen}
