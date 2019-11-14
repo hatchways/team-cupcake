@@ -3,12 +3,14 @@ import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import useStyles from "../Styles/updateStyles";
 import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
-export default function ProfileUpdate(props) {
+import { withSnackbar } from "notistack";
+function ProfileUpdate(props) {
   const classes = useStyles();
-  const [user, setUser] = useState({ username: "" });
+  const user = JSON.parse(sessionStorage.getItem("credentials"));
   const [formData, setData] = useState({
     description: "",
-    photo_url: "assets/blank.png"
+    photo_url: "",
+    photoFile: ""
   });
   const showProfilePic = file => {
     const reader = new FileReader();
@@ -19,12 +21,21 @@ export default function ProfileUpdate(props) {
   };
   useEffect(() => {
     if (!isAuthenticated()) return props.history.push("/");
-    setUser(JSON.parse(sessionStorage.getItem("credentials")));
-  }, [props.history]);
+    authFetch("/users", null, props).then(({ Profile }) => {
+      setData({
+        description: Profile.description,
+        photo_url: Profile.photo_url
+      });
+    });
+  }, [props]);
   async function formSubmit(e) {
     e.preventDefault();
-    const result = await authFetch("/users", formData, props, "put");
-    console.log(result);
+    const data = new FormData();
+    data.append("description", formData.description);
+    data.append("photoFile", formData.photoFile);
+    await authFetch("/users", data, props, "put", null);
+    props.enqueueSnackbar("Profile Updated !", { variant: "success" });
+    setTimeout(() => props.history.push("/"), 1000);
   }
 
   return (
@@ -77,7 +88,6 @@ export default function ProfileUpdate(props) {
             className={classes.input}
             id="contained-button-file"
             name="photo"
-            multiple
             type="file"
             //value={formData.photourl}
             onChange={e => {
@@ -85,7 +95,7 @@ export default function ProfileUpdate(props) {
                 showProfilePic(e.target.files[0]);
                 setData({
                   ...formData,
-                  photo_url: `assets/${e.target.files[0].name}`
+                  photoFile: e.target.files[0]
                 });
               }
             }}
@@ -99,7 +109,7 @@ export default function ProfileUpdate(props) {
               Upload
             </Button>
           </label>
-          <img src="assets/blank.png" id="ImageChosen" alt="profilepic" />
+          <img src={formData.photo_url} id="ImageChosen" alt="profilepic" />
         </div>
         <div className={classes.imageDiv}>
           <Button
@@ -116,3 +126,4 @@ export default function ProfileUpdate(props) {
     </Paper>
   );
 }
+export default withSnackbar(ProfileUpdate);

@@ -11,7 +11,9 @@ import signupRouter from "./routes/signup";
 import usersRouter from "./routes/users";
 import loginRouter from "./routes/login";
 import postsRouter from "./routes/posts";
+import commentRouter from "./routes/comments";
 import { auth } from "./middlewares/authMiddleware";
+
 //This line connects mongoose to our mongoDB database
 const mongoURL = "mongodb://localhost:27017/hatchways";
 mongoose.connect(
@@ -37,6 +39,7 @@ app.use("/signup", signupRouter);
 app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
 app.use("/posts", postsRouter);
+app.use("/comments", commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import useStyles from "../Styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-export default function LoginForm(props) {
+import { withSnackbar } from "notistack";
+function LoginForm(props) {
   const classes = useStyles();
   const [fields, handleChange] = useState({ email: "", password: "" });
   const login = e => {
@@ -17,11 +18,12 @@ export default function LoginForm(props) {
     })
       .then(res => res.json())
       .then(res => {
-        if (res.error) handleChange({ ...fields, message: res.error });
+        if (res.error) props.enqueueSnackbar(res.error, { variant: "error" });
         if (res.accessToken) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
-          props.history.push("/");
+          props.enqueueSnackbar("Success", { variant: "success" });
+          setTimeout(() => props.history.push("/"), 1000);
         }
       });
   };
@@ -32,9 +34,6 @@ export default function LoginForm(props) {
       </Typography>
       <Paper className={classes.login}>
         <div className={classes.paperdiv}>
-          <h3 style={{ color: "red", textAlign: "center" }}>
-            {fields.message}
-          </h3>
           <h3 className={classes.formtitle}>Login in your account:</h3>
           <img
             src="assets/instafyx2.png"
@@ -85,3 +84,4 @@ export default function LoginForm(props) {
     </div>
   );
 }
+export default withSnackbar(LoginForm);
