@@ -65,7 +65,7 @@ router.put("/:postID", function(req, res) {
   Post.findOne({ _id: req.params.postID })
     .then(function(userpost) {
       if (userpost === null) {
-        throw "{error: postID not found}";
+        throw "{error: post ID not found}";
       }
     })
     .then(function() {
@@ -81,17 +81,17 @@ router.put("/:postID", function(req, res) {
         messageDict["date"] = "date updated";
         postUpdateDict["date"] = req.body.date;
       }
-      if (req.body.image_url) {
-        messageDict["image_url"] = "image_url updated";
-        postUpdateDict["image_url"] = req.body.image_url;
+      if (req.body.imageUrl) {
+        messageDict["imageUrl"] = "image url updated";
+        postUpdateDict["imageUrl"] = req.body.imageUrl;
       }
       if (req.body.description) {
         messageDict["description"] = "description updated";
         postUpdateDict["description"] = req.body.description;
       }
-      if (req.body.music_url) {
-        messageDict["music_url"] = "photo url updated";
-        postUpdateDict["music_url"] = req.body.music_url;
+      if (req.body.musicUrl) {
+        messageDict["musicUrl"] = "photo url updated";
+        postUpdateDict["musicUrl"] = req.body.musicUrl;
       }
       if (Object.keys(postUpdateDict).length > 0) {
         Post.findOneAndUpdate(
