@@ -7,7 +7,7 @@ const commentLikeSchema = new Schema({
     default: Date.now,
     required: true
   },
-  author: {
+  liker_id: {
     type: Schema.Types.ObjectID,
     ref: "User",
     required: true
