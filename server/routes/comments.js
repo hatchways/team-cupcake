@@ -55,6 +55,21 @@ router.post("/", function(req, res) {
     });
 });
 
+router.put("/:comment_id", function(req, res) {
+  Comment.findOneAndUpdate(
+    { _id: req.params.comment_id },
+    { description: req.body.description },
+    function(err, result) {
+      if (err) {
+        res.status(400).send({ error: "Bad update request" });
+      } else {
+        result.description = req.body.description;
+        res.status(200).send(result);
+      }
+    }
+  );
+});
+
 // Test route
 router.get("/", function(req, res) {
   res.send("here");
