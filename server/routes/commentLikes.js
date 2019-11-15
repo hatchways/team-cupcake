@@ -9,46 +9,28 @@ router.get("/", function(req, res) {
   res.status(200).send({ success: "ping" });
 });
 
-// Delete like - in progress
 router.delete("/", function(req, res) {
-  CommentLike.findOne({ _id: req.body.commentLike_id }, function(err, clike) {
-    if (err || clike === null) {
-      res.status(400).send({ error: "bad commentLike_id" });
-    }
-  })
-    .catch(function(err) {
-      res.status(400).send({ err });
-    })
-    .then(function(clike) {
-      console.log("decrement");
-      console.log(clike.comment_id);
-      Comment.findOneAndUpdate(
-        { _id: clike.comment_id },
-        {
-          $inc: { likeCount: -1 },
-          function(err, thing) {
+  CommentLike.findOneAndRemove({ _id: req.body.commentLike_id })
+    .then(function(result) {
+      if (result === null) {
+        res.status(400).send({ error: "Bad commentLike ID" });
+      } else {
+        Comment.findOneAndUpdate(
+          { _id: result.comment_id },
+          { $inc: { likeCount: -1 } },
+          function(err, result2) {
             if (err) {
               res
                 .status(500)
-                .send({ error: "problem decrementing comment like count." });
+                .send({ error: "problem updating post like count." });
+            } else {
+              res.status(200).send({ success: result2 });
             }
           }
-        }
-      );
+        );
+      }
     })
-    .catch(function(err) {
-      res.status(400).send({ err });
-    })
-    .then(function() {
-      CommentLike.findOneAndRemove({ _id: req.body.commentLike_id }, function(
-        err,
-        message
-      ) {
-        res.status(200).send(message);
-      }).catch(function(err) {
-        res.status(400).send({ err });
-      });
-    });
+    .catch(err => res.status(400).send({ error: err }));
 });
 
 // CREATE new like
