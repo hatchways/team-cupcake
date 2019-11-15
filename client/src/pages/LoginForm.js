@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useStyles from "../Styles/formstyles";
+import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { withSnackbar } from "notistack";

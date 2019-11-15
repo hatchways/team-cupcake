@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import useStyles from '../Styles/shareMusic';
+import useStyles from '../styles/shareMusic';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
