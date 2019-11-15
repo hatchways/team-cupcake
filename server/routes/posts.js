@@ -102,14 +102,14 @@ router.put("/:postID", function(req, res) {
             res.status(200).send(messageDict);
           })
           .catch(function(err) {
-            res.status(400).send({ err });
+            res.status(400).send({ err8: err });
           });
       } else {
         res.status(400).send({ error: "Something wrong with update. Sorry." });
       }
     })
     .catch(function(err) {
-      res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
+      res.status(400).send({ error: "Bad post ID" });
     });
 });
 

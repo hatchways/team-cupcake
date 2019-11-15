@@ -5,14 +5,14 @@ const User = require("../models/user");
 const Post = require("../models/post");
 
 router.post("/", function(req, res) {
-  User.findOne({ _id: req.body.author })
+  User.findOne({ _id: req.body.commenter })
     .then(function(user) {
       if (user === null) {
         throw "{error: User ID not found}";
       }
     })
     .catch(function(err) {
-      res.status(400).send({ error: "Bad author ID" });
+      res.status(400).send({ error: "Bad commenter ID" });
     })
     .then(function() {
       Post.findOne({ _id: req.body.post_id })

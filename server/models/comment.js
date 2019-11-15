@@ -13,7 +13,7 @@ const CommentSchema = new Schema({
     default: Date.now,
     required: true
   },
-  author: {
+  commenter: {
     type: Schema.Types.ObjectID,
     ref: "User",
     required: true
