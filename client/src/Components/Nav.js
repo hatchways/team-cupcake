@@ -70,7 +70,7 @@ const Nav = () => {
 	return (
 		<>
 			<nav className={classes.nav}>
-				<NavLink className={classes.instafy} to='/profile'>
+				<NavLink className={classes.instafy} to='/'>
 					<h2>Instafy</h2>
 				</NavLink>
 
@@ -83,12 +83,12 @@ const Nav = () => {
 				/>
 				<Button className={classes.dialogButton} onClick={openDialog}>Share Music</Button>
 				<ul className={classes.ul}>
-					<a href='./' className={classes.a}>
+					<a href='./discover' className={classes.a}>
 						<li className={classes.li}>
 							Discover
 						</li>
 					</a>
-					<a href='./' className={classes.a}>
+					<a href='./messages' className={classes.a}>
 						<li className={classes.li}>
 							Massages
 						</li>
