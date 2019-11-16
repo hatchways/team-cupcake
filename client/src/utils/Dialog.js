@@ -9,19 +9,10 @@ import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
-export default function NavDialog({ label }) {
+export default function NavDialog({ open, close }) {
 	const classes = useStyles();
-	const [open, setOpen] = React.useState(false);
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
 
 	return (
 		<div
@@ -33,11 +24,10 @@ export default function NavDialog({ label }) {
 				placeSelf: 'center'
 			}}
 		>
-			<Button onClick={handleClickOpen}>{label}</Button>
 			<Dialog
 				fullScreen={fullScreen}
 				open={open}
-				onClose={handleClose}
+				onClose={event => close(false)}
 				aria-labelledby='responsive-dialog-title'
 				maxWidth={'lg'}
 			>
@@ -74,7 +64,7 @@ export default function NavDialog({ label }) {
 										href='/'
 									>
 										Change
-									</a>
+										</a>
 								</div>
 							</Box>
 							<div className={classes.descriptionWrapper}>
@@ -117,7 +107,7 @@ export default function NavDialog({ label }) {
 										}}
 									>
 										upload another picture
-									</p>
+										</p>
 								</IconButton>
 							</label>
 						</div>
@@ -129,10 +119,10 @@ export default function NavDialog({ label }) {
 							className={classes.button}
 						>
 							Share
-						</Button>
+							</Button>
 					</div>
 				</div>
 			</Dialog>
-		</div>
+		</div >
 	);
 }

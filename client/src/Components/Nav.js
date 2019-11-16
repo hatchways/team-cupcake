@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import './Nav.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,11 +47,25 @@ const useStyles = makeStyles(theme => ({
 	li: {
 		listStyle: 'none',
 		cursor: 'pointer'
+	},
+	dialogButton: {
+		border: '1px solid #d4d3d3',
+		maxHeight: '40px',
+		display: 'grid',
+		placeSelf: 'center'
 	}
 }));
 
 const Nav = () => {
 	const classes = useStyles();
+	const [open, setOpen] = useState(false);
+
+	const openDialog = () => {
+		return setOpen(true)
+	}
+	const closeDialog = () => {
+		return setOpen(false);
+	};
 
 	return (
 		<>
@@ -66,22 +81,23 @@ const Nav = () => {
 					margin='normal'
 					variant='outlined'
 				/>
-				<NavDialog label={'Share Music'} />
+				<Button className={classes.dialogButton} onClick={openDialog}>Share Music</Button>
 				<ul className={classes.ul}>
 					<a href='./' className={classes.a}>
 						<li className={classes.li}>
-							<NavDialog label={'Discover'} />
+							Discover
 						</li>
 					</a>
 					<a href='./' className={classes.a}>
 						<li className={classes.li}>
-							<NavDialog label={'Massages'} />
+							Massages
 						</li>
 					</a>
 				</ul>
 				<div className='thumbnail'>
 					<img src='/assets/Profile.png' alt='Logo' />
 				</div>
+				<NavDialog open={open} close={closeDialog} />
 			</nav>
 		</>
 	);
