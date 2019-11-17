@@ -33,51 +33,38 @@ router.delete("/", function(req, res) {
     .catch(err => res.status(400).send({ error: err }));
 });
 
-// CREATE new like
+// CREATE a new like
 router.post("/", function(req, res) {
   User.findOne({ _id: req.body.liker_id })
     .then(function(user) {
       if (user === null) {
-        throw "{error: User ID not found}";
+        res.status(400).send({ error: "Bad User ID" });
+      } else {
+        Comment.findOneAndUpdate(
+          { _id: req.body.comment_id },
+          { $inc: { likeCount: 1 } },
+          function(err, count) {
+            if (err) {
+              res
+                .status(500)
+                .send({ error: "problem updating comment like count." });
+            } else {
+              // create new like
+              const newLike = new CommentLike(req.body);
+              CommentLike.create(newLike)
+                .then(function(like) {
+                  res.status(200).send(like);
+                })
+                .catch(function(err) {
+                  res.status(400).send({ error: "Error 2" });
+                });
+            }
+          }
+        );
       }
     })
     .catch(function(err) {
-      res.status(400).send({ error: "Bad liker ID" });
-    })
-    .then(function() {
-      console.log("in increment");
-      Comment.findOneAndUpdate(
-        { _id: req.body.comment_id },
-        { $inc: { likeCount: 1 } },
-        function(err, count) {
-          if (err) {
-            res
-              .status(500)
-              .send({ error: "problem updating comment like count." });
-          }
-        }
-      )
-        .then(function(comment) {
-          if (comment === null) {
-            throw "{error: Comment ID not found}";
-          }
-        })
-        .then(function(comment) {
-          // do the good stuff
-          const newLike = new CommentLike(req.body);
-          CommentLike.create(newLike).then(function(like) {
-            res.status(200).send(like);
-          });
-        })
-        .catch(function(err) {
-          res.status(400).send({ error: "Bad Comment ID" });
-        });
-    })
-    .catch(function(err) {
-      res.status(400).send({ error: "Error 2" });
-    })
-    .catch(function(err) {
-      res.status(400).send({ error: "Error 3" });
+      res.status(400).send({ error: "Bad user ID" });
     });
 });
 

@@ -9,93 +9,62 @@ router.get("/", function(req, res) {
   res.status(200).send({ success: "ping" });
 });
 
-// Delete like
 router.delete("/", function(req, res) {
-  PostLike.findOne({ _id: req.body.postLike_id }, function(err, plike) {
-    if (err || plike === null) {
-      res.status(400).send({ error: "bad postLike_id" });
-    }
-  })
-    .catch(function(err) {
-      res.status(400).send({ err });
-    })
-    .then(function(plike) {
-      console.log("decrement");
-      console.log(plike.post_id);
-      Post.findOneAndUpdate(
-        { _id: plike.post_id },
-        {
-          $inc: { likeCount: -1 },
-          function(err, thing) {
+  PostLike.findOneAndRemove({ _id: req.body.postLike_id })
+    .then(function(result) {
+      if (result === null) {
+        res.status(400).send({ error: "Bad postLike ID" });
+      } else {
+        Post.findOneAndUpdate(
+          { _id: result.post_id },
+          { $inc: { likeCount: -1 } },
+          function(err, result2) {
             if (err) {
               res
                 .status(500)
-                .send({ error: "problem decrementing post like count." });
+                .send({ error: "problem updating post like count." });
+            } else {
+              res.status(200).send({ success: result2 });
             }
           }
-        }
-      );
+        );
+      }
     })
-    .catch(function(err) {
-      res.status(400).send({ err });
-    })
-    .then(function() {
-      PostLike.findOneAndRemove({ _id: req.body.postLike_id }, function(
-        err,
-        message
-      ) {
-        res.status(200).send(message);
-      }).catch(function(err) {
-        res.status(400).send({ err });
-      });
-    });
+    .catch(err => res.status(400).send({ error: err }));
 });
 
-// CREATE new like
+// CREATE new postlike
 router.post("/", function(req, res) {
   User.findOne({ _id: req.body.liker_id })
     .then(function(user) {
       if (user === null) {
-        throw "{error: User ID not found}";
+        res.status(400).send({ error: "Bad User ID" });
+      } else {
+        Post.findOneAndUpdate(
+          { _id: req.body.post_id },
+          { $inc: { likeCount: 1 } },
+          function(err, count) {
+            if (err) {
+              res
+                .status(500)
+                .send({ error: "problem updating post like count." });
+            } else {
+              // create new like
+              const newLike = new PostLike(req.body);
+              PostLike.create(newLike)
+                .then(function(like) {
+                  res.status(200).send(like);
+                })
+                .catch(function(err) {
+                  res.status(400).send({ error: "Error 2" });
+                });
+            }
+          }
+        );
       }
     })
     .catch(function(err) {
-      res.status(400).send({ error: "Bad liker ID" });
-    })
-    .then(function() {
-      console.log("in increment");
-      Post.findOneAndUpdate(
-        { _id: req.body.post_id },
-        { $inc: { likeCount: 1 } },
-        function(err, count) {
-          if (err) {
-            res
-              .status(500)
-              .send({ error: "problem updating post like count." });
-          }
-        }
-      )
-        .then(function(post) {
-          if (post === null) {
-            throw "{error: Post ID not found}";
-          }
-        })
-        .then(function(post) {
-          // do the good stuff
-          const newLike = new PostLike(req.body);
-          PostLike.create(newLike).then(function(like) {
-            res.status(200).send(like);
-          });
-        })
-        .catch(function(err) {
-          res.status(400).send({ error: "Bad Post ID" });
-        });
-    })
-    .catch(function(err) {
-      res.status(400).send({ error: "Error 2" });
-    })
-    .catch(function(err) {
-      res.status(400).send({ error: "Error 3" });
+      res.status(400).send({ error: "Bad User ID" });
     });
 });
 
