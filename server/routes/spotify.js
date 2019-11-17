@@ -53,16 +53,18 @@ router.get("/callback", function(req, res) {
     let username = authOptions.form.state;
 
     // save refresh token to User
-    console.log(username);
-    console.log(refreshToken);
     User.findOneAndUpdate(
       { username: username },
       { refreshToken: refreshToken }
-    );
-
-    // go somewhere else with access token
-    let uri = process.env.FRONTEND_URI || "http://localhost:3000";
-    res.redirect(uri + "?accessToken=" + accessToken);
+    ).then(function(user) {
+      if (user === null) {
+        res.status(400).send({ error: err });
+      } else {
+        // go somewhere else with spotify access token
+        let uri = process.env.FRONTEND_URI || "http://localhost:3000";
+        res.redirect(uri + "?accessToken=" + accessToken);
+      }
+    });
   });
 });
 
