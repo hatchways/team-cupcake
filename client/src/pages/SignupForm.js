@@ -93,7 +93,7 @@ function SignupForm(props) {
           props.enqueueSnackbar("Registration Succesful", {
             variant: "success"
           });
-          setTimeout(() => props.history.push("/update?welcome=true"), 1000);
+          setTimeout(() => props.history.push("/linkspotify"), 1000);
         }
       });
   };

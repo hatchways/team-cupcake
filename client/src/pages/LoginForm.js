@@ -3,6 +3,7 @@ import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { withSnackbar } from "notistack";
+import authFetch from "../utils/authFetch";
 function LoginForm(props) {
   const classes = useStyles();
   const [fields, handleChange] = useState({ email: "", password: "" });
@@ -22,8 +23,12 @@ function LoginForm(props) {
         if (res.accessToken) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
-          props.enqueueSnackbar("Success", { variant: "success" });
-          setTimeout(() => props.history.push("/"), 1000);
+          authFetch("/spotify/refresh", null, props).then(res => {
+            if (res.error) return;
+            sessionStorage.setItem("spotifyToken", res.token);
+            props.enqueueSnackbar("Success", { variant: "success" });
+            setTimeout(() => props.history.push("/"), 1000);
+          });
         }
       });
   };

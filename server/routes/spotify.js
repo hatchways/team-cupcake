@@ -3,25 +3,12 @@ const router = express.Router();
 const querystring = require("querystring");
 const request = require("request");
 const User = require("../models/user");
-
+const { auth } = require("../middlewares/authMiddleware");
 const redirect_uri =
   process.env.REDIRECT_URI || "http://localhost:3001/spotify/callback";
 
 router.get("/", function(req, res) {
   res.status(200).send({ sucess: "ping" });
-});
-
-router.get("/login/:username", function(req, res) {
-  res.redirect(
-    "https://accounts.spotify.com/authorize?" +
-      querystring.stringify({
-        response_type: "code",
-        state: req.params.username,
-        client_id: process.env.SPOTIFY_CLIENT_ID,
-        scope: "user-read-private user-read-email", // permissions we're asking for
-        redirect_uri
-      })
-  );
 });
 
 router.get("/callback", function(req, res) {
@@ -62,10 +49,46 @@ router.get("/callback", function(req, res) {
       } else {
         // go somewhere else with spotify access token
         let uri = process.env.FRONTEND_URI || "http://localhost:3000";
-        res.redirect(uri + "?accessToken=" + accessToken);
+        res.redirect(uri + "/linkspotify?accessToken=" + accessToken);
       }
     });
   });
 });
-
+router.use(auth);
+router.get("/login", function(req, res) {
+  res.json({
+    spotifylink:
+      "https://accounts.spotify.com/authorize?" +
+      querystring.stringify({
+        response_type: "code",
+        state: req.body.username,
+        client_id: process.env.SPOTIFY_CLIENT_ID,
+        scope: "user-read-private user-read-email", // permissions we're asking for
+        redirect_uri
+      })
+  });
+});
+router.get("/refresh", (req, res) => {
+  const authOptions = {
+    url: "https://accounts.spotify.com/api/token",
+    form: {
+      refresh_token: req.body.refreshToken,
+      grant_type: "refresh_token"
+    },
+    headers: {
+      Authorization:
+        "Basic " +
+        new Buffer.from(
+          process.env.SPOTIFY_CLIENT_ID +
+            ":" +
+            process.env.SPOTIFY_CLIENT_SECRET
+        ).toString("base64")
+    },
+    json: true
+  };
+  request.post(authOptions, (err, response, body) => {
+    if (err) return res.status(400).json({ error: err });
+    res.json({ token: body.access_token });
+  });
+});
 module.exports = router;
