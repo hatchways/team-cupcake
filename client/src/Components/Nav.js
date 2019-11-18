@@ -90,7 +90,7 @@ const Nav = () => {
 					</a>
 					<a href='./messages' className={classes.a}>
 						<li className={classes.li}>
-							Massages
+							Messages
 						</li>
 					</a>
 				</ul>
