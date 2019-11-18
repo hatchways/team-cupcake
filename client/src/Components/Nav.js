@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import './Nav.css';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import NavDialog from './Dialog';
+import authFetch from "../utils/authFetch";
 
 const useStyles = makeStyles(theme => ({
 	nav: {
@@ -56,9 +57,15 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Nav = () => {
+const Nav = (props) => {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
+	const [profile, setProfile] = useState({ photo_url: "" });
+	useEffect(() => {
+		authFetch("/users", null, props).then(({ Profile }) => {
+			setProfile({ ...Profile });
+		});
+	}, [props]);
 
 	const openDialog = () => {
 		return setOpen(true)
@@ -95,7 +102,12 @@ const Nav = () => {
 					</a>
 				</ul>
 				<div className='thumbnail'>
-					<img src='/assets/Profile.png' alt='Logo' />
+					<a href="/update-user-info">
+						<img
+							src={profile.photo_url}
+							alt="profileimage"
+							className={classes.profileImg}
+						/></a>
 				</div>
 				<NavDialog open={open} close={closeDialog} />
 			</nav>

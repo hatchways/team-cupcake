@@ -8,6 +8,7 @@ import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
 import ProfileUpdate from "./pages/ProfileUpdate";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import UpdateUserInfo from "./pages/UpdateUserInfo"
 import NotFound from "./pages/404";
 import { SnackbarProvider } from "notistack";
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route exact path="/signup" component={SignUp} />
             <ProtectedRoute exact path="/" component={Profile} />
             <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+            <ProtectedRoute exact path="/update-user-info" component={UpdateUserInfo} />
             <ProtectedRoute exact path="/messages" component={Messages} />
             <ProtectedRoute exact path="/discover" component={Discover} />
             <Route path="*" component={NotFound} />
