@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// const User = require("./user"); // is this necessary?
 
 const PostSchema = new Schema({
   description: {
@@ -16,27 +15,32 @@ const PostSchema = new Schema({
   author: {
     type: Schema.Types.ObjectID,
     ref: "User",
-    required: true
+    required: true,
+    index: true // most queries posts by author
   },
-  image_url: {
+  imageUrl: {
     type: String,
     required: false, // insert dummy image by default? make one like
     min: 6,
     max: 50
-    // likely want to do some re here if not previously validated
   },
-  music_url: {
+  musicUrl: {
     type: String,
     required: false,
     min: 6,
     max: 50
-    // likely want to do some re here if not previously validated
+  },
+  commentCount: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  likeCount: {
+    type: Number,
+    required: true,
+    default: 0
   }
-  // Possible added fields
-  // might want date created and/or date updated
 });
-
-// functions
 
 const Post = mongoose.model("post", PostSchema);
 

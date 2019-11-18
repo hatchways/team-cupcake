@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
-import logo from "../assets/instafy.png";
-import profilePicture from "../assets/Profile.png";
+import { AppBar, Toolbar, Button, TextField } from "@material-ui/core";
+import authFetch from "../utils/authFetch";
 const useStyles = makeStyles(theme => ({
   menuImg: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    alignSelf: "center"
   },
   appbar: {
-    backgroundColor: "white"
+    backgroundColor: "white",
+    "& div": {
+      flexGrow: 1
+    }
   },
   toolbar: {
     display: "flex",
-    height: "100px",
-    alignItems: "center"
+    height: "80px"
   },
   thebutton: {
     marginRight: theme.spacing(1)
@@ -25,28 +27,42 @@ const useStyles = makeStyles(theme => ({
   },
   typo: {
     color: "grey",
-    flexGrow: 1
+    width: "50%"
   }
 }));
 
-function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
+  const [profile, setProfile] = useState({ photo_url: "" });
+  useEffect(() => {
+    authFetch("/users", null, props).then(({ Profile }) => {
+      setProfile({ ...Profile });
+    });
+  }, [props]);
   return (
     <div>
       <AppBar position="static" className={classes.appbar}>
         <Toolbar className={classes.toolbar}>
-          <img src={logo} alt="Website logo" className={classes.menuImg} />
-          <Typography variant="subtitle2" className={classes.typo}>
-            Share and enjoy music !
-          </Typography>
+          <img
+            src="assets/instafy.png"
+            alt="Website logo"
+            className={classes.menuImg}
+          />
+          <div>
+            <TextField
+              variant="outlined"
+              placeholder="Share and enjoy music !"
+              className={classes.typo}
+            ></TextField>
+          </div>
           <Button variant="outlined" className={classes.thebutton}>
             Share Music
           </Button>
           <Button className={classes.thebutton}>Discover</Button>
           <Button className={classes.thebutton}>Messages</Button>
           <img
-            src={profilePicture}
-            alt="Website logo"
+            src={profile.photo_url}
+            alt="profileimage"
             className={classes.profileImg}
           />
         </Toolbar>

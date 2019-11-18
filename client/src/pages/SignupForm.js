@@ -3,7 +3,8 @@ import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";
-export default function SignupForm(props) {
+import { withSnackbar } from "notistack";
+function SignupForm(props) {
   const classes = useStyles();
   useEffect(() => {
     if (isAuthenticated()) props.history.push("/");
@@ -83,15 +84,16 @@ export default function SignupForm(props) {
       .then(res => res.json())
       .then(res => {
         if (res.error) {
-          const formErrors = { ...error };
-          formErrors.message = res.error;
-          setErrors(formErrors);
+          props.enqueueSnackbar(res.error, { variant: "error" });
           return;
         }
         if (res.accessToken) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
-          props.history.push("/update?welcome=true");
+          props.enqueueSnackbar("Registration Succesful", {
+            variant: "success"
+          });
+          setTimeout(() => props.history.push("/update?welcome=true"), 1000);
         }
       });
   };
@@ -177,3 +179,4 @@ export default function SignupForm(props) {
     </div>
   );
 }
+export default withSnackbar(SignupForm);

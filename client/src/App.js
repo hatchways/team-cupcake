@@ -9,19 +9,22 @@ import Messages from "./pages/Messages";
 import ProfileUpdate from "./pages/ProfileUpdate";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import NotFound from "./pages/404";
+import { SnackbarProvider } from "notistack";
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/signup" component={SignUp} />
-          <ProtectedRoute exact path="/" component={Profile} />
-          <ProtectedRoute exact path="/update" component={ProfileUpdate} />
-          <ProtectedRoute exact path="/messages" component={Messages} />
-          <ProtectedRoute exact path="/discover" component={Discover} />
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </BrowserRouter>
+      <SnackbarProvider maxSnack={1}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/signup" component={SignUp} />
+            <ProtectedRoute exact path="/" component={Profile} />
+            <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+            <ProtectedRoute exact path="/messages" component={Messages} />
+            <ProtectedRoute exact path="/discover" component={Discover} />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </BrowserRouter>
+      </SnackbarProvider>
     </MuiThemeProvider>
   );
 }
