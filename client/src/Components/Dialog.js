@@ -14,6 +14,10 @@ export default function NavDialog({ open, close }) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+	const closeDialog = () => {
+		return close(false)
+	}
+
 	return (
 		<div
 			style={{
@@ -27,7 +31,7 @@ export default function NavDialog({ open, close }) {
 			<Dialog
 				fullScreen={fullScreen}
 				open={open}
-				onClose={event => close(false)}
+				onClose={closeDialog}
 				aria-labelledby='responsive-dialog-title'
 				maxWidth={'lg'}
 			>
