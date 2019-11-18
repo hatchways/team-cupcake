@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import './Nav.css';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import NavDialog from '../utils/Dialog';
+import NavDialog from './Dialog';
 
 const useStyles = makeStyles(theme => ({
 	nav: {
