@@ -10,6 +10,7 @@ import pingRouter from "./routes/ping";
 import signupRouter from "./routes/signup";
 import usersRouter from "./routes/users";
 import loginRouter from "./routes/login";
+import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
 import commentRouter from "./routes/comments";
 import { auth } from "./middlewares/authMiddleware";
@@ -38,6 +39,7 @@ app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
 app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
+app.use("/spotify", spotifyRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentRouter);
 

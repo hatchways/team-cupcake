@@ -24,12 +24,16 @@ const UserSchema = new Schema({
   password: {
     type: String, // plain text for early demo, hashed for use
     required: true
+  },
+  refreshToken: {
+    type: String,
+    required: false
   }
 });
 
 // hash password with bcrypt here
 // Aecio notes that async method should be used.
-// hashing also in users.js PUT. 
+// hashing also in users.js PUT.
 // Either reuse this method there or if making changes
 // ensure same change is made there.
 UserSchema.methods.setPassword = function(password) {
