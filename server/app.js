@@ -11,9 +11,7 @@ import signupRouter from "./routes/signup";
 import usersRouter from "./routes/users";
 import loginRouter from "./routes/login";
 import postsRouter from "./routes/posts";
-import postLikeRouter from "./routes/postLikes";
 import commentRouter from "./routes/comments";
-import commentLikeRouter from "./routes/commentLikes";
 import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
@@ -42,8 +40,6 @@ app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentRouter);
-app.use("/commentLikes", commentLikeRouter);
-app.use("/postLikes", postLikeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
