@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
-// import useStyles from "../styles/updateStyles";
-import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
 import { withSnackbar } from "notistack";
 import useStyles from "../styles/updateUserInfo";
@@ -9,12 +7,6 @@ import useStyles from "../styles/updateUserInfo";
 function UpdateUserInfo(props) {
     const classes = useStyles();
     const [userInfo, setUserInfo] = useState({ description: "" });
-    const user = JSON.parse(sessionStorage.getItem("credentials"));
-    const [formData, setFormData] = useState({
-        description: "",
-        photo_url: "",
-        photoFile: ""
-    });
     const showProfilePic = file => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -32,8 +24,8 @@ function UpdateUserInfo(props) {
     async function formSubmit(e) {
         e.preventDefault();
         const data = new FormData();
-        data.append("description", formData.description);
-        data.append("photoFile", formData.photoFile);
+        data.append("description", userInfo.description);
+        data.append("photoFile", userInfo.photoFile);
         await authFetch("/users", data, props, "put", null);
         props.enqueueSnackbar("Profile Updated !", { variant: "success" });
         setTimeout(() => props.history.push("/"), 1000);
@@ -41,7 +33,6 @@ function UpdateUserInfo(props) {
 
     return (
         <Paper className={classes.updateInfoWrapper}>
-
             <React.Fragment>
                 <img
                     className={classes.intafyLogo}
@@ -50,7 +41,6 @@ function UpdateUserInfo(props) {
                     style={{ height: "auto", width: "125px", alignSelf: "center" }}
                 />
             </React.Fragment>
-
             <form className={classes.formWrapper} encType="multipart/form-data" onSubmit={e => formSubmit(e)}>
                 <div className={classes.imageDiv}>
                     <div className={classes.photoWrapper}>
@@ -65,12 +55,11 @@ function UpdateUserInfo(props) {
                         accept="image/*"
                         className={classes.input}
                         name="photo"
-                        // value={formData.photourl}
                         onChange={e => {
                             if (e.target.files[0]) {
                                 showProfilePic(e.target.files[0]);
-                                setFormData({
-                                    ...formData,
+                                setUserInfo({
+                                    ...userInfo,
                                     photoFile: e.target.files[0]
                                 });
                             }
@@ -85,22 +74,20 @@ function UpdateUserInfo(props) {
 
                 <TextField
                     id="outlined-multiline-static"
-                    label={userInfo.description}
+                    value={userInfo.description}
                     multiline
                     name="description"
                     rows="5"
                     margin="normal"
                     variant="outlined"
                     className={classes.textField}
-                    // value={about.description}
-                    onChange={e => setFormData({ ...formData, description: e.target.value })}
-                // required
+                    onChange={e => setUserInfo({ ...userInfo, description: e.target.value })}
                 />
 
                 <div className={classes.buttonDiv}>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.button}>
                         UPDATE
-      </Button>
+                    </Button>
                 </div>
             </form>
         </Paper>
