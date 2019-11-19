@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import Autosuggest from "react-autosuggest";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Button, TextField } from "@material-ui/core";
+import { AppBar, Toolbar, Button } from "@material-ui/core";
 import authFetch from "../utils/authFetch";
+import debounce from "../utils/debounce";
+import "../styles/autosuggest.css";
 const useStyles = makeStyles(theme => ({
   menuImg: {
     marginRight: theme.spacing(2),
@@ -34,6 +37,52 @@ const useStyles = makeStyles(theme => ({
 function NavBar(props) {
   const classes = useStyles();
   const [profile, setProfile] = useState({ photo_url: "" });
+  const [value, setValue] = useState("");
+  const [songs, setSongs] = useState([]);
+  const inputProps = {
+    placeholder: "Search and share music !",
+    value,
+    onChange: (event, { newValue }) => {
+      setValue(newValue);
+    }
+  };
+  const renderSuggestions = suggestion => {
+    const getAuthors = suggestion.artists.map((artist, i) => {
+      return i + 1 !== suggestion.artists.length
+        ? `${artist.name} & `
+        : artist.name;
+    });
+    return (
+      <div className="suggestion-content">
+        <img src={suggestion.album.images[2].url} alt="albumimage" />
+        <span style={{ marginLeft: "10px" }}>
+          {suggestion.name} <br /> <b>By : {getAuthors}</b>
+        </span>
+      </div>
+    );
+  };
+  const getSuggestion = suggestion => {
+    return suggestion.name;
+  };
+  const clearSuggestion = () => {
+    setSongs([]);
+  };
+  const searchSpotify = ({ value }) => {
+    debounce(apiCall, 1000, value);
+    async function apiCall(value) {
+      const result = await authFetch(
+        "/spotify/songs",
+        { query: value },
+        props,
+        "post",
+        "application/json"
+      );
+      const music = JSON.parse(result.body);
+      if (music.error) return setSongs([]);
+      setSongs(music.tracks.items);
+      return;
+    }
+  };
   useEffect(() => {
     authFetch("/users", null, props).then(({ Profile }) => {
       setProfile({ ...Profile });
@@ -49,11 +98,14 @@ function NavBar(props) {
             className={classes.menuImg}
           />
           <div>
-            <TextField
-              variant="outlined"
-              placeholder="Share and enjoy music !"
-              className={classes.typo}
-            ></TextField>
+            <Autosuggest
+              inputProps={inputProps}
+              suggestions={songs}
+              onSuggestionsFetchRequested={searchSpotify}
+              onSuggestionsClearRequested={clearSuggestion}
+              renderSuggestion={renderSuggestions}
+              getSuggestionValue={getSuggestion}
+            />
           </div>
           <Button variant="outlined" className={classes.thebutton}>
             Share Music
