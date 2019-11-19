@@ -91,4 +91,18 @@ router.get("/refresh", (req, res) => {
     res.json({ token: body.access_token });
   });
 });
+router.post("/songs", (req, res) => {
+  request.get(
+    `https://api.spotify.com/v1/search?q=${req.body.query}&type=track&limit=5`,
+    {
+      headers: {
+        Authorization: req.headers.authorization
+      }
+    },
+    (error, response, body) => {
+      if (error) return res.send({ error });
+      res.json({ body });
+    }
+  );
+});
 module.exports = router;
