@@ -30,9 +30,10 @@ const Profile = () => {
 
   // Take 4
   useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem("credentials")).username;
     fetch(
-      `/posts/{ {JSON.parse(sessionStorage.getItem("credentials")).username}}`
-      // "posts/benjamin" // for my local testing
+      // `/posts/{JSON.parse(sessionStorage.getItem("credentials")).username}` // this broke :(
+      "posts/" + user
     )
       .then(res => res.json())
       .then(res => {
