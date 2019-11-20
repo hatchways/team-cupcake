@@ -35,7 +35,7 @@ export default function SingularPost(props) {
           <div className={classes.topdiv}>
             <div className={classes.childiv}>
               <img
-                src={Data.albumPic}
+                src={props.albumPic}
                 alt="profileImage"
                 className={classes.songpicture}
               />
@@ -44,16 +44,16 @@ export default function SingularPost(props) {
               <div className={classes.flexparent}>
                 <div className={classes.divprofile}>
                   <img
-                    src={Data.authorPic}
+                    src={props.authorPic}
                     alt="profileImage"
                     className={classes.songpicture2}
                   />
                 </div>
                 <div className={classes.divprofileinfo}>
-                  <h3>{Data.AuthorName}</h3>
-                  <h4>{Data.PostDescription}</h4>
+                  <h3>{props.authorName}</h3>
+                  <h4>{props.postDescription}</h4>
                   <p style={{ color: "grey" }}>
-                    {getTime(Data.timeCreated)} ago
+                    {getTime(props.timeCreated)} ago
                   </p>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function SingularPost(props) {
             <div className={classes.likePost}>
               <Favorite style={{ color: "red", verticalAlign: "middle" }} />
               <h3 style={{ display: "inline-flex", verticalAlign: "middle" }}>
-                &nbsp; {Data.likes} Likes
+                &nbsp; {props.likes} Likes
               </h3>
             </div>
             <div className={classes.listenSpot}>

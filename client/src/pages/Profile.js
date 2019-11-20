@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core";
 // import photo1 from '../../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png'
 import "./Profile.css";
 import { type } from "os";
+import SingularPost from "../components/SingularPost";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -22,15 +23,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const user = JSON.parse(sessionStorage.getItem("credentials")).username;
+
 const Profile = () => {
   const classes = useStyles();
   const [toggleButton1, setToggleButton1] = useState(true);
   const [toggleButton2, setToggleButton2] = useState(true);
-  const [userPosts, setUserPosts] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
 
   // Take 4
   useEffect(() => {
-    let user = JSON.parse(sessionStorage.getItem("credentials")).username;
+    // let user = JSON.parse(sessionStorage.getItem("credentials")).username;
     fetch(
       // `/posts/{JSON.parse(sessionStorage.getItem("credentials")).username}` // this broke :(
       "posts/" + user
@@ -45,6 +48,19 @@ const Profile = () => {
       });
   }, []);
 
+  let postsToDisplay = userPosts.map(userPost => (
+    <SingularPost
+      key={userPost._id}
+      // author_id={userPost.author}
+      postDescription={userPost.description}
+      authorName={user}
+      timeCreated={userPost.date}
+      albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"}
+      authorPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"}
+      likes={userPost.likeCount}
+    />
+  ));
+
   return (
     <>
       <div className={classes.profile}>
@@ -56,10 +72,8 @@ const Profile = () => {
             />
           </div>
           <div className="name-container">
-            <h3>
-              {JSON.parse(sessionStorage.getItem("credentials")).username}
-            </h3>
-            {userPosts && <h6>{userPosts["0"]["description"]}</h6>}
+            <h3>{user}</h3>
+            {userPosts.length > 0 && <h6>{userPosts["0"]["description"]}</h6>}
 
             <div>
               <span>130K Followers</span>
@@ -81,7 +95,7 @@ const Profile = () => {
             </Button>
           </div>
         </div>
-        <Following />
+        {postsToDisplay}
       </div>
     </>
   );
