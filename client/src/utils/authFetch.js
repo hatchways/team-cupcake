@@ -14,8 +14,10 @@ export default async function authFetch(
   contentType = "application/json"
 ) {
   const token = sessionStorage.getItem("authToken");
+  const spotifyToken = sessionStorage.getItem("spotifyToken");
   const headers = new Headers();
   headers.set("accessToken", `Bearer ${token ? token : "no-auth"}`);
+  headers.set("authorization", `Bearer ${spotifyToken}`);
   if (contentType) {
     headers.set("content-Type", contentType);
     body = JSON.stringify(body);

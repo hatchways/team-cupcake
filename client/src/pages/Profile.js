@@ -23,7 +23,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const user = JSON.parse(sessionStorage.getItem("credentials")).username;
+const user = JSON.parse(sessionStorage.getItem("credentials"))
+  ? JSON.parse(sessionStorage.getItem("credentials")).username
+  : "Murphy";
 
 const Profile = () => {
   const classes = useStyles();
@@ -43,7 +45,7 @@ const Profile = () => {
       });
   }, []);
 
-  let postsToDisplay = userPosts.map(userPost => (
+  let postsToDisplay = userPosts().map(userPost => (
     <SingularPost
       key={userPost._id}
       // author_id={userPost.author}

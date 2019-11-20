@@ -11,7 +11,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         if (isAuthenticated())
           return (
             <Fragment>
-              <Nav />
+              <Nav {...props} />
               <Component {...props} />
             </Fragment>
           );
