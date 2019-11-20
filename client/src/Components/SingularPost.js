@@ -18,6 +18,20 @@ export default function SingularPost(props) {
     setOpen(false);
   };
 
+  // useEffect(() => {
+  //   if (open) {
+  //     fetch("posts/" + user)
+  //       .then(res => res.json())
+  //       .then(res => {
+  //         if (res.error) {
+  //           console.log(res.error);
+  //         } else {
+  //           setUserPosts(res);
+  //         }
+  //       });
+  //   }
+  // }, [open]);
+
   return (
     <React.Fragment>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>

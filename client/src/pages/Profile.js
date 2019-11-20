@@ -31,13 +31,8 @@ const Profile = () => {
   const [toggleButton2, setToggleButton2] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
 
-  // Take 4
   useEffect(() => {
-    // let user = JSON.parse(sessionStorage.getItem("credentials")).username;
-    fetch(
-      // `/posts/{JSON.parse(sessionStorage.getItem("credentials")).username}` // this broke :(
-      "posts/" + user
-    )
+    fetch("posts/" + user)
       .then(res => res.json())
       .then(res => {
         if (res.error) {
