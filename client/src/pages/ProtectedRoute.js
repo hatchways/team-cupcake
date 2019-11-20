@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";
 import Login from "./LoginForm";
-import Nav from "../components/Navbar";
+import Nav from "../Components/Nav";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route

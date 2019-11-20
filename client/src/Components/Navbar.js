@@ -6,6 +6,7 @@ import authFetch from "../utils/authFetch";
 import debounce from "../utils/debounce";
 import Dialog from "./Dialog";
 import "../styles/autosuggest.css";
+
 const useStyles = makeStyles(theme => ({
   menuImg: {
     marginRight: theme.spacing(2),
