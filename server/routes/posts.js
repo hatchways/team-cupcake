@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 const Post = require("../models/post");
 const User = require("../models/user");
+const Comment = require("../models/comment");
 const PostLike = require("../models/postLike");
+const Profile = require("../models/profile");
 
 // CREATE new post
 router.post("/:username", function(req, res) {
@@ -151,9 +153,7 @@ router.post("/:post_id/likes", function(req, res) {
 });
 
 // Delete postLike
-// the route could have the post_id rather than "all"
-// - marginally more secure but harder to use
-router.delete("all/likes/:like_id", function(req, res) {
+router.delete("/likes/:like_id", function(req, res) {
   PostLike.findOneAndRemove({ _id: req.params.like_id })
     .then(function(result) {
       if (result === null) {
@@ -176,5 +176,109 @@ router.delete("all/likes/:like_id", function(req, res) {
     })
     .catch(err => res.status(400).send({ error: err }));
 });
+
+// // GET all comments on a post
+// router.get("/:post_id/comments", function(req, res) {
+//   Comment.find({ post_id: req.params.post_id }).then(function(result) {
+//     if (result == null) {
+//       res.status(400).send({ error: "Bad request or no result found" });
+//     } else {
+//       res.status(200).send(result);
+//     }
+//   });
+// });
+
+// GET all comments on a post // sorta working
+router.get("/:post_id/comments", function(req, res) {
+  Comment.find({ post_id: req.params.post_id })
+    // .populate({ path: "commenter", model: User }) // works, sorta.
+    .populate({
+      path: "commenter",
+      model: User,
+      select: "username" // just gets username
+      // This bit breaks
+      // populate: {
+      //   path: "username",
+      //   model: Profile
+      // }
+    })
+    .exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
+      }
+    });
+});
+
+// Take 2 // untested
+// GET all comments on a post and commenter user data
+// router.get("/:post_id/comments", function(req, res) {
+//   Comment.aggregate([
+//     { $match: { post_id: req.params.post_id } },
+//     {
+//       $lookup: {
+//         localField: "commenter",
+//         from: "user", // capitilize or no?
+//         foreignField: "_id",
+//         as: "userData"
+//       }
+//     },
+//     { $unwind: "$userData" },
+//     {
+//       $project: {
+//         _id: 1,
+//         likeCount: 1,
+//         post_id: 1,
+//         commenter: 1,
+//         description: 1,
+//         date: 1,
+//         "userData.username": 1,
+//         "userData.email": 1
+//       }
+//     }
+//   ]).then(function(result) {
+//     if (result === null) {
+//       res.status(400).send("oopsy");
+//     } else {
+//       res.status(200).send(result);
+//     }
+//   });
+// });
+
+// Take 3 // untested
+// GET all comments on a post and commenter user data
+// router.get("/:post_id/comments", function(req, res) {
+//   Comment.aggregate([
+//     { $match: { post_id: req.params.post_id } },
+//     {
+//       $lookup: {
+//         localField: "commenter",
+//         from: "user", // capitilize or no?
+//         foreignField: "_id",
+//         as: "userData"
+//       }
+//     },
+//     { $unwind: "$userData" },
+//     {
+//       $project: {
+//         _id: 1,
+//         likeCount: 1,
+//         post_id: 1,
+//         commenter: 1,
+//         description: 1,
+//         date: 1,
+//         username: "userData.username",
+//         email: "userData.email"
+//       }
+//     }
+//   ]).then(function(result) {
+//     if (result === null) {
+//       res.status(400).send("oopsy");
+//     } else {
+//       res.status(200).send(result);
+//     }
+//   });
+// });
 
 module.exports = router;

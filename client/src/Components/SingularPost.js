@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { Dialog, TextField } from "@material-ui/core";
 import { FavoriteBorder, Favorite } from "@material-ui/icons";
@@ -7,7 +7,8 @@ import Data from "../mockdata/post"; // Mock data will be replaced when backend 
 import getTime from "../utils/getTime";
 export default function SingularPost(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const fullWidth = true;
   const maxWidth = "lg";
   const handleClickOpen = () => {
@@ -18,19 +19,19 @@ export default function SingularPost(props) {
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   if (open) {
-  //     fetch("posts/" + user)
-  //       .then(res => res.json())
-  //       .then(res => {
-  //         if (res.error) {
-  //           console.log(res.error);
-  //         } else {
-  //           setUserPosts(res);
-  //         }
-  //       });
-  //   }
-  // }, [open]);
+  useEffect(() => {
+    if (open) {
+      fetch("posts/" + props.post_id + "/comments")
+        .then(res => res.json())
+        .then(res => {
+          if (res.error) {
+            console.log(res.error);
+          } else {
+            setComments(res);
+          }
+        });
+    }
+  }, [open]);
 
   return (
     <React.Fragment>
@@ -73,23 +74,25 @@ export default function SingularPost(props) {
               </div>
               <div>
                 <h4 style={{ color: "lightgrey" }}>
-                  Comments ({Data.comments.length}) :
+                  Comments ({comments.length}) :
                 </h4>
                 <div className={classes.commentsDiv}>
-                  {Data.comments.map(comment => (
-                    <div className={classes.comments} key={comment.id}>
+                  {comments.map(comment => (
+                    <div className={classes.comments} key={comment._id}>
                       <div className={classes.divprofile}>
                         <img
-                          src={comment.authorPic}
+                          src={
+                            "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
+                          }
                           alt="profileImage"
                           className={classes.songpicture2}
                         />
                       </div>
                       <div className={classes.divprofileinfo}>
-                        <h3>{comment.authorName}</h3>
-                        <p>{comment.comment}</p>
+                        <h3>{comment.commenter}</h3>
+                        <p>{comment.description}</p>
                         <p style={{ color: "grey" }}>
-                          {getTime(comment.timeCreated)} ago
+                          {getTime(comment.date)} ago
                         </p>
                       </div>
                       <div className={classes.likeComment}>

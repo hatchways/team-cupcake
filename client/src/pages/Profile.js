@@ -45,10 +45,11 @@ const Profile = () => {
       });
   }, []);
 
-  let postsToDisplay = userPosts().map(userPost => (
+  let postsToDisplay = userPosts.map(userPost => (
     <SingularPost
       key={userPost._id}
-      // author_id={userPost.author}
+      // author_id={userPost.author}  // might need this
+      post_id={userPost._id} // redundant if I can use key
       postDescription={userPost.description}
       authorName={user}
       timeCreated={userPost.date}
