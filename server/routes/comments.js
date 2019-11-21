@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Post = require("../models/post");
 const CommentLike = require("../models/commentLike");
 
+// CREATE a new comment
 router.post("/", function(req, res) {
   User.findOne({ _id: req.body.commenter })
     .then(function(user) {
@@ -109,9 +110,7 @@ router.post("/:comment_id/likes", function(req, res) {
 });
 
 // Delete commentLike
-// the route could have the comment_id rather than "all"
-// - marginally more secure but harder to use
-router.delete("/all/likes/:like_id", function(req, res) {
+router.delete("/likes/:like_id", function(req, res) {
   CommentLike.findOneAndRemove({ _id: req.params.like_id })
     .then(function(result) {
       if (result === null) {
