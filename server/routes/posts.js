@@ -177,30 +177,20 @@ router.delete("/likes/:like_id", function(req, res) {
     .catch(err => res.status(400).send({ error: err }));
 });
 
-// // GET all comments on a post
-// router.get("/:post_id/comments", function(req, res) {
-//   Comment.find({ post_id: req.params.post_id }).then(function(result) {
-//     if (result == null) {
-//       res.status(400).send({ error: "Bad request or no result found" });
-//     } else {
-//       res.status(200).send(result);
-//     }
-//   });
-// });
-
-// GET all comments on a post // sorta working
+// GET all comments on a post // gets other stuff too!
 router.get("/:post_id/comments", function(req, res) {
   Comment.find({ post_id: req.params.post_id })
     // .populate({ path: "commenter", model: User }) // works, sorta.
     .populate({
       path: "commenter",
       model: User,
-      select: "username" // just gets username
+      select: "username profile_id", // just gets username
       // This bit breaks
-      // populate: {
-      //   path: "username",
-      //   model: Profile
-      // }
+      populate: {
+        path: "profile_id",
+        model: Profile,
+        select: "photo_url"
+      }
     })
     .exec(function(err, result) {
       if (err) {
@@ -210,75 +200,5 @@ router.get("/:post_id/comments", function(req, res) {
       }
     });
 });
-
-// Take 2 // untested
-// GET all comments on a post and commenter user data
-// router.get("/:post_id/comments", function(req, res) {
-//   Comment.aggregate([
-//     { $match: { post_id: req.params.post_id } },
-//     {
-//       $lookup: {
-//         localField: "commenter",
-//         from: "user", // capitilize or no?
-//         foreignField: "_id",
-//         as: "userData"
-//       }
-//     },
-//     { $unwind: "$userData" },
-//     {
-//       $project: {
-//         _id: 1,
-//         likeCount: 1,
-//         post_id: 1,
-//         commenter: 1,
-//         description: 1,
-//         date: 1,
-//         "userData.username": 1,
-//         "userData.email": 1
-//       }
-//     }
-//   ]).then(function(result) {
-//     if (result === null) {
-//       res.status(400).send("oopsy");
-//     } else {
-//       res.status(200).send(result);
-//     }
-//   });
-// });
-
-// Take 3 // untested
-// GET all comments on a post and commenter user data
-// router.get("/:post_id/comments", function(req, res) {
-//   Comment.aggregate([
-//     { $match: { post_id: req.params.post_id } },
-//     {
-//       $lookup: {
-//         localField: "commenter",
-//         from: "user", // capitilize or no?
-//         foreignField: "_id",
-//         as: "userData"
-//       }
-//     },
-//     { $unwind: "$userData" },
-//     {
-//       $project: {
-//         _id: 1,
-//         likeCount: 1,
-//         post_id: 1,
-//         commenter: 1,
-//         description: 1,
-//         date: 1,
-//         username: "userData.username",
-//         email: "userData.email"
-//       }
-//     }
-//   ]).then(function(result) {
-//     if (result === null) {
-//       res.status(400).send("oopsy");
-//     } else {
-//       res.status(200).send(result);
-//     }
-//   });
-// });
 
 module.exports = router;
