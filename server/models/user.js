@@ -1,31 +1,31 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
-const bcrypt = require("bcrypt"); // part of req's, not implemented, obv.
+const bcrypt = require("bcrypt"); // still should be made async
 
 const UserSchema = new Schema({
-  // input format should be checked by front end form too
-  // important to do here as well (e.g. Rest client request)
-
-  // might want to consider changing/requiring lower case; should Benjamin == benJAMin?
   username: {
     type: String,
     required: [true, "Please enter a username !"],
-    match: [/^[a-zA-Z0-9]{5,}$/, "Please enter a valid username !"], // limit characters, not sure re is working
+    match: [/^[a-z0-9]{5,}$/, "Please enter a valid username !"], // change to lowercase only
     unique: true,
     index: true
   },
   email: {
     type: String,
-    match: [/\S+@\S+\.\S+/, "Please enter a valid Email !"], // might not be working
+    match: [/\S+@\S+\.\S+/, "Please enter a valid Email !"],
     required: [true, "Please enter an Email !"],
     unique: true
   },
   password: {
-    type: String, // plain text for early demo, hashed for use
+    type: String,
     required: true
   },
   refreshToken: {
+    type: String,
+    required: false
+  },
+  profile_id: {
     type: String,
     required: false
   }
