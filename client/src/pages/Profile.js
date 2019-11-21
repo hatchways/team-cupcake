@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import Following from "../components/Following";
+// import Following from "../components/Following";
 import { makeStyles } from "@material-ui/core";
 // import photo1 from '../../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png'
 import "./Profile.css";
-import { type } from "os";
+// import { type } from "os";
 import SingularPost from "../components/SingularPost";
 
 const useStyles = makeStyles(theme => ({
@@ -23,24 +23,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const user = JSON.parse(sessionStorage.getItem("credentials"))
-  ? JSON.parse(sessionStorage.getItem("credentials")).username
-  : "Murphy";
+// const user = JSON.parse(sessionStorage.getItem("credentials"))
+//   ? JSON.parse(sessionStorage.getItem("credentials")).username
+//   : "Murphy";
 
 const Profile = () => {
   const classes = useStyles();
   const [toggleButton1, setToggleButton1] = useState(true);
   const [toggleButton2, setToggleButton2] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
+  const [username, setUsername] = useState("username");
+  const [userPhoto, setUserPhoto] = useState(
+    "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
+  );
 
   useEffect(() => {
-    fetch("posts/" + user)
+    const user = JSON.parse(sessionStorage.getItem("credentials")).username;
+    fetch("posts/" + user) // change to an authFetch and move route to users.
       .then(res => res.json())
       .then(res => {
         if (res.error) {
           console.log(res.error);
         } else {
           setUserPosts(res);
+          setUsername(user);
+          // setUserPhoto
         }
       });
   }, []);
@@ -51,10 +58,10 @@ const Profile = () => {
       // author_id={userPost.author}  // might need this
       post_id={userPost._id} // redundant if I can use key
       postDescription={userPost.description}
-      authorName={user}
+      authorName={username}
       timeCreated={userPost.date}
-      albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"}
-      authorPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"}
+      albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"} // will have to come from spotify
+      authorPic={userPhoto}
       likes={userPost.likeCount}
     />
   ));
@@ -70,7 +77,7 @@ const Profile = () => {
             />
           </div>
           <div className="name-container">
-            <h3>{user}</h3>
+            <h3>{username}</h3>
             {userPosts.length > 0 && <h6>{userPosts["0"]["description"]}</h6>}
 
             <div>
