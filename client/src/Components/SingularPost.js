@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import { Dialog, TextField } from "@material-ui/core";
 import { FavoriteBorder, Favorite } from "@material-ui/icons";
 import useStyles from "../styles/singularPostStyles";
-import Data from "../mockdata/post"; // Mock data will be replaced when backend routes are ready.
+// import Data from "../mockdata/post"; // Mock data will be replaced when backend routes are ready.
 import getTime from "../utils/getTime";
 export default function SingularPost(props) {
   const classes = useStyles();

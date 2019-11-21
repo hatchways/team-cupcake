@@ -1,25 +1,52 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Post = require("../models/post");
 const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
+
+// FLAG FOR DELETION, if nothing's broken by Nov 23rd it can go.
 // READ get user by username
-router.get("/", function(req, res) {
-  const username = req.body.username;
-  User.findOne({ username })
-    .then(function(user) {
-      if (user === null) {
-        //res.send('error: user not found')
-        throw "{error: user not found}";
+// router.get("/", function(req, res) {
+//   const username = req.body.username;
+//   User.findOne({ username })
+//     .then(function(user) {
+//       if (user === null) {
+//         //res.send('error: user not found')
+//         throw "{error: user not found}";
+//       }
+//       Profile.findOne({ profileID: username }, (err, Profile) => {
+//         if (err) throw err;
+//         res.send({ Profile });
+//       });
+//     })
+//     .catch(function(err) {
+//       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
+//     });
+// });
+
+// GET all data necessary for front/profile page
+// profile photo url & posts by user
+// In retrospect seems to be too inefficient: need to breakout user and profile calls
+router.get("/:user_id", function(req, res) {
+  Post.find({ author: req.params.user_id })
+    .populate({
+      path: "author",
+      model: User,
+      select: "username profile_id", // just gets username
+      populate: {
+        path: "profile_id",
+        model: Profile,
+        select: "photo_url"
       }
-      Profile.findOne({ profileID: username }, (err, Profile) => {
-        if (err) throw err;
-        res.send({ Profile });
-      });
     })
-    .catch(function(err) {
-      res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
+    .exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
+      }
     });
 });
 

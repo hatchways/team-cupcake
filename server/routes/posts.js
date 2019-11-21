@@ -35,6 +35,7 @@ router.post("/:username", function(req, res) {
 });
 
 // GET Posts by username
+// used on Profile page, will need photo_url too.
 router.get("/:username", function(req, res) {
   // First GET User._id --- I would rather link to username in Model
   // but haven't found a way to do it (yet)
@@ -72,10 +73,7 @@ router.put("/:postID", function(req, res) {
       }
     })
     .then(function() {
-      // UPDATE date
-      // Should check date formats match w/ FE
-      // May want to have date making/matching functionality
-      // either here or in the front end
+      // UPDATE date - may want date-created and last-edited
 
       // Could put block in here to change author but
       // IMO, changing the author is a bad idea.
@@ -180,12 +178,35 @@ router.delete("/likes/:like_id", function(req, res) {
 // GET all comments on a post // gets other stuff too!
 router.get("/:post_id/comments", function(req, res) {
   Comment.find({ post_id: req.params.post_id })
-    // .populate({ path: "commenter", model: User }) // works, sorta.
     .populate({
       path: "commenter",
       model: User,
+      select: "username profile_id", // just gets username & profile ID
+      populate: {
+        path: "profile_id",
+        model: Profile,
+        select: "photo_url"
+      }
+    })
+    .exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
+      }
+    });
+});
+
+// To be moved over to users as soon as I figure out
+// protected routes or whatever
+// GET all data necessary for front/profile page
+// profile photo url & posts by user
+router.get("/tester/:user_id", function(req, res) {
+  Post.find({ author: req.params.user_id })
+    .populate({
+      path: "author",
+      model: User,
       select: "username profile_id", // just gets username
-      // This bit breaks
       populate: {
         path: "profile_id",
         model: Profile,
