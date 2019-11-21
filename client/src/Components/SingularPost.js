@@ -81,15 +81,13 @@ export default function SingularPost(props) {
                     <div className={classes.comments} key={comment._id}>
                       <div className={classes.divprofile}>
                         <img
-                          src={
-                            "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
-                          }
+                          src={comment.commenter.profile_id.photo_url}
                           alt="profileImage"
                           className={classes.songpicture2}
                         />
                       </div>
                       <div className={classes.divprofileinfo}>
-                        <h3>{comment.commenter}</h3>
+                        <h3>{comment.commenter.username}</h3>
                         <p>{comment.description}</p>
                         <p style={{ color: "grey" }}>
                           {getTime(comment.date)} ago
