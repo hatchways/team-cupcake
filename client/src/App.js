@@ -12,6 +12,7 @@ import UpdateUserInfo from "./pages/UpdateUserInfo"
 import Spotify from "./pages/SpotifyAuth";
 import NotFound from "./pages/404";
 import { SnackbarProvider } from "notistack";
+import FollowLog from './Components/FollowLog'
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
@@ -25,6 +26,7 @@ function App() {
             <ProtectedRoute exact path="/linkspotify" component={Spotify} />
             <ProtectedRoute exact path="/messages" component={Messages} />
             <ProtectedRoute exact path="/discover" component={Discover} />
+            <ProtectedRoute exact path="/follow" component={FollowLog} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

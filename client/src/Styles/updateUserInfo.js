@@ -7,7 +7,6 @@ const useStyles = makeStyles(theme => ({
     placeItems: 'center'
   },
   button: {
-    margin: '10px',
     border: 'none',
     margin: '0'
   },

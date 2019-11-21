@@ -13,6 +13,7 @@ import loginRouter from "./routes/login";
 import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
 import commentRouter from "./routes/comments";
+import followRouter from "./routes/follow";
 import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
@@ -42,14 +43,15 @@ app.use("/login", loginRouter);
 app.use("/spotify", spotifyRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentRouter);
+app.use("/follow", followRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
