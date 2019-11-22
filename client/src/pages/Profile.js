@@ -38,7 +38,7 @@ const Profile = () => {
   );
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("credentials")).username;
+    const user = JSON.parse(sessionStorage.getItem("credentials"));
     fetch("posts/" + user) // change to an authFetch and move route to users.
       .then(res => res.json())
       .then(res => {
@@ -46,7 +46,7 @@ const Profile = () => {
           console.log(res.error);
         } else {
           setUserPosts(res);
-          setUsername(user);
+          setUsername(user.username);
           // setUserPhoto
         }
       });

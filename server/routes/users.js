@@ -6,25 +6,24 @@ const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
 
-// FLAG FOR DELETION, if nothing's broken by Nov 23rd it can go.
 // READ get user by username
-// router.get("/", function(req, res) {
-//   const username = req.body.username;
-//   User.findOne({ username })
-//     .then(function(user) {
-//       if (user === null) {
-//         //res.send('error: user not found')
-//         throw "{error: user not found}";
-//       }
-//       Profile.findOne({ profileID: username }, (err, Profile) => {
-//         if (err) throw err;
-//         res.send({ Profile });
-//       });
-//     })
-//     .catch(function(err) {
-//       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
-//     });
-// });
+router.get("/", function(req, res) {
+  const username = req.body.username;
+  User.findOne({ username })
+    .then(function(user) {
+      if (user === null) {
+        //res.send('error: user not found')
+        throw "{error: user not found}";
+      }
+      Profile.findOne({ profileID: username }, (err, Profile) => {
+        if (err) throw err;
+        res.send({ Profile });
+      });
+    })
+    .catch(function(err) {
+      res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
+    });
+});
 
 // GET all data necessary for front/profile page
 // profile photo url & posts by user
