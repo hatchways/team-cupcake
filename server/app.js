@@ -13,6 +13,7 @@ import loginRouter from "./routes/login";
 import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
 import commentRouter from "./routes/comments";
+import profileRouter from "./routes/profiles";
 import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
@@ -42,6 +43,7 @@ app.use("/login", loginRouter);
 app.use("/spotify", spotifyRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentRouter);
+app.use("/profile", profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
