@@ -25,21 +25,32 @@ router.get("/", function(req, res) {
     });
 });
 
-// GET all data necessary for front/profile page
-// profile photo url & posts by user
-// In retrospect seems to be too inefficient: need to breakout user and profile calls
-router.get("/:user_id", function(req, res) {
-  Post.find({ author: req.params.user_id })
-    .populate({
-      path: "author",
-      model: User,
-      select: "username profile_id", // just gets username
-      populate: {
-        path: "profile_id",
-        model: Profile,
-        select: "photo_url"
+// Alternate GET Profile route
+router.get("/:username/profile", function(req, res) {
+  Profile.findOne(
+    { profileID: req.params.username }.exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
       }
     })
+  );
+});
+
+// GET all posts for user
+router.get("/:user_id/posts", function(req, res) {
+  Post.find({ author: req.params.user_id })
+    // .populate({
+    //   path: "author",
+    //   model: User,
+    //   select: "username profile_id", // just gets username
+    //   populate: {
+    //     path: "profile_id",
+    //     model: Profile,
+    //     select: "photo_url"
+    //   }
+    // })
     .exec(function(err, result) {
       if (err) {
         res.status(400).send({ error: err });

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-// import Following from "../components/Following";
 import { makeStyles } from "@material-ui/core";
-// import photo1 from '../../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png'
 import "./Profile.css";
-// import { type } from "os";
 import SingularPost from "../components/SingularPost";
+import isAuthenticated from "../utils/isAuthenticated";
+import authFetch from "../utils/authFetch";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -32,24 +31,41 @@ const Profile = () => {
   const [toggleButton1, setToggleButton1] = useState(true);
   const [toggleButton2, setToggleButton2] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
-  const [username, setUsername] = useState("username");
-  const [userPhoto, setUserPhoto] = useState(
-    "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
-  );
+  // const [username, setUsername] = useState("username"); // refactor to userData
+  // const [userPhoto, setUserPhoto] = useState(
+  //  "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
+  // ); //refactor to userData
+  const [userData, setData] = useState({
+    username: "username",
+    photo_url: "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
+  });
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("credentials"));
-    fetch("posts/" + user) // change to an authFetch and move route to users.
-      .then(res => res.json())
-      .then(res => {
+    if (!isAuthenticated()) {
+      // setUsername(user.username); // move this up
+      return;
+    }
+    authFetch(`/users/${user._id}/posts/`) // change to an authFetch and move route to users.
+      .then(res => setUserPosts(res));
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("credentials"));
+    fetch(`/profile/${user.username}`).then(res => {
+      res.json().then(res => {
         if (res.error) {
           console.log(res.error);
         } else {
-          setUserPosts(res);
-          setUsername(user.username);
-          // setUserPhoto
+          console.log(res);
+          setData({
+            description: res.description,
+            photo_url: res.photo_url,
+            username: user.username
+          });
         }
       });
+    });
   }, []);
 
   let postsToDisplay = userPosts.map(userPost => (
@@ -58,10 +74,10 @@ const Profile = () => {
       // author_id={userPost.author}  // might need this
       post_id={userPost._id} // redundant if I can use key
       postDescription={userPost.description}
-      authorName={username}
+      authorName={userData.username}
       timeCreated={userPost.date}
       albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"} // will have to come from spotify
-      authorPic={userPhoto}
+      authorPic={"/" + userData.photo_url}
       likes={userPost.likeCount}
     />
   ));
@@ -77,9 +93,11 @@ const Profile = () => {
             />
           </div>
           <div className="name-container">
-            <h3>{username}</h3>
-            {userPosts.length > 0 && <h6>{userPosts["0"]["description"]}</h6>}
-
+            <h3>{userData.username}</h3>
+            <h6>{userData.description}</h6>
+            {
+              // {userPosts.length > 0 && <h6>{userPosts["0"]["description"]}</h6>}
+            }
             <div>
               <span>130K Followers</span>
               <span>340 Following</span>
