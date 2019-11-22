@@ -76,10 +76,7 @@ const Profile = () => {
       <div className={classes.profile}>
         <div className="profile-header">
           <div className="headshot-container">
-            <img
-              src="/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
-              alt="Logo"
-            />
+            <img src={userData.photo_url} alt="Logo" />
           </div>
           <div className="name-container">
             <h3>{userData.username}</h3>
