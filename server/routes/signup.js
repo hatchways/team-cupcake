@@ -18,9 +18,14 @@ router.post("/", function(req, res) {
         profileID: user.username,
         description: "",
         photo_url: "assets/blank.png"
-      }).then(() => {
-        res.send({ accessToken: accessToken, user });
-      });
+      })
+        .then(profile => {
+          user.profile_id = profile._id;
+          user.save();
+        })
+        .then(() => {
+          res.send({ accessToken: accessToken, user });
+        });
     })
     .catch(function(error) {
       res.status(401).send({ error: error.message });
