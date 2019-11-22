@@ -22,19 +22,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// const user = JSON.parse(sessionStorage.getItem("credentials"))
-//   ? JSON.parse(sessionStorage.getItem("credentials")).username
-//   : "Murphy";
-
 const Profile = () => {
   const classes = useStyles();
   const [toggleButton1, setToggleButton1] = useState(true);
   const [toggleButton2, setToggleButton2] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
-  // const [username, setUsername] = useState("username"); // refactor to userData
-  // const [userPhoto, setUserPhoto] = useState(
-  //  "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
-  // ); //refactor to userData
   const [userData, setData] = useState({
     username: "username",
     photo_url: "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
@@ -43,11 +35,9 @@ const Profile = () => {
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("credentials"));
     if (!isAuthenticated()) {
-      // setUsername(user.username); // move this up
       return;
     }
-    authFetch(`/users/${user._id}/posts/`) // change to an authFetch and move route to users.
-      .then(res => setUserPosts(res));
+    authFetch(`/users/${user._id}/posts/`).then(res => setUserPosts(res));
   }, []);
 
   useEffect(() => {
@@ -57,7 +47,6 @@ const Profile = () => {
         if (res.error) {
           console.log(res.error);
         } else {
-          console.log(res);
           setData({
             description: res.description,
             photo_url: res.photo_url,
