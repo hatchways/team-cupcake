@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     display: "flex",
-    height: "80px"
+    height: "10vh"
   },
   thebutton: {
     marginRight: theme.spacing(1)
@@ -42,6 +42,7 @@ function NavBar(props) {
   const [value, setValue] = useState("");
   const [songs, setSongs] = useState([]);
   const [open, setOpen] = useState(false);
+
   const inputProps = {
     placeholder: "Search and share music !",
     value,
@@ -118,7 +119,12 @@ function NavBar(props) {
             Share Music
           </Button>
           <Button className={classes.thebutton}>Discover</Button>
-          <Button className={classes.thebutton}>Messages</Button>
+          <Button
+            className={classes.thebutton}
+            onClick={() => props.history.push("/messages")}
+          >
+            Messages
+          </Button>
           <img
             src={profile.photo_url}
             alt="profileimage"

@@ -2,7 +2,8 @@ import React, { Fragment } from "react";
 import { Route } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";
 import Login from "./LoginForm";
-import Nav from "../Components/Nav";
+import Nav from "../components/Navbar";
+
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
@@ -12,10 +13,10 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
           return (
             <Fragment>
               <Nav {...props} />
-              <Component {...props} />
+              <Component {...props} {...rest} />
             </Fragment>
           );
-        return <Login {...props} />;
+        return <Login {...props} setSocket={rest.setSocket} />;
       }}
     />
   );

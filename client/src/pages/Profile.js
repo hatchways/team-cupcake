@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import Following from "../Components/Following";
+import Following from "../components/Following";
 import { makeStyles } from "@material-ui/core";
 // import photo1 from '../../assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png'
 import "./Profile.css";

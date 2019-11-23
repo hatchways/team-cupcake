@@ -4,6 +4,7 @@ import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { withSnackbar } from "notistack";
 import authFetch from "../utils/authFetch";
+import io from "socket.io-client";
 function LoginForm(props) {
   const classes = useStyles();
   const [fields, handleChange] = useState({ email: "", password: "" });
@@ -27,7 +28,9 @@ function LoginForm(props) {
             if (res.error) return;
             sessionStorage.setItem("spotifyToken", res.token);
             props.enqueueSnackbar("Success", { variant: "success" });
-            setTimeout(() => props.history.push("/"), 1000);
+            props.setSocket(
+              io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+            );
           });
         }
       });
