@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { Dialog, TextField } from "@material-ui/core";
 import { FavoriteBorder, Favorite } from "@material-ui/icons";
 import useStyles from "../styles/singularPostStyles";
-import Data from "../mockdata/post"; // Mock data will be replaced when backend routes are ready.
+// import Data from "../mockdata/post"; // Mock data will be replaced when backend routes are ready.
 import getTime from "../utils/getTime";
 export default function SingularPost(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const fullWidth = true;
   const maxWidth = "lg";
   const handleClickOpen = () => {
@@ -17,6 +18,20 @@ export default function SingularPost(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (open) {
+      fetch("posts/" + props.post_id + "/comments")
+        .then(res => res.json())
+        .then(res => {
+          if (res.error) {
+            console.log(res.error);
+          } else {
+            setComments(res);
+          }
+        });
+    }
+  }, [open]);
 
   return (
     <React.Fragment>
@@ -35,7 +50,7 @@ export default function SingularPost(props) {
           <div className={classes.topdiv}>
             <div className={classes.childiv}>
               <img
-                src={Data.albumPic}
+                src={props.albumPic}
                 alt="profileImage"
                 className={classes.songpicture}
               />
@@ -44,38 +59,38 @@ export default function SingularPost(props) {
               <div className={classes.flexparent}>
                 <div className={classes.divprofile}>
                   <img
-                    src={Data.authorPic}
+                    src={props.authorPic}
                     alt="profileImage"
                     className={classes.songpicture2}
                   />
                 </div>
                 <div className={classes.divprofileinfo}>
-                  <h3>{Data.AuthorName}</h3>
-                  <h4>{Data.PostDescription}</h4>
+                  <h3>{props.authorName}</h3>
+                  <h4>{props.postDescription}</h4>
                   <p style={{ color: "grey" }}>
-                    {getTime(Data.timeCreated)} ago
+                    {getTime(props.timeCreated)} ago
                   </p>
                 </div>
               </div>
               <div>
                 <h4 style={{ color: "lightgrey" }}>
-                  Comments ({Data.comments.length}) :
+                  Comments ({comments.length}) :
                 </h4>
                 <div className={classes.commentsDiv}>
-                  {Data.comments.map(comment => (
-                    <div className={classes.comments} key={comment.id}>
+                  {comments.map(comment => (
+                    <div className={classes.comments} key={comment._id}>
                       <div className={classes.divprofile}>
                         <img
-                          src={comment.authorPic}
+                          src={comment.commenter.profile_id.photo_url}
                           alt="profileImage"
                           className={classes.songpicture2}
                         />
                       </div>
                       <div className={classes.divprofileinfo}>
-                        <h3>{comment.authorName}</h3>
-                        <p>{comment.comment}</p>
+                        <h3>{comment.commenter.username}</h3>
+                        <p>{comment.description}</p>
                         <p style={{ color: "grey" }}>
-                          {getTime(comment.timeCreated)} ago
+                          {getTime(comment.date)} ago
                         </p>
                       </div>
                       <div className={classes.likeComment}>
@@ -91,7 +106,7 @@ export default function SingularPost(props) {
             <div className={classes.likePost}>
               <Favorite style={{ color: "red", verticalAlign: "middle" }} />
               <h3 style={{ display: "inline-flex", verticalAlign: "middle" }}>
-                &nbsp; {Data.likes} Likes
+                &nbsp; {props.likes} Likes
               </h3>
             </div>
             <div className={classes.listenSpot}>
