@@ -3,8 +3,10 @@ import Button from "@material-ui/core/Button";
 import { Dialog, TextField } from "@material-ui/core";
 import { FavoriteBorder, Favorite } from "@material-ui/icons";
 import useStyles from "../styles/singularPostStyles";
-// import Data from "../mockdata/post"; // Mock data will be replaced when backend routes are ready.
 import getTime from "../utils/getTime";
+import isAuthenticated from "../utils/isAuthenticated";
+import authFetch from "../utils/authFetch";
+
 export default function SingularPost(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -20,16 +22,14 @@ export default function SingularPost(props) {
   };
 
   useEffect(() => {
-    if (open) {
-      fetch("posts/" + props.post_id + "/comments")
-        .then(res => res.json())
-        .then(res => {
-          if (res.error) {
-            console.log(res.error);
-          } else {
-            setComments(res);
-          }
-        });
+    if (open && isAuthenticated()) {
+      authFetch(`posts/${props.post_id}/comments`).then(res => {
+        if (res.error) {
+          console.log(res.error);
+        } else {
+          setComments(res);
+        }
+      });
     }
   }, [open]);
 

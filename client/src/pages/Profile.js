@@ -37,7 +37,7 @@ const Profile = () => {
     if (!isAuthenticated()) {
       return;
     }
-    authFetch(`/users/${user._id}/posts/`).then(res => setUserPosts(res));
+    authFetch(`/users/${user._id}/posts`).then(res => setUserPosts(res));
   }, []);
 
   useEffect(() => {

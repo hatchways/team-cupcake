@@ -41,7 +41,7 @@ app.use("/signup", signupRouter);
 app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
 app.use("/spotify", spotifyRouter);
-app.use("/posts", postsRouter);
+app.use("/posts", auth, postsRouter);
 app.use("/comments", commentRouter);
 app.use("/profile", profileRouter);
 
