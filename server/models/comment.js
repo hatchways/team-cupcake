@@ -28,6 +28,12 @@ const CommentSchema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  // Dummy value, to either be improved or replaced.
+  likedBySelf: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
 

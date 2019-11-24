@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const PostLike = require("../models/postLike");
 const Profile = require("../models/profile");
+const CommentLike = require("../models/commentLike");
 
 // CREATE new post
 router.post("/:username", function(req, res) {
@@ -175,19 +176,55 @@ router.delete("/likes/:like_id", function(req, res) {
     .catch(err => res.status(400).send({ error: err }));
 });
 
+// // GET all comments on a post // gets other stuff too!
+// router.get("/:post_id/comments", function(req, res) {
+//   Comment.find({ post_id: req.params.post_id })
+//     .populate({
+//       path: "commenter",
+//       model: User,
+//       select: "username profile_id", // just gets username & profile ID
+//       populate: {
+//         path: "profile_id",
+//         model: Profile,
+//         select: "photo_url"
+//       }
+//     })
+//     .exec(function(err, result) {
+//       if (err) {
+//         res.status(400).send({ error: err });
+//       } else {
+//         res.status(200).send(result);
+//       }
+//     });
+// });
+
 // GET all comments on a post // gets other stuff too!
 router.get("/:post_id/comments", function(req, res) {
   Comment.find({ post_id: req.params.post_id })
-    .populate({
-      path: "commenter",
-      model: User,
-      select: "username profile_id", // just gets username & profile ID
-      populate: {
-        path: "profile_id",
-        model: Profile,
-        select: "photo_url"
-      }
-    })
+    .populate([
+      {
+        path: "commenter",
+        model: User,
+        select: "username profile_id", // just gets username & profile ID
+        populate: {
+          path: "profile_id",
+          model: Profile,
+          select: "photo_url"
+        } // ,
+        // populate: {
+        //   path: "_id",
+        //   model: CommentLike,
+        //   select: "liker_id"
+        // }
+      } //,
+      // {
+      //   path: _id.toString(), // tried multiple connectors, fields
+      //   // match: { comment_id: "commenter_id" }, // tried w/ and w/o match
+      //   model: CommentLike,
+      //   // match: { comment_id: "5dd3bf4abf92f41a14e9fa4d" },
+      //   select: "comment_id liker_id" // no result whatever I try here
+      // }
+    ])
     .exec(function(err, result) {
       if (err) {
         res.status(400).send({ error: err });

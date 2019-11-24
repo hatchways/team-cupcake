@@ -68,6 +68,7 @@ const Profile = () => {
       albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"} // will have to come from spotify
       authorPic={"/" + userData.photo_url}
       likes={userPost.likeCount}
+      likedByUser={false} // this will get data whenever populate works correctly
     />
   ));
 
