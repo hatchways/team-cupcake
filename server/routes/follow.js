@@ -19,12 +19,12 @@ router.get("/:id", function (req, res) {
 });
 router.post("/:id", (req, res) => {
     const userId = req.params.id;
-    const followers = 'someid1';
-    const following = 'soneud2';
+    const follower = 'someid1';
+    const followee = 'soneud2';
     const newFollow = new Follow({
         userId,
-        followers,
-        following,
+        follower,
+        followee,
     });
 
     Follow.findOne()
