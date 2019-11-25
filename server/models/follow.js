@@ -7,11 +7,11 @@ const FollowSchema = new Schema({
         ref: 'User',
     },
     followers: [{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User',
     }],
     following: [{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User',
     }]
 });

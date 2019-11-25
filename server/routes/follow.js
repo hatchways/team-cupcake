@@ -2,31 +2,38 @@ const express = require("express");
 const router = express.Router();
 const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
-const { upload } = require("../services/file-upload");
+const {
+    upload
+} = require("../services/file-upload");
 const User = require("../models/user");
 const Follow = require("../models/follow");
 
 //This processes the data after the task form has been submitted
 router.get("/:id", function (req, res) {
-    Follow.findOne({ userId: req.params.id })
-        .then(allFollows => { res.json(allFollows) })
+    // console.log(req.user.id)
+    Follow.findOne({
+            userId: req.params.id
+        })
+        .then(follows => {
+            res.json(follows)
+        })
         .catch(err => res.status(400).json('Error: ' + err));
 });
 router.post("/:id", (req, res) => {
     const userId = req.params.id;
-    const followers = req.body.followers;
-    const following = req.body.following;
+    const followers = 'someid1';
+    const following = 'soneud2';
     const newFollow = new Follow({
         userId,
         followers,
         following,
     });
 
+    Follow.findOne()
     newFollow.save()
         .then(() => res.json('Follow added!'))
         .catch(err => res.status(400).json('Error: ' + err));
-}
-);
+});
 // router.post('/:id', function (req, res) {
 //     const user_id = req.user._id;
 //     const follow = req.body.follow_id;
