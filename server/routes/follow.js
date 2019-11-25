@@ -11,9 +11,7 @@ const Follow = require("../models/follow");
 //This processes the data after the task form has been submitted
 router.get("/:id", function (req, res) {
     // console.log(req.user.id)
-    Follow.findOne({
-            userId: req.params.id
-        })
+    Follow.findById(req.params.id)
         .then(follows => {
             res.json(follows)
         })
