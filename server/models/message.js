@@ -17,6 +17,8 @@ const MessageSchema = new Schema({
     required: true,
     index: true
   }
+  // might want conversation id
+  // if we allow editing of messages => last edited field req'd
 });
 
 const Message = mongoose.model("message", MessageSchema);
