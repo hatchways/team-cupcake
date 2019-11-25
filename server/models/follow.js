@@ -6,14 +6,14 @@ const FollowSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    followers: [{
+    followers: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-    }],
-    following: [{
+    },
+    following: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-    }]
+    }
 });
 
 const Follow = mongoose.model('follow', FollowSchema);
