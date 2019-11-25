@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper, TextField, Button } from "@material-ui/core";
+import { Paper, TextField, Button, Typography } from "@material-ui/core";
 import authFetch from "../utils/authFetch";
 import { withSnackbar } from "notistack";
 import useStyles from "../styles/updateUserInfo";
@@ -26,7 +26,8 @@ function UpdateUserInfo(props) {
     const data = new FormData();
     data.append("description", userInfo.description);
     data.append("photoFile", userInfo.photoFile);
-    await authFetch("/users", data, props, "put", null);
+    const result = await authFetch("/users", data, props, "put", null);
+    sessionStorage.setItem("profile", JSON.stringify(result));
     props.enqueueSnackbar("Profile Updated !", { variant: "success" });
     setTimeout(() => props.history.push("/"), 1000);
   }
@@ -40,6 +41,7 @@ function UpdateUserInfo(props) {
           alt="logo"
           style={{ height: "auto", width: "125px", alignSelf: "center" }}
         />
+        <Typography variant="h5">Update your profile</Typography>
       </React.Fragment>
       <form
         className={classes.formWrapper}

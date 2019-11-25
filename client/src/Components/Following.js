@@ -1,30 +1,44 @@
-import React, { useState, useEffect } from "react"
-import { getAlbumData } from '../utils/MakeAPIcall';
-import "./Follow.css"
+import React, { useState, useEffect } from "react";
+import "./Follow.css";
+import authFetch from "../utils/authFetch";
+import SingularPost from "../components/SingularPost";
+const Following = props => {
+  const [data, setData] = useState([]);
+  const [post, setPost] = useState({});
+  const [open, setOpen] = useState(false);
+  const openPost = post => {
+    setPost(post);
+    setOpen(true);
+  };
 
-const Following = () => {
-    const followEndPoint = "https://api.themoviedb.org/3/movie/now_playing?api_key=eb942738a2bb8b5943c88166d66d5f7d&language=en-US&region=US&page=1"
-    const [data, setData] = useState([]);
+  useEffect(() => {
+    async function fetchFollowData() {
+      let response = await authFetch(
+        `/posts/${props.user.profileID}`,
+        null,
+        props.history
+      );
+      setData(response);
+    }
+    fetchFollowData();
+  }, [props.user.profileID, props.history]);
 
-    useEffect(() => {
-        async function fetchFollowData() {
-            let response = await getAlbumData(followEndPoint);
-            await setData(response.results);
-            // console.log(response)
-        }
-        fetchFollowData()
-    }, [])
-
-    return (
-        <>
-            <ul className="album-img-wrapper">
-            {
-                    data.map((r, i) => {
-                        return <li key={i}><img src={"https://image.tmdb.org/t/p/w185_and_h278_bestv2"+r.poster_path} alt="Smiley face"/></li>
-                    })
-            }
-            </ul>
-        </>
-    )
-}
-export default Following
+  return (
+    <ul className="album-img-wrapper">
+      {data.map(r => {
+        return (
+          <li key={r._id}>
+            <img src={r.imageUrl} alt="MusicPost" onClick={() => openPost(r)} />
+          </li>
+        );
+      })}
+      <SingularPost
+        open={open}
+        close={() => setOpen(false)}
+        post={post}
+        author={props.user}
+      />
+    </ul>
+  );
+};
+export default Following;

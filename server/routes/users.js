@@ -22,6 +22,13 @@ router.get("/", function(req, res) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
     });
 });
+router.get("/:user", function(req, res) {
+  const username = req.params.user;
+  Profile.findOne({ profileID: username }, (err, Profile) => {
+    if (err) throw err;
+    res.send({ Profile });
+  });
+});
 
 router.put("/", function(req, res) {
   // could combine these into one object, but not as clear
@@ -70,22 +77,10 @@ router.put("/", function(req, res) {
           Profile.findOneAndUpdate(
             { profileID: username },
             { $set: { ...profileUpdateDict } },
-            { upsert: true }
-          )
-            .then(function() {
-              // res.status(200).send(messageDict);
-              console.log("profile updated");
-            })
-            .catch(function(err) {
-              res.status(400).send({ err });
-            });
-        }
-        if (Object.keys(messageDict).length > 0) {
-          res.status(200).send(messageDict);
-        } else {
-          res
-            .status(400)
-            .send({ error: "Something wrong with update. Sorry." });
+            { upsert: false, useFindAndModify: false, new: true }
+          ).then(function(profile) {
+            res.status(200).send(profile);
+          });
         }
       });
     })
@@ -93,5 +88,4 @@ router.put("/", function(req, res) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
     });
 });
-
 module.exports = router;

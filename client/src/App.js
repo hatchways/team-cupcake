@@ -27,13 +27,12 @@ function App() {
       <SnackbarProvider maxSnack={1}>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/signup" component={SignUp} />
-            <ProtectedRoute
+            <Route
               exact
-              path="/"
-              component={Profile}
-              setSocket={setSocket}
+              path="/signup"
+              render={props => <SignUp setSocket={setSocket} {...props} />}
             />
+            <ProtectedRoute exact path="/profile/:user" component={Profile} />
             <ProtectedRoute exact path="/update" component={ProfileUpdate} />
             <ProtectedRoute
               exact
@@ -47,7 +46,12 @@ function App() {
               component={Messages}
               socket={socket}
             />
-            <ProtectedRoute exact path="/discover" component={Discover} />
+            <ProtectedRoute
+              exact
+              path="/"
+              component={Discover}
+              setSocket={setSocket}
+            />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

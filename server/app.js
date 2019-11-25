@@ -39,8 +39,8 @@ app.use("/signup", signupRouter);
 app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
 app.use("/spotify", spotifyRouter);
-app.use("/posts", postsRouter);
-app.use("/comments", commentRouter);
+app.use("/posts", auth, postsRouter);
+app.use("/comments", auth, commentRouter);
 app.use("/connectedusers", auth, connected);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -5,19 +5,25 @@ const User = require("../models/user");
 const PostLike = require("../models/postLike");
 
 // CREATE new post
-router.post("/:username", function(req, res) {
+router.post("/", function(req, res) {
   // First GET User._id --- I would rather link to username in Model
   // but haven't found a way to do it (yet)
-  User.findOne({ username: req.params.username })
+  User.findOne({ username: req.body.username })
     .then(function(user) {
       if (user === null) {
         //res.send('error: user not found')
         throw "{error: user not found}";
       } else {
-        req.body.username = req.params.username;
+        req.body.username = req.body.username;
         req.body.author = user._id;
+        const post = {
+          author: req.body.author,
+          description: req.body.description,
+          imageUrl: req.body.imageUrl,
+          musicUrl: req.body.musicUrl
+        };
         // res.status(200).send(req.body);
-        const newPost = new Post(req.body);
+        const newPost = new Post(post);
         Post.create(newPost)
           .then(function(post) {
             res.status(200).send(post);

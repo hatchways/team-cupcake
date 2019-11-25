@@ -24,6 +24,7 @@ function LoginForm(props) {
         if (res.accessToken) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
+          sessionStorage.setItem("profile", JSON.stringify(res.profile));
           authFetch("/spotify/refresh", null, props).then(res => {
             if (res.error) return;
             sessionStorage.setItem("spotifyToken", res.token);

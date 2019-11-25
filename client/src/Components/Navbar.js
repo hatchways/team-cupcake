@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Autosuggest from "react-autosuggest";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
-import authFetch from "../utils/authFetch";
-import debounce from "../utils/debounce";
+import SearchSong from "../components/SuggestMusic";
 import Dialog from "./Dialog";
 import "../styles/autosuggest.css";
 
 const useStyles = makeStyles(theme => ({
   menuImg: {
     marginRight: theme.spacing(2),
-    alignSelf: "center"
+    alignSelf: "center",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   appbar: {
     backgroundColor: "white",
@@ -28,7 +29,10 @@ const useStyles = makeStyles(theme => ({
   profileImg: {
     borderRadius: "50%",
     maxHeight: "80%",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   typo: {
     color: "grey",
@@ -38,78 +42,21 @@ const useStyles = makeStyles(theme => ({
 
 function NavBar(props) {
   const classes = useStyles();
-  const [profile, setProfile] = useState({ photo_url: "" });
-  const [value, setValue] = useState("");
-  const [songs, setSongs] = useState([]);
   const [open, setOpen] = useState(false);
-
-  const inputProps = {
-    placeholder: "Search and share music !",
-    value,
-    onChange: (event, { newValue }) => {
-      setValue(newValue);
-    }
-  };
-  const renderSuggestions = suggestion => {
-    const getAuthors = suggestion.artists.map((artist, i) => {
-      return i + 1 !== suggestion.artists.length
-        ? `${artist.name} & `
-        : artist.name;
-    });
-    return (
-      <div className="suggestion-content">
-        <img src={suggestion.album.images[2].url} alt="albumimage" />
-        <span style={{ marginLeft: "10px" }}>
-          {suggestion.name} <br /> <b>By : {getAuthors}</b>
-        </span>
-      </div>
-    );
-  };
-  const getSuggestion = suggestion => {
-    return suggestion.name;
-  };
-  const clearSuggestion = () => {
-    setSongs([]);
-  };
-  const searchSpotify = ({ value }) => {
-    debounce(apiCall, 1000, value);
-    async function apiCall(value) {
-      const result = await authFetch(
-        "/spotify/songs",
-        { query: value },
-        props,
-        "post",
-        "application/json"
-      );
-      const music = JSON.parse(result.body);
-      if (music.error) return setSongs([]);
-      setSongs(music.tracks.items);
-      return;
-    }
-  };
-  useEffect(() => {
-    authFetch("/users", null, props).then(({ Profile }) => {
-      setProfile({ ...Profile });
-    });
-  }, [props]);
+  const [song, setSong] = useState(null);
+  const profile = JSON.parse(sessionStorage.getItem("profile"));
   return (
     <div>
       <AppBar position="static" className={classes.appbar}>
         <Toolbar className={classes.toolbar}>
           <img
-            src="assets/instafy.png"
+            src="https://instafyuploads.s3.ca-central-1.amazonaws.com/instafy.png"
             alt="Website logo"
             className={classes.menuImg}
+            onClick={() => props.history.push("/")}
           />
           <div>
-            <Autosuggest
-              inputProps={inputProps}
-              suggestions={songs}
-              onSuggestionsFetchRequested={searchSpotify}
-              onSuggestionsClearRequested={clearSuggestion}
-              renderSuggestion={renderSuggestions}
-              getSuggestionValue={getSuggestion}
-            />
+            <SearchSong limit={5} open={setOpen} song={setSong} />
           </div>
           <Button
             variant="outlined"
@@ -129,10 +76,11 @@ function NavBar(props) {
             src={profile.photo_url}
             alt="profileimage"
             className={classes.profileImg}
+            onClick={() => props.history.push(`/profile/${profile.profileID}`)}
           />
         </Toolbar>
       </AppBar>
-      <Dialog open={open} close={() => setOpen(false)} />
+      <Dialog open={open} close={() => setOpen(false)} song={song} {...props} />
     </div>
   );
 }

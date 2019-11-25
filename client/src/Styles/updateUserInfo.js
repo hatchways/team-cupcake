@@ -25,14 +25,13 @@ const useStyles = makeStyles(theme => ({
     // display: 'none'
   },
   photoWrapper: {
-    height: "100px",
-    width: "100px",
-    borderRadius: "50%",
-    overflow: "hidden"
+    overflow: "hidden",
+    marginTop: "10px"
   },
   phofilePhoto: {
     width: "auto",
-    height: "135px"
+    height: "135px",
+    borderRadius: "50%"
   },
   imageDiv: {
     display: "grid",

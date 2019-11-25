@@ -17,9 +17,10 @@ router.post("/", function(req, res) {
       Profile.create({
         profileID: user.username,
         description: "",
-        photo_url: "assets/blank.png"
-      }).then(() => {
-        res.send({ accessToken: accessToken, user });
+        photo_url:
+          "https://instafyuploads.s3.ca-central-1.amazonaws.com/blank.png"
+      }).then(profile => {
+        res.send({ accessToken: accessToken, user, profile });
       });
     })
     .catch(function(error) {
