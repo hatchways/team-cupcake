@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-
+const Profile = require("../models/profile");
 router.post("/", function(req, res) {
   User.findOne({ email: req.body.email })
     .then(function(user) {
@@ -15,7 +15,9 @@ router.post("/", function(req, res) {
             { user },
             process.env.ACCESS_TOKEN_SECRET
           ); // expiry?
-          res.status(200).send({ accessToken: accessToken, user });
+          Profile.findOne({ profileID: user.username }).then(profile => {
+            res.status(200).send({ accessToken: accessToken, user, profile });
+          });
         } else {
           res
             .status(400)

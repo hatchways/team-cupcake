@@ -33,9 +33,11 @@ function ProfileUpdate(props) {
     const data = new FormData();
     data.append("description", formData.description);
     data.append("photoFile", formData.photoFile);
-    await authFetch("/users", data, props, "put", null);
-    props.enqueueSnackbar("Profile Updated !", { variant: "success" });
-    setTimeout(() => props.history.push("/"), 1000);
+    await authFetch("/users", data, props, "put", null).then(res => {
+      sessionStorage.setItem("profile", JSON.stringify(res));
+      props.enqueueSnackbar("Profile Updated !", { variant: "success" });
+      setTimeout(() => props.history.push("/"), 500);
+    });
   }
 
   return (

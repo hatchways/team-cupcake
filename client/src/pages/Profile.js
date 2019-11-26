@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
+import Following from "../components/Following";
 import { makeStyles } from "@material-ui/core";
+
 import "./Profile.css";
-import SingularPost from "../components/SingularPost";
-import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
 
 const useStyles = makeStyles(theme => ({
@@ -22,91 +22,57 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Profile = () => {
+const Profile = props => {
   const classes = useStyles();
-  const [toggleButton1, setToggleButton1] = useState(true);
-  const [toggleButton2, setToggleButton2] = useState(true);
-  const [userPosts, setUserPosts] = useState([]);
-  const [userData, setData] = useState({
-    username: "username",
-    photo_url: "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
-  });
-
+  const [user, setUser] = useState({});
+  const [mine, setMine] = useState(false);
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("credentials"));
-    if (!isAuthenticated()) {
+    const profile = JSON.parse(sessionStorage.getItem("profile"));
+    if (props.match.params.user === profile.profileID) {
+      setUser(profile);
+      setMine(true);
       return;
     }
-    authFetch(`/users/${user._id}/posts`).then(res => setUserPosts(res));
-  }, []);
-
-  useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("credentials"));
-    fetch(`/profile/${user.username}`).then(res => {
-      res.json().then(res => {
-        if (res.error) {
-          console.log(res.error);
-        } else {
-          setData({
-            description: res.description,
-            photo_url: res.photo_url,
-            username: user.username
-          });
+    authFetch(`/users/${props.match.params.user}`, null, props.history).then(
+      res => {
+        if (!res.Profile) {
+          props.history.push(`/profile/${profile.profileID}`);
+          return;
         }
-      });
-    });
-  }, []);
-
-  let postsToDisplay = userPosts.map(userPost => (
-    <SingularPost
-      key={userPost._id}
-      // author_id={userPost.author}  // might need this
-      post_id={userPost._id} // redundant if I can use key
-      postDescription={userPost.description}
-      authorName={userData.username}
-      timeCreated={userPost.date}
-      albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"} // will have to come from spotify
-      authorPic={"/" + userData.photo_url}
-      likes={userPost.likeCount}
-    />
-  ));
-
+        setUser(res.Profile);
+      }
+    );
+  }, [props.history, props.match.params.user]);
   return (
-    <>
-      <div className={classes.profile}>
-        <div className="profile-header">
-          <div className="headshot-container">
-            <img src={userData.photo_url} alt="Logo" />
-          </div>
-          <div className="name-container">
-            <h3>{userData.username}</h3>
-            <h6>{userData.description}</h6>
-            {
-              // {userPosts.length > 0 && <h6>{userPosts["0"]["description"]}</h6>}
-            }
-            <div>
-              <span>130K Followers</span>
-              <span>340 Following</span>
-            </div>
-          </div>
-          <div className="follow-container">
-            <Button
-              onClick={event => setToggleButton1(!toggleButton1)}
-              className={toggleButton1 ? classes.button : classes.activeButton}
-            >
-              Follow
-            </Button>
-            <Button
-              onClick={event => setToggleButton2(!toggleButton2)}
-              className={toggleButton2 ? classes.button : classes.activeButton}
-            >
-              Message
-            </Button>
+    <div className={classes.profile}>
+      <div className="profile-header">
+        <div className="headshot-container">
+          <img src={user.photo_url} alt="Logo" />
+        </div>
+        <div className="name-container">
+          <h3>{user.profileID}</h3>
+          <h5>{user.description}</h5>
+          <h6>Music Lover</h6>
+          <div>
+            <span>130K Followers</span>
+            <span>340 Following</span>
           </div>
         </div>
-        {postsToDisplay}
+        <div className="follow-container">
+          {mine ? (
+            <Button onClick={() => props.history.push("/update-user-info")}>
+              Update your Profile !
+            </Button>
+          ) : (
+            <div>
+              <Button>Follow !</Button>
+              <Button>Message !</Button>
+            </div>
+          )}
+        </div>
       </div>
-    </>
+      {user.profileID ? <Following user={user} {...props} /> : null}
+    </div>
   );
 };
 export default Profile;
