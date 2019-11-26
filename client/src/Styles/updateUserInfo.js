@@ -7,8 +7,8 @@ const useStyles = makeStyles(theme => ({
     placeItems: "center"
   },
   button: {
-    margin: "10px",
-    border: "none"
+    border: "none",
+    margin: "0"
   },
   formWrapper: {
     display: "grid",

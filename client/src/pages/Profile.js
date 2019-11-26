@@ -4,6 +4,8 @@ import Following from "../components/Following";
 import { makeStyles } from "@material-ui/core";
 
 import "./Profile.css";
+import SingularPost from "../components/SingularPost";
+import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
 
 const useStyles = makeStyles(theme => ({
