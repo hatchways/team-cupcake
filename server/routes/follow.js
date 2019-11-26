@@ -2,60 +2,20 @@ const express = require("express");
 const router = express.Router();
 const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
-const {
-    upload
-} = require("../services/file-upload");
+const { upload } = require("../services/file-upload");
 const User = require("../models/user");
 const Follow = require("../models/follow");
 
 //This processes the data after the task form has been submitted
-router.get("/:id", function (req, res) {
-    // console.log(req.user.id)
-    Follow.findById(req.params.id)
-        .then(follows => {
-            res.json(follows);
-        })
-        .catch(err => res.status(400).json("Error: " + err));
+router.get("/:id", function(req, res) {
+  // console.log(req.user.id)
+  Follow.findById(req.params.id)
+    .then(follows => {
+      res.json(follows);
+    })
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.post("/:id", function (req, res) {
-    const user_id = req.user._id;
-    const follow = req.body.follow_id;
-
-    let bulk = Follow.collection.initializeUnorderedBulkOp();
-
-    bulk
-        .findOne({
-            userId: req.params.id
-        })
-        .upsert()
-        .updateOne({
-            $addToSet: {
-                following: follow
-            }
-        });
-    bulk
-        .find({
-            user: Types.ObjectId(follow)
-        })
-        .upsert()
-        .updateOne({
-            $addToSet: {
-                followers: Types.ObjectId(user_id)
-            }
-        });
-    bulk.execute(function (err, doc) {
-        if (err) {
-            return res.json({
-                state: false,
-                msg: err
-            });
-        }
-        res.json({
-            state: true,
-            msg: "Followed"
-        });
-    });
-});
+router.post("/:id", function(req, res) {});
 
 module.exports = router;

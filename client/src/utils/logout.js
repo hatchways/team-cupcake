@@ -1,4 +1,4 @@
 export default function logout(props) {
   sessionStorage.clear();
-  props.history.push("/");
+  props.push("/");
 }

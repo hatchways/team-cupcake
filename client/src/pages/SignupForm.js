@@ -4,6 +4,7 @@ import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";
 import { withSnackbar } from "notistack";
+import io from "socket.io-client";
 function SignupForm(props) {
   const classes = useStyles();
   useEffect(() => {
@@ -90,10 +91,12 @@ function SignupForm(props) {
         if (res.accessToken) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
+          sessionStorage.setItem("profile", JSON.stringify(res.profile));
+          props.setSocket(io(`:3001?token=${res.accessToken}`));
           props.enqueueSnackbar("Registration Succesful", {
             variant: "success"
           });
-          setTimeout(() => props.history.push("/linkspotify"), 1000);
+          props.history.push("/linkspotify");
         }
       });
   };

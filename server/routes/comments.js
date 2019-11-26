@@ -3,11 +3,12 @@ var router = express.Router();
 const Comment = require("../models/comment");
 const User = require("../models/user");
 const Post = require("../models/post");
+const Profile = require("../models/profile");
 const CommentLike = require("../models/commentLike");
 
 // CREATE a new comment
 router.post("/", function(req, res) {
-  User.findOne({ _id: req.body.commenter })
+  User.findOne({ _id: req.body.userId })
     .then(function(user) {
       if (user === null) {
         throw "{error: User ID not found}";
@@ -26,7 +27,11 @@ router.post("/", function(req, res) {
         .then(function() {
           // res.send(req.body); // tester
           // do the good stuff
-          const newComment = new Comment(req.body);
+          const newComment = new Comment({
+            commenter: req.body.userId,
+            post_id: req.body.post_id,
+            description: req.body.description
+          });
           Comment.create(newComment)
             .then(function(post) {
               // update the comment_count
@@ -135,8 +140,27 @@ router.delete("/likes/:like_id", function(req, res) {
 });
 
 // Test route
-router.get("/", function(req, res) {
-  res.send("here");
+router.get("/:postID", function(req, res) {
+  Comment.find({ post_id: req.params.postID })
+    .sort({ date: -1 })
+    .populate("commenter")
+    .exec((err, document) => {
+      if (err) throw err;
+      const Profiles = {};
+      const Promises = [];
+      for (let comment of document) {
+        Promises.push(
+          Profile.findOne({ profileID: comment.commenter.username }).then(
+            doc => {
+              Profiles[comment.commenter.username] = doc;
+            }
+          )
+        );
+      }
+      Promise.all(Promises).then(() => {
+        res.json({ comments: document, profiles: Profiles });
+      });
+    });
 });
 
 module.exports = router;

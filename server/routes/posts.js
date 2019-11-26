@@ -7,19 +7,25 @@ const PostLike = require("../models/postLike");
 const Profile = require("../models/profile");
 
 // CREATE new post
-router.post("/:username", function(req, res) {
+router.post("/", function(req, res) {
   // First GET User._id --- I would rather link to username in Model
   // but haven't found a way to do it (yet)
-  User.findOne({ username: req.params.username })
+  User.findOne({ username: req.body.username })
     .then(function(user) {
       if (user === null) {
         //res.send('error: user not found')
         throw "{error: user not found}";
       } else {
-        req.body.username = req.params.username;
+        req.body.username = req.body.username;
         req.body.author = user._id;
+        const post = {
+          author: req.body.author,
+          description: req.body.description,
+          imageUrl: req.body.imageUrl,
+          musicUrl: req.body.musicUrl
+        };
         // res.status(200).send(req.body);
-        const newPost = new Post(req.body);
+        const newPost = new Post(post);
         Post.create(newPost)
           .then(function(post) {
             res.status(200).send(post);
@@ -112,13 +118,6 @@ router.put("/:postID", function(req, res) {
     .catch(function(err) {
       res.status(400).send({ error: "Bad post ID" });
     });
-});
-
-// Delete post
-router.delete("/:postID", function(req, res) {
-  Post.findByIdAndDelete(req.params.postID)
-    .then(() => res.json("Post deleted."))
-    .catch(err => res.status(400).json("Error: " + err));
 });
 
 // CREATE new postlike
