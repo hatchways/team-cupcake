@@ -4,12 +4,10 @@
 }*/
 .profile-header {
   /* border: 1px solid; */
-  display: grid;
-  grid-template-columns: 1.5fr 4fr 3fr;
-}
-
-.profile-header div {
-  /* border: 1px solid; */
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  justify-content: space-between;
 }
 
 .profile-header div.headshot-container {
@@ -17,10 +15,7 @@
   height: 100px;
   width: 100px;
   overflow: hidden;
-  border-radius: 100%;
-  display: grid;
-  place-self: center;
-  margin-top: 75px;
+  border-radius: 50%;
 }
 
 .profile-header div.headshot-container img {
@@ -28,35 +23,35 @@
 }
 
 .name-container {
-  /* margin-top: 50px; */
+  flex: 1;
+  margin-left: 15px;
+  text-align: justify;
 }
-
+.name-container h5 {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin-right: 3px;
+}
 .name-container h3 {
-  margin: 85px 0 0;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
-
 .name-container h6 {
-  margin: 3px 0 15px;
+  margin-top: 1px;
+  margin-bottom: 1px;
   color: rgb(145, 145, 145);
 }
 
 .name-container div {
   font-size: 0.7em;
   font-weight: bold;
+  margin: 0;
 }
 
 .name-container div span:first-child {
   padding-right: 20px;
 }
 
-.follow-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 100px;
-}
-
 .follow-container button {
-  max-height: 60px;
   border: 1px solid rgb(196, 196, 196);
-  margin: 0 5px;
+  padding: 20px;
 }

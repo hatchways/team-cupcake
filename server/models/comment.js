@@ -15,7 +15,7 @@ const CommentSchema = new Schema({
   },
   commenter: {
     type: Schema.Types.ObjectID,
-    ref: "User",
+    ref: "user",
     required: true
   },
   post_id: {

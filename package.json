@@ -18,5 +18,7 @@
   },
   "homepage": "https://github.com/hatchways/team-cupcake#readme",
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }

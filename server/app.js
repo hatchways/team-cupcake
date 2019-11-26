@@ -4,7 +4,7 @@ import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
-
+import connected from "./routes/connectedUsers";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import signupRouter from "./routes/signup";
@@ -36,7 +36,6 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
@@ -48,7 +47,7 @@ app.use("/comments", commentRouter);
 app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);
-
+app.use("/connectedusers", auth, connected);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

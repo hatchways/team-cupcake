@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Post = require("../models/post");
 const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
+
 // READ get user by username
 router.get("/", function(req, res) {
   const username = req.body.username;
@@ -20,6 +22,48 @@ router.get("/", function(req, res) {
     })
     .catch(function(err) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
+    });
+});
+router.get("/:user", function(req, res) {
+  const username = req.params.user;
+  Profile.findOne({ profileID: username }, (err, Profile) => {
+    if (err) throw err;
+    res.send({ Profile });
+  });
+});
+
+// Alternate GET Profile route
+router.get("/:username/profile", function(req, res) {
+  Profile.findOne(
+    { profileID: req.params.username }.exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
+      }
+    })
+  );
+});
+
+// GET all posts for user
+router.get("/:user_id/posts", function(req, res) {
+  Post.find({ author: req.params.user_id })
+    // .populate({
+    //   path: "author",
+    //   model: User,
+    //   select: "username profile_id", // just gets username
+    //   populate: {
+    //     path: "profile_id",
+    //     model: Profile,
+    //     select: "photo_url"
+    //   }
+    // })
+    .exec(function(err, result) {
+      if (err) {
+        res.status(400).send({ error: err });
+      } else {
+        res.status(200).send(result);
+      }
     });
 });
 
@@ -70,22 +114,10 @@ router.put("/", function(req, res) {
           Profile.findOneAndUpdate(
             { profileID: username },
             { $set: { ...profileUpdateDict } },
-            { upsert: true }
-          )
-            .then(function() {
-              // res.status(200).send(messageDict);
-              console.log("profile updated");
-            })
-            .catch(function(err) {
-              res.status(400).send({ err });
-            });
-        }
-        if (Object.keys(messageDict).length > 0) {
-          res.status(200).send(messageDict);
-        } else {
-          res
-            .status(400)
-            .send({ error: "Something wrong with update. Sorry." });
+            { upsert: false, useFindAndModify: false, new: true }
+          ).then(function(profile) {
+            res.status(200).send(profile);
+          });
         }
       });
     })
@@ -93,5 +125,4 @@ router.put("/", function(req, res) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
     });
 });
-
 module.exports = router;
