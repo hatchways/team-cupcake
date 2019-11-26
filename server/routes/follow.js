@@ -13,53 +13,49 @@ router.get("/:id", function (req, res) {
     // console.log(req.user.id)
     Follow.findById(req.params.id)
         .then(follows => {
-            res.json(follows)
+            res.json(follows);
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.status(400).json("Error: " + err));
 });
-router.post("/:id", (req, res) => {
-    const userId = req.params.id;
-    const follower = 'someid1';
-    const followee = 'soneud2';
-    const newFollow = new Follow({
-        userId,
-        follower,
-        followee,
+
+router.post("/:id", function (req, res) {
+    const user_id = req.user._id;
+    const follow = req.body.follow_id;
+
+    let bulk = Follow.collection.initializeUnorderedBulkOp();
+
+    bulk
+        .findOne({
+            userId: req.params.id
+        })
+        .upsert()
+        .updateOne({
+            $addToSet: {
+                following: follow
+            }
+        });
+    bulk
+        .find({
+            user: Types.ObjectId(follow)
+        })
+        .upsert()
+        .updateOne({
+            $addToSet: {
+                followers: Types.ObjectId(user_id)
+            }
+        });
+    bulk.execute(function (err, doc) {
+        if (err) {
+            return res.json({
+                state: false,
+                msg: err
+            });
+        }
+        res.json({
+            state: true,
+            msg: "Followed"
+        });
     });
-
-    Follow.findOne()
-    newFollow.save()
-        .then(() => res.json('Follow added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
 });
-// router.post('/:id', function (req, res) {
-//     const user_id = req.user._id;
-//     const follow = req.body.follow_id;
-
-//     let bulk = Follow.collection.initializeUnorderedBulkOp();
-
-//     bulk.findOne({ userId: req.params.id }).upsert().updateOne({
-//         $addToSet: {
-//             following: follow
-//         }
-//     });
-//     bulk.find({ 'user': Types.ObjectId(follow) }).upsert().updateOne({
-//         $addToSet: {
-//             followers: Types.ObjectId(user_id)
-//         }
-//     })
-//     bulk.execute(function (err, doc) {
-//         if (err) {
-//             return res.json({
-//                 'state': false,
-//                 'msg': err
-//             })
-//         }
-//         res.json({
-//             'state': true,
-//             'msg': 'Followed'
-//         })
-//     })
-// })
 
 module.exports = router;
