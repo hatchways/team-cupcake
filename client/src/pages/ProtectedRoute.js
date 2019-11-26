@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";
 import Login from "./LoginForm";
 import Nav from "../components/Navbar";
-
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route

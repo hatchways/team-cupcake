@@ -13,6 +13,7 @@ import loginRouter from "./routes/login";
 import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
 import commentRouter from "./routes/comments";
+import profileRouter from "./routes/profiles";
 import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
