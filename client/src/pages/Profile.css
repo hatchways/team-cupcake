@@ -1,77 +1,57 @@
-body{
+/*body{
     width: 980px;
     margin: auto;
-}
-.profile .profile-header{
-    /* border: 1px solid; */
-    display: grid;
-    grid-template-columns: 1.5fr 4fr 3fr;
-}
-.profile .profile-header div{
-    /* border: 1px solid; */
-}
-
-.profile .profile-header div.headshot-container{
-    /* border: 1px solid; */
-    height: 100px;
-    width: 100px;
-    overflow: hidden;
-    border-radius: 100%;
-    display: grid;
-    place-self: center;
-    margin-top: 75px;
+}*/
+.profile-header {
+  /* border: 1px solid; */
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  justify-content: space-between;
 }
 
-.profile .profile-header div.headshot-container img{
-    height: 100px;
-    margin-left: -40px;
+.profile-header div.headshot-container {
+  /* border: 1px solid; */
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+  border-radius: 50%;
 }
 
-.profile .name-container{
-    /* margin-top: 50px; */
+.profile-header div.headshot-container img {
+  height: 100px;
 }
 
-.profile .name-container h3{
-    margin: 85px 0 0;
+.name-container {
+  flex: 1;
+  margin-left: 15px;
+  text-align: justify;
 }
-.profile .name-container h6{
-    margin: 3px 0 15px;
-    color: rgb(145, 145, 145);
+.name-container h5 {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin-right: 3px;
 }
-
-.profile .name-container div{
-    font-size: .7em;
-    font-weight: bold;
+.name-container h3 {
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
-
-.profile .name-container div span:first-child{
-    padding-right: 20px;
-}
-.follow-container ul{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 100px;
-    padding: 0;
-    place-items: center;
+.name-container h6 {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  color: rgb(145, 145, 145);
 }
 
-.follow-container ul a{
-    text-decoration: none;
-    color: #000;
-    border: 1px solid rgb(226, 226, 226);
-    /* padding: 10px 30px; */
-    border-radius: 3px;
-    width: 160px;
-    line-height: 3em;
-    text-align: center;
-}
-.follow-container ul a.current{
-    background: #1976d2;
-    color: #fff;
-    border: none;
+.name-container div {
+  font-size: 0.7em;
+  font-weight: bold;
+  margin: 0;
 }
 
-.follow-container ul a li{
-    list-style: none;
+.name-container div span:first-child {
+  padding-right: 20px;
+}
 
+.follow-container button {
+  border: 1px solid rgb(196, 196, 196);
+  padding: 20px;
 }

@@ -1,26 +1,62 @@
-import React from "react";
-import { Link } from "react-router-dom"
+import React, { useEffect, useState } from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { theme } from "./themes/theme";
-import Login from "./Components/LoginForm";
-import SignUp from "./Components/SignupForm";
-import LandingPage from "./pages/Landing";
-import Dashboard from "./pages/Dashboard";
-import "./App.css";
-
+import SignUp from "./pages/SignupForm";
+import Profile from "./pages/Profile";
+import Discover from "./pages/Discover";
+import Messages from "./pages/Messages";
+import ProfileUpdate from "./pages/ProfileUpdate";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import UpdateUserInfo from "./pages/UpdateUserInfo";
+import Spotify from "./pages/SpotifyAuth";
+import NotFound from "./pages/404";
+import { SnackbarProvider } from "notistack";
+import isAuthenticated from "./utils/isAuthenticated";
+import io from "socket.io-client";
 function App() {
-  return (<>
+  const [socket, setSocket] = useState({});
+  useEffect(() => {
+    if (isAuthenticated()) {
+      if (!socket.id)
+        setSocket(io(`:3001?token=${sessionStorage.getItem("authToken")}`));
+    }
+  }, [socket.id]);
+  return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Route exact path="/" exact component={Login} />
-        <Route path="/Signup" component={SignUp} />
-        <Route path="/dashboard" component={Dashboard} />
-      </BrowserRouter>
+      <SnackbarProvider maxSnack={1}>
+        <BrowserRouter>
+          <Switch>
+            <Route
+              exact
+              path="/signup"
+              render={props => <SignUp setSocket={setSocket} {...props} />}
+            />
+            <ProtectedRoute exact path="/profile/:user" component={Profile} />
+            <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+            <ProtectedRoute
+              exact
+              path="/update-user-info"
+              component={UpdateUserInfo}
+            />
+            <ProtectedRoute exact path="/linkspotify" component={Spotify} />
+            <ProtectedRoute
+              exact
+              path="/messages"
+              component={Messages}
+              socket={socket}
+            />
+            <ProtectedRoute
+              exact
+              path="/"
+              component={Discover}
+              setSocket={setSocket}
+            />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </BrowserRouter>
+      </SnackbarProvider>
     </MuiThemeProvider>
-
-    </>
   );
 }
-
 export default App;

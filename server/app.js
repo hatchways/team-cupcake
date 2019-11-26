@@ -4,16 +4,23 @@ import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
-
+import connected from "./routes/connectedUsers";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import signupRouter from "./routes/signup";
+import usersRouter from "./routes/users";
+import loginRouter from "./routes/login";
+import spotifyRouter from "./routes/spotify";
+import postsRouter from "./routes/posts";
+import commentRouter from "./routes/comments";
+import profileRouter from "./routes/profiles";
+import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
 const mongoURL = "mongodb://localhost:27017/hatchways";
 mongoose.connect(
   mongoURL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   err => {
     if (err) return console.error("Connection Failed !");
     console.log("Connection Successful");
@@ -27,11 +34,15 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
-
+app.use("/users", auth, usersRouter);
+app.use("/login", loginRouter);
+app.use("/spotify", spotifyRouter);
+app.use("/posts", auth, postsRouter);
+app.use("/comments", auth, commentRouter);
+app.use("/connectedusers", auth, connected);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
