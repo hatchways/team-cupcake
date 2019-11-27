@@ -15,7 +15,6 @@ export default function SingularPost(props) {
   const [postLikes, setPostLikes] = useState(0); // this is cosmetic
   const fullWidth = true;
   const maxWidth = "lg";
-  // let postLikedBySelf = props.likedByUser;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,11 +25,9 @@ export default function SingularPost(props) {
   };
 
   const handlePostLikeClick = () => {
-    console.log("post like heart clicked!");
-    // if liked
     if (postLikedBySelf) {
       setPostLikedBySelf(false);
-      setPostLikes(postLikes - 1);
+      setPostLikes(postLikes - 1); // cosmetic
       // delete like
       authFetch(
         `/posts/${props.post_id}/likes`,
@@ -39,7 +36,7 @@ export default function SingularPost(props) {
         "delete"
       );
     } else {
-      setPostLikes(postLikes + 1);
+      setPostLikes(postLikes + 1); // cosmetic
       setPostLikedBySelf(true);
       authFetch(
         `/posts/${props.post_id}/likes`,
@@ -54,25 +51,30 @@ export default function SingularPost(props) {
   };
 
   const handleCommentLikeClick = index => {
-    // console.log("Click-o-rama index: " + Object.keys(comments[index]));
     let list = [...comments];
     let liked = list[index].likedBySelf;
-    // if liked
-    //  delete like
-    // might need to revise like count
     if (liked) {
       list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
-      // fetch();
+      //  delete like
+      authFetch(
+        `/comments/${list[index]._id}/likes`,
+        { liker_id: props.author_id },
+        props,
+        "delete"
+      );
     }
-    // else // not liked
-    //  add like
-    //  might need to revise like count
-
-    // finally
-    //  change list => liked = !liked
+    // else // not liked //  add like
+    else {
+      list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
+      authFetch(
+        `/comments/${list[index]._id}/likes`,
+        { liker_id: props.author_id },
+        props,
+        "post"
+      );
+    }
+    // finally //  change list => liked = !liked
     liked = !liked;
-    console.log(liked);
-
     list[index].likedBySelf = liked;
     //  update setComments w/ new array
     setComments(list);
@@ -153,13 +155,6 @@ export default function SingularPost(props) {
                         </p>
                       </div>
                       <div className={classes.likeComment}>
-                        {
-                          // <FavoriteBorder style={{ color: "red" }} /> // old line
-                        }
-                        {
-                          // <Favorite{comment.likedBySelf ? "Border" : ""} style={{ color: "red" }} /> // not working
-                        }
-
                         {comment.likedBySelf ? (
                           <Favorite
                             onClick={event =>
@@ -184,10 +179,6 @@ export default function SingularPost(props) {
           </div>
           <div className={classes.bottomDiv}>
             <div className={classes.likePost}>
-              {
-                // <Favorite style={{ color: "red", verticalAlign: "middle" }} />
-              }
-
               {postLikedBySelf ? (
                 <Favorite
                   onClick={event => handlePostLikeClick()}

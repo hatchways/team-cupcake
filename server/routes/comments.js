@@ -110,11 +110,15 @@ router.post("/:comment_id/likes", function(req, res) {
 });
 
 // Delete commentLike
-router.delete("/likes/:like_id", function(req, res) {
-  CommentLike.findOneAndRemove({ _id: req.params.like_id })
+router.delete("/:comment_id/likes", function(req, res) {
+  CommentLike.findOneAndRemove()
+    .and([
+      { comment_id: req.params.comment_id },
+      { liker_id: req.body.liker_id }
+    ])
     .then(function(result) {
       if (result === null) {
-        res.status(400).send({ error: "Bad commentLike ID" });
+        res.status(400).send({ error: "Bad request." });
       } else {
         Comment.findOneAndUpdate(
           { _id: result.comment_id },
@@ -123,7 +127,7 @@ router.delete("/likes/:like_id", function(req, res) {
             if (err) {
               res
                 .status(500)
-                .send({ error: "problem updating comment like count." });
+                .send({ error: "problem updating post like count." });
             } else {
               res.status(200).send({ success: result2 });
             }
@@ -132,11 +136,6 @@ router.delete("/likes/:like_id", function(req, res) {
       }
     })
     .catch(err => res.status(400).send({ error: err }));
-});
-
-// Test route
-router.get("/", function(req, res) {
-  res.send("here");
 });
 
 module.exports = router;
