@@ -12,6 +12,7 @@ export default function SingularPost(props) {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState([]);
   const [postLikedBySelf, setPostLikedBySelf] = useState(false);
+  const [postLikes, setPostLikes] = useState(0); // this is cosmetic
   const fullWidth = true;
   const maxWidth = "lg";
   // let postLikedBySelf = props.likedByUser;
@@ -27,17 +28,29 @@ export default function SingularPost(props) {
   const handlePostLikeClick = () => {
     console.log("post like heart clicked!");
     // if liked
-
-    // delete like
-    // might need to revise like count
-    // if not liked
-    // change prop
-    // add like
-
+    if (postLikedBySelf) {
+      setPostLikedBySelf(false);
+      setPostLikes(postLikes - 1);
+      // delete like
+      authFetch(
+        `/posts/${props.post_id}/likes`,
+        { liker_id: props.author_id },
+        props,
+        "delete"
+      );
+    } else {
+      setPostLikes(postLikes + 1);
+      setPostLikedBySelf(true);
+      authFetch(
+        `/posts/${props.post_id}/likes`,
+        { liker_id: props.author_id },
+        props,
+        "post"
+      );
+    }
     // finally
     // flip prop value
     setPostLikedBySelf(!postLikedBySelf);
-    console.log(postLikedBySelf);
   };
 
   const handleCommentLikeClick = index => {
@@ -68,6 +81,7 @@ export default function SingularPost(props) {
   useEffect(() => {
     if (open && isAuthenticated()) {
       setPostLikedBySelf(props.likedByUser);
+      setPostLikes(props.likes);
       authFetch(`posts/${props.post_id}/comments`).then(res => {
         if (res.error) {
           console.log(res.error);
@@ -187,7 +201,7 @@ export default function SingularPost(props) {
               )}
 
               <h3 style={{ display: "inline-flex", verticalAlign: "middle" }}>
-                &nbsp; {props.likes} Likes
+                &nbsp; {postLikes} Likes
               </h3>
             </div>
             <div className={classes.listenSpot}>

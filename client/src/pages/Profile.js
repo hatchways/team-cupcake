@@ -69,7 +69,7 @@ const Profile = () => {
   let postsToDisplay = userPosts.map(userPost => (
     <SingularPost
       key={userPost._id}
-      // author_id={userPost.author}  // might need this
+      author_id={userPost.author}
       post_id={userPost._id} // redundant if I can use key
       postDescription={userPost.description}
       authorName={userData.username}

@@ -152,11 +152,12 @@ router.post("/:post_id/likes", function(req, res) {
 });
 
 // Delete postLike
-router.delete("/likes/:like_id", function(req, res) {
-  PostLike.findOneAndRemove({ _id: req.params.like_id })
+router.delete("/:post_id/likes", function(req, res) {
+  PostLike.findOneAndRemove()
+    .and([{ post_id: req.params.post_id }, { liker_id: req.body.liker_id }])
     .then(function(result) {
       if (result === null) {
-        res.status(400).send({ error: "Bad postLike ID" });
+        res.status(400).send({ error: "Bad request." });
       } else {
         Post.findOneAndUpdate(
           { _id: result.post_id },
