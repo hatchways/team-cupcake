@@ -9,12 +9,12 @@ const postLikeSchema = new Schema({
   },
   liker_id: {
     type: Schema.Types.ObjectID,
-    ref: "User",
+    ref: "user",
     required: true
   },
   post_id: {
     type: Schema.Types.ObjectID,
-    ref: "Post",
+    ref: "post",
     required: true,
     index: true // assuming most queries will be done by comment
   }

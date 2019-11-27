@@ -7,7 +7,7 @@ const UserSchema = new Schema({
   username: {
     type: String,
     required: [true, "Please enter a username !"],
-    match: [/^[a-z0-9]{5,}$/, "Please enter a valid username !"], // change to lowercase only
+    match: [/^[a-z0-9]{5,}$/, "Please enter a valid username !"], // n.b. lowercase only
     unique: true,
     index: true
   },
