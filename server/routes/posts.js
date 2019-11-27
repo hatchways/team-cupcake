@@ -40,9 +40,9 @@ router.post("/", function(req, res) {
     });
 });
 
-router.get("/discovery/:page?", function(req, res) {
+router.get("/discovery", function(req, res) {
   const postsPerPage = 3; // at 3 for testing Aecio suggests 20
-  const page = req.params.page;
+  const page = req.query.page;
   const offset = page && page > 0 ? postsPerPage * (page - 1) : 0; // invalid page value return main page
   Post.find()
     .sort({ date: "desc" })

@@ -10,7 +10,8 @@ const PostSchema = new Schema({
   date: {
     type: Date,
     default: Date.now,
-    required: true
+    required: true,
+    index: true
   },
   author: {
     type: Schema.Types.ObjectID,
