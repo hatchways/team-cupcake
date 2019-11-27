@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Post = require("../models/post");
+const PostLike = require("../models/postLike");
 const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
@@ -58,6 +59,15 @@ router.get("/:user_id/posts", function(req, res) {
         res.status(200).send(result);
       }
     });
+});
+
+// GET all postLikes for a user
+// would be better to get only self-liked post_ids
+router.get("/:user_id/postLikes", function(req, res) {
+  PostLike.find({ liker_id: req.params.user_id }).then(result => {
+    const userPostLikes = result.map(result => result.post_id);
+    res.send(userPostLikes);
+  });
 });
 
 router.put("/", function(req, res) {

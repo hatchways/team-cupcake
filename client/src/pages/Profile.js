@@ -27,6 +27,7 @@ const Profile = () => {
   const [toggleButton1, setToggleButton1] = useState(true);
   const [toggleButton2, setToggleButton2] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
+  const [postLikes, setPostLikes] = useState([]);
   const [userData, setData] = useState({
     username: "username",
     photo_url: "/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"
@@ -38,6 +39,14 @@ const Profile = () => {
       return;
     }
     authFetch(`/users/${user._id}/posts`).then(res => setUserPosts(res));
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("credentials"));
+    if (!isAuthenticated()) {
+      return;
+    }
+    authFetch(`/users/${user._id}/postLikes`).then(res => setPostLikes(res));
   }, []);
 
   useEffect(() => {
@@ -68,7 +77,7 @@ const Profile = () => {
       albumPic={"/assets/a0ebf9987c35f57f8bb9c8639b3a67fbd40ddaef.png"} // will have to come from spotify
       authorPic={"/" + userData.photo_url}
       likes={userPost.likeCount}
-      likedByUser={false} // this will get data whenever populate works correctly
+      likedByUser={postLikes.indexOf(userPost._id) >= 0} // this will get data whenever populate works correctly
     />
   ));
 

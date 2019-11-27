@@ -11,8 +11,10 @@ export default function SingularPost(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState([]);
+  const [postLikedBySelf, setPostLikedBySelf] = useState(false);
   const fullWidth = true;
   const maxWidth = "lg";
+  // let postLikedBySelf = props.likedByUser;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +22,22 @@ export default function SingularPost(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handlePostLikeClick = () => {
+    console.log("post like heart clicked!");
+    // if liked
+
+    // delete like
+    // might need to revise like count
+    // if not liked
+    // change prop
+    // add like
+
+    // finally
+    // flip prop value
+    setPostLikedBySelf(!postLikedBySelf);
+    console.log(postLikedBySelf);
   };
 
   const handleCommentLikeClick = index => {
@@ -49,6 +67,7 @@ export default function SingularPost(props) {
 
   useEffect(() => {
     if (open && isAuthenticated()) {
+      setPostLikedBySelf(props.likedByUser);
       authFetch(`posts/${props.post_id}/comments`).then(res => {
         if (res.error) {
           console.log(res.error);
@@ -151,7 +170,22 @@ export default function SingularPost(props) {
           </div>
           <div className={classes.bottomDiv}>
             <div className={classes.likePost}>
-              <Favorite style={{ color: "red", verticalAlign: "middle" }} />
+              {
+                // <Favorite style={{ color: "red", verticalAlign: "middle" }} />
+              }
+
+              {postLikedBySelf ? (
+                <Favorite
+                  onClick={event => handlePostLikeClick()}
+                  style={{ color: "red" }}
+                />
+              ) : (
+                <FavoriteBorder
+                  onClick={event => handlePostLikeClick()}
+                  style={{ color: "red" }}
+                />
+              )}
+
               <h3 style={{ display: "inline-flex", verticalAlign: "middle" }}>
                 &nbsp; {props.likes} Likes
               </h3>
