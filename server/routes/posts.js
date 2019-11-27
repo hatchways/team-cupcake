@@ -40,6 +40,20 @@ router.post("/", function(req, res) {
     });
 });
 
+router.get("/discovery", function(req, res) {
+  const postsPerPage = 3; // at 3 for testing Aecio suggests 20
+  const page = req.query.page;
+  const offset = page && page > 0 ? postsPerPage * (page - 1) : 0; // invalid page value return main page
+  Post.find()
+    .sort({ date: "desc" })
+    .skip(offset)
+    .limit(postsPerPage) // e.g. has this before sort
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
+});
+
 // GET Posts by username
 // used on Profile page, will need photo_url too.
 router.get("/:username", function(req, res) {
@@ -226,6 +240,10 @@ router.get("/tester/:user_id", function(req, res) {
         res.status(200).send(result);
       }
     });
+});
+
+router.get("/discovery", function(req, res) {
+  res.send({ success: "discovery ping." });
 });
 
 module.exports = router;
