@@ -6,5 +6,7 @@
         "exclude": ["transform-regenerator"]
       }
     ]
-  ]
+  ],
+  "sourceMaps": "inline",
+  "retainLines": true
 }
