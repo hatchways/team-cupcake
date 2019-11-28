@@ -47,6 +47,20 @@ router.get("/:user_id/following", function(req, res) {
     .catch(err => res.status(400).send({ error: err }));
 });
 
+// GET all Followers for a userID
+router.get("/:user_id/followedBy", function(req, res) {
+  Follow.find({ followee: req.params.user_id })
+    .populate({
+      path: "follower",
+      select: "_id"
+    })
+    .then(result => result.map(item => item.follower._id))
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
+});
+
 // Alternate GET Profile route
 router.get("/:username/profile", function(req, res) {
   Profile.findOne(
