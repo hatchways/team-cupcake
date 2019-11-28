@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, TextField } from "@material-ui/core";
 import { FavoriteBorder, Favorite } from "@material-ui/icons";
-import useStyles from "../styles/singularPostStyles";
+import useStyles from "../Styles/singularPostStyles";
 import getTime from "../utils/getTime";
 import authFetch from "../utils/authFetch";
 export default function SingularPost(props) {

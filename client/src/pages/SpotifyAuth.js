@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Paper, Typography, Button } from "@material-ui/core";
-import useStyles from "../styles/updateStyles";
+import useStyles from "../Styles/updateStyles";
 import { withSnackbar } from "notistack";
 import authFetch from "../utils/authFetch";
 function SpotifyAuth(props) {

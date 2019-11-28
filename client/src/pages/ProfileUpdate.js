@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
-import useStyles from "../styles/updateStyles";
+import useStyles from "../Styles/updateStyles";
 import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
 import { withSnackbar } from "notistack";
