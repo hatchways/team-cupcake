@@ -1,10 +1,41 @@
-import React from "react";
-import useStyles from "../utils/formstyles";
-import logo from "../assets/instafyx2.png";
+import React, { useState } from "react";
+import useStyles from "../styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-export default function LoginForm() {
+import { withSnackbar } from "notistack";
+import authFetch from "../utils/authFetch";
+import io from "socket.io-client";
+function LoginForm(props) {
   const classes = useStyles();
+  const [fields, handleChange] = useState({ email: "", password: "" });
+  const login = e => {
+    e.preventDefault();
+    const { email, password } = fields;
+    fetch("/login", {
+      method: "post",
+      body: JSON.stringify({ email, password }),
+      headers: new Headers({
+        "content-type": "application/json"
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) props.enqueueSnackbar(res.error, { variant: "error" });
+        if (res.accessToken) {
+          sessionStorage.setItem("authToken", res.accessToken);
+          sessionStorage.setItem("credentials", JSON.stringify(res.user));
+          sessionStorage.setItem("profile", JSON.stringify(res.profile));
+          authFetch("/spotify/refresh", null, props).then(res => {
+            if (res.error) return;
+            sessionStorage.setItem("spotifyToken", res.token);
+            props.enqueueSnackbar("Success", { variant: "success" });
+            props.setSocket(
+              io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+            );
+          });
+        }
+      });
+  };
   return (
     <div>
       <Typography variant="h2" className={classes.typo}>
@@ -13,14 +44,20 @@ export default function LoginForm() {
       <Paper className={classes.login}>
         <div className={classes.paperdiv}>
           <h3 className={classes.formtitle}>Login in your account:</h3>
-          <img src={logo} alt="Logo" className={classes.imgCenter} />
-          <form>
+          <img
+            src="assets/instafyx2.png"
+            alt="Logo"
+            className={classes.imgCenter}
+          />
+          <form onSubmit={login}>
             <TextField
-              id="uinput"
-              label="Username"
+              id="emailInput"
+              label="Email"
               margin="normal"
               variant="outlined"
               fullWidth
+              value={fields.email}
+              onChange={e => handleChange({ ...fields, email: e.target.value })}
               required
             />
             <TextField
@@ -30,17 +67,22 @@ export default function LoginForm() {
               variant="outlined"
               type="password"
               fullWidth
+              value={fields.password}
+              onChange={e =>
+                handleChange({ ...fields, password: e.target.value })
+              }
               required
             />
-            <Link to="/SignUp">
+            <Link to="/signup">
               <Typography className={classes.formtitle}>
                 Not yet registered ? Create an account instead !
               </Typography>
             </Link>
             <Button
+              type="submit"
               variant="contained"
               color="primary"
-              component="div"
+              container="div"
               className={classes.menuButton}
             >
               Sign in
@@ -48,7 +90,7 @@ export default function LoginForm() {
           </form>
         </div>
       </Paper>
-      <Link to="/dashboard/profile/follow" className="dashboard-tour">Click here for a Dashboard tour</Link>
     </div>
   );
 }
+export default withSnackbar(LoginForm);
