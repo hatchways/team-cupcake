@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useStyles from "../styles/formstyles";
+import useStyles from "../Styles/formstyles";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import isAuthenticated from "../utils/isAuthenticated";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography } from "@material-ui/core";
-import ChatBox from "../components/ChatBox";
+import ChatBox from "../Components/ChatBox";
 import authFetch from "../utils/authFetch";
 const useStyles = makeStyles(theme => ({
   mainDiv: {

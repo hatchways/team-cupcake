@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import SharePost from "../components/SharePost";
+import SharePost from "../Components/SharePost";
 import { makeStyles } from "@material-ui/core";
 
 import "./Profile.css";
-import SingularPost from "../components/SingularPost";
+import SingularPost from "../Components/SingularPost";
 import isAuthenticated from "../utils/isAuthenticated";
 import authFetch from "../utils/authFetch";
 

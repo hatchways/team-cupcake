@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import authFetch from "../utils/authFetch";
 import SingularPost from "./SingularPost";
-import useStyles from "../styles/sharePost";
+import useStyles from "../Styles/sharePost";
 
 const SharePost = props => {
   const classes = useStyles();
