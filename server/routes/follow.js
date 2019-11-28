@@ -16,6 +16,20 @@ router.get("/:id", function(req, res) {
     .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.post("/:id", function(req, res) {});
+// Create new follow
+router.post("/:id", function(req, res) {
+  const follow = {
+    follower: req.body.user_id,
+    followee: req.params.id
+  };
+  const newFollow = new Follow(follow);
+  Follow.create(newFollow)
+    .then(function(result) {
+      res.status(200).send(result);
+    })
+    .catch(function(err) {
+      res.status(400).send({ err });
+    });
+});
 
 module.exports = router;
