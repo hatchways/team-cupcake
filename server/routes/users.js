@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Post = require("../models/post");
 const Profile = require("../models/profile");
+const Follow = require("../models/follow");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
 
@@ -30,6 +31,20 @@ router.get("/:user", function(req, res) {
     if (err) throw err;
     res.send({ Profile });
   });
+});
+
+// GET all Followees for a userID
+router.get("/:user_id/following", function(req, res) {
+  Follow.find({ follower: req.params.user_id })
+    .populate({
+      path: "followee",
+      select: "_id"
+    })
+    .then(result => result.map(item => item.followee._id))
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
 });
 
 // Alternate GET Profile route
