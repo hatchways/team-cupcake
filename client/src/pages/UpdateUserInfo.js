@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import authFetch from "../utils/authFetch";
 import { withSnackbar } from "notistack";
-import useStyles from "../Styles/updateUserInfo";
+import useStyles from "../styles/updateUserInfo";
 
 function UpdateUserInfo(props) {
   const classes = useStyles();
