@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
-import logo from "../assets/instafy.png";
-import profilePicture from "../assets/Profile.png";
+import { AppBar, Toolbar, Button } from "@material-ui/core";
+import SearchSong from "../components/SuggestMusic";
+import Dialog from "./Dialog";
+import "../styles/autosuggest.css";
+
 const useStyles = makeStyles(theme => ({
   menuImg: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    alignSelf: "center",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   appbar: {
-    backgroundColor: "white"
+    backgroundColor: "white",
+    "& div": {
+      flexGrow: 1
+    }
   },
   toolbar: {
     display: "flex",
-    height: "100px",
-    alignItems: "center"
+    height: "10vh"
   },
   thebutton: {
     marginRight: theme.spacing(1)
@@ -21,36 +29,58 @@ const useStyles = makeStyles(theme => ({
   profileImg: {
     borderRadius: "50%",
     maxHeight: "80%",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   typo: {
     color: "grey",
-    flexGrow: 1
+    width: "50%"
   }
 }));
 
-function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [song, setSong] = useState(null);
+  const profile = JSON.parse(sessionStorage.getItem("profile"));
   return (
     <div>
       <AppBar position="static" className={classes.appbar}>
         <Toolbar className={classes.toolbar}>
-          <img src={logo} alt="Website logo" className={classes.menuImg} />
-          <Typography variant="subtitle2" className={classes.typo}>
-            Share and enjoy music !
-          </Typography>
-          <Button variant="outlined" className={classes.thebutton}>
+          <img
+            src="https://instafyuploads.s3.ca-central-1.amazonaws.com/instafy.png"
+            alt="Website logo"
+            className={classes.menuImg}
+            onClick={() => props.history.push("/")}
+          />
+          <div>
+            <SearchSong limit={5} open={setOpen} song={setSong} />
+          </div>
+          <Button
+            variant="outlined"
+            className={classes.thebutton}
+            onClick={() => setOpen(true)}
+          >
             Share Music
           </Button>
           <Button className={classes.thebutton}>Discover</Button>
-          <Button className={classes.thebutton}>Messages</Button>
+          <Button
+            className={classes.thebutton}
+            onClick={() => props.history.push("/messages")}
+          >
+            Messages
+          </Button>
           <img
-            src={profilePicture}
-            alt="Website logo"
+            src={profile.photo_url}
+            alt="profileimage"
             className={classes.profileImg}
+            onClick={() => props.history.push(`/profile/${profile.profileID}`)}
           />
         </Toolbar>
       </AppBar>
+      <Dialog open={open} close={() => setOpen(false)} song={song} {...props} />
     </div>
   );
 }

@@ -1,0 +1,46 @@
+{
+  "id": "123565",
+  "AuthorId": "s789d7",
+  "AuthorName": "Kenneth J.",
+  "PostDescription": "Check out this new hot song !!!!",
+  "timeCreated": "2019-11-05T12:06:28.672Z",
+  "likes": "106",
+  "spotifyLink": "https://open.spotify.com/album/5zi7WsKlIiUXv09tbGLKsE",
+  "albumPic": "assets/TestImage.png",
+  "authorPic": "assets/Kenneth.png",
+  "comments": [
+    {
+      "id": "9850",
+      "authorId": "s8d79a",
+      "authorPic": "assets/Profile.png",
+      "authorName": "Taylor B.",
+      "timeCreated": "2019-11-06T12:06:28.672Z",
+      "comment": "This song is so Dope !",
+      "likedBy": {
+        "s789d7": true
+      }
+    },
+    {
+      "id": "9898",
+      "authorId": "s8d7dfg4",
+      "authorPic": "assets/Jason.png",
+      "authorName": "Jason C.",
+      "timeCreated": "2019-11-06T14:06:28.672Z",
+      "comment": "Amazing !!",
+      "likedBy": {
+        "s789d7": true
+      }
+    },
+    {
+      "id": "9847",
+      "authorId": "s8d79a",
+      "authorPic": "assets/Jessica.png",
+      "authorName": "Jessica E.",
+      "timeCreated": "2019-11-06T15:06:28.672Z",
+      "comment": "I like this song much better !",
+      "likedBy": {
+        "s789d7": true
+      }
+    }
+  ]
+}

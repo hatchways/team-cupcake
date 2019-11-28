@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/hatchways/team-cupcake/issues"
   },
-  "homepage": "https://github.com/hatchways/team-cupcake#readme"
+  "homepage": "https://github.com/hatchways/team-cupcake#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "aws-sdk": "^2.579.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "notistack": "^0.9.6",
+    "react-autosuggest": "^9.4.3",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0"
+  }
 }
