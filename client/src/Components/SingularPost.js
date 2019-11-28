@@ -26,8 +26,6 @@ export default function SingularPost(props) {
 
   const handlePostLikeClick = () => {
     if (postLikedBySelf) {
-      setPostLikedBySelf(false);
-      setPostLikes(postLikes - 1); // cosmetic
       // delete like
       authFetch(
         `/posts/${props.post_id}/likes`,
@@ -35,15 +33,17 @@ export default function SingularPost(props) {
         props,
         "delete"
       );
+      setPostLikedBySelf(false);
+      setPostLikes(postLikes - 1); // cosmetic;
     } else {
-      setPostLikes(postLikes + 1); // cosmetic
-      setPostLikedBySelf(true);
       authFetch(
         `/posts/${props.post_id}/likes`,
         { liker_id: props.author_id },
         props,
         "post"
       );
+      setPostLikes(postLikes + 1); // cosmetic
+      setPostLikedBySelf(true);
     }
     // finally
     // flip prop value
@@ -54,7 +54,6 @@ export default function SingularPost(props) {
     let list = [...comments];
     let liked = list[index].likedBySelf;
     if (liked) {
-      list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
       //  delete like
       authFetch(
         `/comments/${list[index]._id}/likes`,
@@ -62,16 +61,17 @@ export default function SingularPost(props) {
         props,
         "delete"
       );
+      list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
     }
     // else // not liked //  add like
     else {
-      list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
       authFetch(
         `/comments/${list[index]._id}/likes`,
         { liker_id: props.author_id },
         props,
         "post"
       );
+      list[index].likeCount -= 1; // superficial, but taken care of in db w/ delete
     }
     // finally //  change list => liked = !liked
     liked = !liked;
