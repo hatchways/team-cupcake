@@ -9,12 +9,12 @@ const commentLikeSchema = new Schema({
   },
   liker_id: {
     type: Schema.Types.ObjectID,
-    ref: "User",
+    ref: "user",
     required: true
   },
   comment_id: {
     type: Schema.Types.ObjectID,
-    ref: "Comment",
+    ref: "comment",
     required: true,
     index: true // assuming most queries will be done by comment
   }

@@ -10,11 +10,12 @@ const PostSchema = new Schema({
   date: {
     type: Date,
     default: Date.now,
-    required: true
+    required: true,
+    index: true
   },
   author: {
     type: Schema.Types.ObjectID,
-    ref: "User",
+    ref: "user",
     required: true,
     index: true // most queries posts by author
   },
