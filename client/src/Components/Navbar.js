@@ -110,7 +110,7 @@ function NavBar(props) {
             className={classes.profileImg}
           />
         </IconButton>
-        <p style={{ fontSize: "1.5em" }}>Profile</p>
+        <p style={{ fontSize: "1.5em" }}>{profile.profileID}</p>
       </MenuItem>
     </Menu>
   );
@@ -149,14 +149,14 @@ function NavBar(props) {
               aria-haspopup="true"
               color="inherit"
               className={classes.profileImgWrapper}
+              onClick={() =>
+                props.history.push(`/profile/${profile.profileID}`)
+              }
             >
               <img
                 src={profile.photo_url}
                 alt="profileimage"
                 className={classes.profileImg}
-                onClick={() =>
-                  props.history.push(`/profile/${profile.profileID}`)
-                }
               />
             </IconButton>
           </div>
