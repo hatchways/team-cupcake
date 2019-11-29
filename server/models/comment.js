@@ -20,7 +20,7 @@ const CommentSchema = new Schema({
   },
   post_id: {
     type: Schema.Types.ObjectID,
-    ref: "Post",
+    ref: "post",
     required: true,
     index: true // assuming most queries will be done by post
   },

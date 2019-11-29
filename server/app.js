@@ -14,6 +14,7 @@ import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
 import postLikes from "./routes/likes";
 import commentRouter from "./routes/comments";
+import followRouter from "./routes/follow";
 import profileRouter from "./routes/profiles";
 import messageRouter from "./routes/messages";
 import commentLikes from "./routes/commentLike";

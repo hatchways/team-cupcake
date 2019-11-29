@@ -39,6 +39,7 @@ router.post("/", function(req, res) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
     });
 });
+
 router.get("/discovery", function(req, res) {
   const postsPerPage = 12;
   const page = req.query.page;
@@ -241,6 +242,10 @@ router.get("/tester/:user_id", function(req, res) {
         res.status(200).send(result);
       }
     });
+});
+
+router.get("/discovery", function(req, res) {
+  res.send({ success: "discovery ping." });
 });
 
 module.exports = router;

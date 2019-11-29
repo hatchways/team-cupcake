@@ -14,7 +14,7 @@ const commentLikeSchema = new Schema({
   },
   comment_id: {
     type: Schema.Types.ObjectID,
-    ref: "Comment",
+    ref: "comment",
     required: true,
     index: true // assuming most queries will be done by comment
   }
