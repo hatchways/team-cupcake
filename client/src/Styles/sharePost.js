@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     padding: "40px 0 0"
   },
   individualPost: {
-    position: "relative",
     overflow: "hidden",
     borderRadius: "8px",
     width: "200px",
@@ -27,9 +26,9 @@ const useStyles = makeStyles(theme => ({
     height: "15px",
     lineHeight: "10px",
     color: "#fff",
-    position: "absolute",
-    right: "15px",
-    top: "10px",
+    position: "sticky",
+    left: "10px",
+    top: "5px",
     fontSize: "1.5em",
     transition: "width 2s, height 2s, transform 2s",
     "&:hover": {
@@ -37,7 +36,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   postImg: {
-    width: "inherit"
+    width: "inherit",
+    marginTop: "-18px"
   }
 }));
 export default useStyles;
