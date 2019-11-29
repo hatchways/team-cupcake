@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     height: "10vh"
   },
   thebutton: {
-    marginRight: theme.spacing(1),
+    margin: "0 20px",
     height: "40px",
     display: "grid",
     placeSelf: "center"
