@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./Follow.css";
 import authFetch from "../utils/authFetch";
-import SingularPost from "../components/SingularPost";
-const Following = props => {
+import SingularPost from "./SingularPost";
+import useStyles from "../styles/sharePost";
+
+const SharePost = props => {
+  const classes = useStyles();
   const [data, setData] = useState([]);
   const [post, setPost] = useState({});
   const [open, setOpen] = useState(false);
@@ -23,12 +25,27 @@ const Following = props => {
     fetchFollowData();
   }, [props.user.profileID, props.history]);
 
+  const delPost = post => {
+    authFetch("/posts/" + post._id, {}, props, "delete").then(
+      setData(data.filter(d => d._id !== post._id))
+    );
+  };
+
   return (
-    <ul className="album-img-wrapper">
+    <ul className={classes.postWrapper}>
       {data.map(r => {
         return (
-          <li key={r._id}>
-            <img src={r.imageUrl} alt="MusicPost" onClick={() => openPost(r)} />
+          <li key={r._id} className={classes.individualPost}>
+            {console.log(r)}
+            <span onClick={event => delPost(r)} className={classes.deleteBtn}>
+              &times;
+            </span>
+            <img
+              src={r.imageUrl}
+              alt="MusicPost"
+              onClick={() => openPost(r)}
+              className={classes.postImg}
+            />
           </li>
         );
       })}
@@ -41,4 +58,4 @@ const Following = props => {
     </ul>
   );
 };
-export default Following;
+export default SharePost;

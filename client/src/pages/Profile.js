@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import Following from "../components/Following";
+import SharePost from "../components/SharePost";
 import { makeStyles } from "@material-ui/core";
 
 import "./Profile.css";
@@ -73,7 +73,7 @@ const Profile = props => {
           )}
         </div>
       </div>
-      {user.profileID ? <Following user={user} {...props} /> : null}
+      {user.profileID ? <SharePost user={user} {...props} /> : null}
     </div>
   );
 };
