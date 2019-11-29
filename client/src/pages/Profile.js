@@ -28,6 +28,11 @@ const Profile = props => {
   const classes = useStyles();
   const [user, setUser] = useState({});
   const [mine, setMine] = useState(false);
+  const [followData, setFollowData] = useState({
+    followedBy: 0,
+    following: 0,
+    followedByUser: false
+  });
 
   // ADDs a Follow to DB
   // needs better error handling (i.e. duplicate sends only 400)
@@ -53,6 +58,23 @@ const Profile = props => {
       })
       .catch(err => console.log({ error: err }));
   };
+
+  // Grab and set Follow Data
+  useEffect(() => {
+    console.log("In the follower get effect.");
+    const user_id = JSON.parse(sessionStorage.getItem("credentials"))._id;
+    authFetch(
+      `/profile/${props.match.params.user}/follows?visitor=${user_id}`,
+      null,
+      null
+    ).then(result => {
+      if (result === null) {
+        console.log("Bad profile follower fetch");
+      } else {
+        setFollowData(result.result);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const profile = JSON.parse(sessionStorage.getItem("profile"));
@@ -81,10 +103,9 @@ const Profile = props => {
         <div className="name-container">
           <h3>{user.profileID}</h3>
           <h5>{user.description}</h5>
-          <h6>Music Lover</h6>
           <div>
-            <span>130K Followers</span>
-            <span>340 Following</span>
+            <span>{followData.followedBy} Followers</span>
+            <span>{followData.following} Following</span>
           </div>
         </div>
         <div className="follow-container">

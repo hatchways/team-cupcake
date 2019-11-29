@@ -5,7 +5,7 @@ const User = require("../models/user");
 const Follow = require("../models/follow");
 
 // GET follow data for a profile. #Followers, #followees, etc.
-router.get("/follows/:profileUsername", function(req, res) {
+router.get("/:profileUsername/follows", function(req, res) {
   const visitor_id = req.query.visitor;
   let followData = {};
   User.findOne({ username: req.params.profileUsername })
