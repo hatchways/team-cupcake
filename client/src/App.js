@@ -32,14 +32,36 @@ function App() {
               path="/signup"
               render={props => <SignUp setSocket={setSocket} {...props} />}
             />
-            <ProtectedRoute exact path="/profile/:user" component={Profile} />
-            <ProtectedRoute exact path="/update" component={ProfileUpdate} />
+            <ProtectedRoute
+              exact
+              path="/profile/:user"
+              component={Profile}
+              socket={socket}
+            />
+            <ProtectedRoute
+              exact
+              path="/update"
+              component={ProfileUpdate}
+              socket={socket}
+            />
             <ProtectedRoute
               exact
               path="/update-user-info"
               component={UpdateUserInfo}
+              socket={socket}
             />
-            <ProtectedRoute exact path="/linkspotify" component={Spotify} />
+            <ProtectedRoute
+              exact
+              path="/messages/:username"
+              component={Messages}
+              socket={socket}
+            />
+            <ProtectedRoute
+              exact
+              path="/linkspotify"
+              component={Spotify}
+              socket={socket}
+            />
             <ProtectedRoute
               exact
               path="/messages"
@@ -50,9 +72,10 @@ function App() {
               exact
               path="/"
               component={Discover}
+              socket={socket}
               setSocket={setSocket}
             />
-            <Route path="*" component={NotFound} />
+            <Route path="*" component={NotFound} socket={socket} />
           </Switch>
         </BrowserRouter>
       </SnackbarProvider>

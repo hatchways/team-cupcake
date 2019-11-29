@@ -11,9 +11,9 @@ const useStyles = makeStyles(theme => ({
       flexDirection: "column",
       padding: "10px"
     },
-    childiv: { flex: "0 0 45%", padding: "20px" },
-    childiv2: { flex: "0 0 50%" },
-    songpicture: { maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" },
+    childiv: { flex: "0 0 49%", padding: "20px", boxSizing: "border-box" },
+    childiv2: { flex: "0 0 49%", padding: "20px", boxSizing: "border-box" },
+    songpicture: { width: "100%", maxHeight: "100%", borderRadius: "20px" },
     songpicture2: { maxWidth: "100%", maxHeight: "100%", borderRadius: "50%" },
     spotifypic: { maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" },
     flexparent: {
@@ -67,11 +67,12 @@ const useStyles = makeStyles(theme => ({
       display: "flex",
       alignItems: "flex-baseline",
       padding: "10px",
-      height: "500px"
+      height: "500px",
+      justifyContent: "space-between"
     },
-    childiv: { flex: "0 0 45%", padding: "20px" },
-    childiv2: { flex: "0 0 50%" },
-    songpicture: { maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" },
+    childiv: { width: "49%", padding: "20px", boxSizing: "border-box" },
+    childiv2: { width: "49%", padding: "20px", boxSizing: "border-box" },
+    songpicture: { width: "100%", maxHeight: "100%", borderRadius: "20px" },
     songpicture2: { maxWidth: "100%", maxHeight: "100%", borderRadius: "50%" },
     spotifypic: { maxWidth: "100%", maxHeight: "50%", borderRadius: "20px" },
     flexparent: {

@@ -44,6 +44,17 @@ function NavBar(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [song, setSong] = useState(null);
+  const [messageCount, setMessageCount] = useState(0);
+  if (Object.keys(props.socket).length > 0) {
+    props.socket.off("newmessage");
+    props.socket.on("newmessage", () => {
+      if (
+        props.match.path !== "/messages" &&
+        props.match.path !== "/messages/:username"
+      )
+        setMessageCount(messageCount + 1);
+    });
+  }
   const profile = JSON.parse(sessionStorage.getItem("profile"));
   return (
     <div>
@@ -65,12 +76,36 @@ function NavBar(props) {
           >
             Share Music
           </Button>
-          <Button className={classes.thebutton}>Discover</Button>
           <Button
             className={classes.thebutton}
-            onClick={() => props.history.push("/messages")}
+            onClick={() => props.history.push("/")}
+          >
+            Discover
+          </Button>
+          <Button
+            className={classes.thebutton}
+            onClick={() => {
+              setMessageCount(0);
+              props.history.push("/messages");
+            }}
           >
             Messages
+            {messageCount > 0 ? (
+              <span
+                style={{
+                  display: "inline-block",
+                  boxSizing: "border-box",
+                  backgroundColor: "red",
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                  borderRadius: "100%",
+                  color: "white",
+                  marginLeft: "5px"
+                }}
+              >
+                {messageCount}
+              </span>
+            ) : null}
           </Button>
           <img
             src={profile.photo_url}

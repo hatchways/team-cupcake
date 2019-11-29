@@ -41,7 +41,7 @@ router.post("/", function(req, res) {
         },
         // { $push: { messages: message } },
         { upsert: true, setDefaultsOnInsert: true }
-      ).then(result => res.status(200).send({ result: result }));
+      ).then(result => res.status(200).send({ result: message }));
     })
 
     .catch(function(error) {

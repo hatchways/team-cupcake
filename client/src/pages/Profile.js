@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import Following from "../components/Following";
+import SharePost from "../components/SharePost";
 import { makeStyles } from "@material-ui/core";
 
 import "./Profile.css";
@@ -42,7 +42,7 @@ const Profile = props => {
         setUser(res.Profile);
       }
     );
-  }, [props.history, props.match.params.user]);
+  }, [props.history, props.match.params.user, props.history.location.search]);
   return (
     <div className={classes.profile}>
       <div className="profile-header">
@@ -54,8 +54,10 @@ const Profile = props => {
           <h5>{user.description}</h5>
           <h6>Music Lover</h6>
           <div>
+            {/*
             <span>130K Followers</span>
             <span>340 Following</span>
+            */}
           </div>
         </div>
         <div className="follow-container">
@@ -65,13 +67,21 @@ const Profile = props => {
             </Button>
           ) : (
             <div>
+              {/*
               <Button>Follow !</Button>
-              <Button>Message !</Button>
+              */}
+              <Button
+                onClick={() =>
+                  props.history.push(`/messages/${user.profileID}`)
+                }
+              >
+                Message !
+              </Button>
             </div>
           )}
         </div>
       </div>
-      {user.profileID ? <Following user={user} {...props} /> : null}
+      {user.profileID ? <SharePost user={user} {...props} /> : null}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const commentLikeSchema = new Schema({
   },
   liker_id: {
     type: Schema.Types.ObjectID,
-    ref: "User",
+    ref: "profile",
     required: true
   },
   comment_id: {

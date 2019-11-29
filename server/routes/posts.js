@@ -10,7 +10,7 @@ const Profile = require("../models/profile");
 router.post("/", function(req, res) {
   // First GET User._id --- I would rather link to username in Model
   // but haven't found a way to do it (yet)
-  User.findOne({ username: req.body.username })
+  Profile.findOne({ profileID: req.body.username })
     .then(function(user) {
       if (user === null) {
         //res.send('error: user not found')
@@ -39,26 +39,35 @@ router.post("/", function(req, res) {
       res.status(400).send({ err }); // likely too much information.  may want to select a key/value pair or two.
     });
 });
-
+router.get("/discovery", function(req, res) {
+  const postsPerPage = 12;
+  const page = req.query.page;
+  const offset = page && page > 0 ? postsPerPage * (page - 1) : 0;
+  Post.find()
+    .sort({ date: "desc" })
+    .skip(offset)
+    .limit(postsPerPage)
+    .populate("author")
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
+});
 // GET Posts by username
 // used on Profile page, will need photo_url too.
 router.get("/:username", function(req, res) {
   // First GET User._id --- I would rather link to username in Model
   // but haven't found a way to do it (yet)
-  User.findOne({ username: req.params.username })
+  Profile.findOne({ profileID: req.params.username })
     .then(function(user) {
       if (user === null) {
         throw "{error: user not found}";
       } else {
-        Post.find({ author: user._id }, (err, posts) => {
-          if (err) {
-            res.status(400).send({ error: err });
-            // Not sure if better with a if block that yields a response for zero posts
-            // Currently zero posts yields an empty array.
-          } else {
+        Post.find({ author: user._id })
+          .populate("author")
+          .then(posts => {
             res.status(200).send(posts);
-          }
-        });
+          });
       }
     })
     .catch(function(err) {
@@ -122,7 +131,7 @@ router.put("/:postID", function(req, res) {
 
 // CREATE new postlike
 router.post("/:post_id/likes", function(req, res) {
-  User.findOne({ _id: req.body.liker_id })
+  Profile.findOne({ profileID: req.body.username })
     .then(function(user) {
       if (user === null) {
         res.status(400).send({ error: "Bad User ID" });
@@ -137,8 +146,10 @@ router.post("/:post_id/likes", function(req, res) {
                 .send({ error: "problem updating post like count." });
             } else {
               // create new like
-              req.body.post_id = req.params.post_id;
-              const newLike = new PostLike(req.body);
+              const newLike = new PostLike({
+                liker_id: user._id,
+                post_id: req.params.post_id
+              });
               PostLike.create(newLike)
                 .then(function(like) {
                   res.status(200).send(like);
@@ -180,7 +191,11 @@ router.delete("/likes/:like_id", function(req, res) {
     })
     .catch(err => res.status(400).send({ error: err }));
 });
-
+router.delete("/:postID", function(req, res) {
+  Post.findByIdAndDelete(req.params.postID)
+    .then(() => res.json("Post deleted."))
+    .catch(err => res.status(400).json("Error: " + err));
+});
 // GET all comments on a post // gets other stuff too!
 router.get("/:post_id/comments", function(req, res) {
   Comment.find({ post_id: req.params.post_id })
