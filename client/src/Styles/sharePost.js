@@ -29,11 +29,7 @@ const useStyles = makeStyles(theme => ({
     position: "sticky",
     left: "10px",
     top: "5px",
-    fontSize: "1.5em",
-    transition: "width 2s, height 2s, transform 2s",
-    "&:hover": {
-      transform: "rotate(180deg)"
-    }
+    fontSize: "1.5em"
   },
   postImg: {
     width: "inherit",
