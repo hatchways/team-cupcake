@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     lineHeight: "10px",
     color: "#fff",
     position: "absolute",
-    right: "20px",
+    right: "15px",
     top: "10px",
     fontSize: "1.5em",
     transition: "width 2s, height 2s, transform 2s",
