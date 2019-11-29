@@ -130,6 +130,13 @@ router.put("/:postID", function(req, res) {
     });
 });
 
+// Delete post
+router.delete("/:postID", function(req, res) {
+  Post.findByIdAndDelete(req.params.postID)
+    .then(() => res.json("Post deleted."))
+    .catch(err => res.status(400).json("Error: " + err));
+});
+
 // CREATE new postlike
 router.post("/:post_id/likes", function(req, res) {
   Profile.findOne({ profileID: req.body.username })

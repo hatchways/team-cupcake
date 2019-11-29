@@ -7,6 +7,7 @@ const SharePost = props => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [post, setPost] = useState({ author: {} });
+
   const [open, setOpen] = useState(false);
   const openPost = post => {
     setPost(post);
@@ -36,6 +37,7 @@ const SharePost = props => {
       {data.map(r => {
         return (
           <li key={r._id} className={classes.individualPost}>
+
             <span onClick={event => delPost(r)} className={classes.deleteBtn}>
               &times;
             </span>
@@ -49,6 +51,7 @@ const SharePost = props => {
         );
       })}
       <SingularPost open={open} close={() => setOpen(false)} post={post} />
+
     </ul>
   );
 };
