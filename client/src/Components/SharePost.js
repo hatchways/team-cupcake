@@ -26,7 +26,7 @@ const SharePost = props => {
   }, [props.user.profileID, props.history]);
 
   const delPost = post => {
-    authFetch("/posts/" + post._id, null, props, "delete").then(
+    authFetch("/posts/" + post._id, {}, props, "delete").then(
       setData(data.filter(d => d._id !== post._id))
     );
   };
