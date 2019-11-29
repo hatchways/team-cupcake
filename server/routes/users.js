@@ -33,7 +33,20 @@ router.get("/:user", function(req, res) {
   });
 });
 
-// GET all Followees for a userID
+// GET ID from username
+router.get("/id/:username", function(req, res) {
+  User.findOne({ username: req.params.username })
+    .select("_id")
+    .then(result => {
+      if (result === null) {
+        res.status(400).send("Nope. No one here.");
+      } else {
+        res.status(200).send(result);
+      }
+    });
+});
+
+// GET all FolloweEs for a userID
 router.get("/:user_id/following", function(req, res) {
   Follow.find({ follower: req.params.user_id })
     .populate({
@@ -47,7 +60,7 @@ router.get("/:user_id/following", function(req, res) {
     .catch(err => res.status(400).send({ error: err }));
 });
 
-// GET all Followers for a userID
+// GET all FolloweRs for a userID
 router.get("/:user_id/followedBy", function(req, res) {
   Follow.find({ followee: req.params.user_id })
     .populate({
