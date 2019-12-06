@@ -19,7 +19,11 @@ function App() {
   useEffect(() => {
     if (isAuthenticated()) {
       if (!socket.id)
-        setSocket(io(`:3001?token=${sessionStorage.getItem("authToken")}`));
+        setSocket(
+          window.location.hostname === "localhost"
+            ? io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+            : io(`?token=${sessionStorage.getItem("authToken")}`)
+        );
     }
   }, [socket.id]);
   return (

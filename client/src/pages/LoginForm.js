@@ -30,7 +30,9 @@ function LoginForm(props) {
             sessionStorage.setItem("spotifyToken", res.token);
             props.enqueueSnackbar("Success", { variant: "success" });
             props.setSocket(
-              io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+              window.location.hostname === "localhost"
+                ? io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+                : io(`?token=${sessionStorage.getItem("authToken")}`)
             );
           });
         }

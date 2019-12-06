@@ -92,7 +92,11 @@ function SignupForm(props) {
           sessionStorage.setItem("authToken", res.accessToken);
           sessionStorage.setItem("credentials", JSON.stringify(res.user));
           sessionStorage.setItem("profile", JSON.stringify(res.profile));
-          props.setSocket(io(`:3001?token=${res.accessToken}`));
+          props.setSocket(
+            window.location.hostname === "localhost"
+              ? io(`:3001?token=${sessionStorage.getItem("authToken")}`)
+              : io(`?token=${sessionStorage.getItem("authToken")}`)
+          );
           props.enqueueSnackbar("Registration Succesful", {
             variant: "success"
           });
