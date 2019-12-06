@@ -28,6 +28,100 @@ const Profile = props => {
   const classes = useStyles();
   const [user, setUser] = useState({});
   const [mine, setMine] = useState(false);
+  const [followData, setFollowData] = useState({
+    followedBy: 0,
+    following: 0,
+    followedByUser: false,
+    loaded: false
+  });
+
+  // ADD/DELETE a Follow to DB
+  const handleFollowClick = () => {
+    const user_id = JSON.parse(sessionStorage.getItem("credentials"))._id;
+    const profile_name = props.match.params.user; // N.B. odd naming convention
+    // if not followedByUser
+    if (followData.followedByUser === false) {
+      authFetch(`/users/id/${profile_name}`, null, null)
+        .then(result => {
+          if (result === null) {
+            throw "bad user fetch";
+          } else {
+            // create follow
+            authFetch(
+              `/follow/${result._id}`,
+              { user_id: user_id },
+              null,
+              "post"
+            )
+              .then(result => {
+                if (result === null) {
+                  throw "Problem creating follow";
+                } else {
+                  setFollowData({
+                    followedByUser: true,
+                    followedBy: followData.followedBy + 1,
+                    following: followData.following,
+                    loaded: true
+                  });
+                }
+              })
+              .catch(err => console.log({ error: err }));
+          }
+        })
+        .catch(err => console.log({ error: err }));
+    }
+    // else then followedByUser
+    else {
+      // delete follow
+      authFetch(`/users/id/${profile_name}`, null, null)
+        .then(result => {
+          if (result === null) {
+            throw "bad user fetch";
+          } else {
+            // delete follow
+            authFetch(
+              `/follow`,
+              { follower: user_id, followee: result._id },
+              null,
+              "delete"
+            )
+              .then(result => {
+                if (result === null) {
+                  throw "Problem deleting follow";
+                } else {
+                  setFollowData({
+                    followedByUser: false,
+                    followedBy: followData.followedBy - 1,
+                    following: followData.following,
+                    loaded: true
+                  });
+                }
+              })
+              .catch(err => console.log({ error: err }));
+          }
+        })
+        .catch(err => console.log({ error: err }));
+    }
+  };
+
+  // Grab and set Follow Data
+  useEffect(() => {
+    console.log("In the follower get effect.");
+    const user_id = JSON.parse(sessionStorage.getItem("credentials"))._id;
+    authFetch(
+      `/profile/${props.match.params.user}/follows?visitor=${user_id}`,
+      null,
+      null
+    ).then(result => {
+      if (result === null) {
+        console.log("Bad profile follower fetch");
+      } else {
+        result.result.loaded = true;
+        setFollowData(result.result);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     const profile = JSON.parse(sessionStorage.getItem("profile"));
     if (props.match.params.user === profile.profileID) {
@@ -54,7 +148,6 @@ const Profile = props => {
         <div className="name-container">
           <h3>{user.profileID}</h3>
           <h5>{user.description}</h5>
-          <h6>Music Lover</h6>
           <div>
             {/*
             <span>130K Followers</span>
@@ -70,7 +163,14 @@ const Profile = props => {
           ) : (
             <div>
               {/*
-              <Button>Follow !</Button>
+              <Button onClick={event => handleFollowClick()}>
+                {followData.loaded
+                  ? followData.followedBy
+                    ? "Unfollow"
+                    : "Follow"
+                  : "loading"}
+              </Button>
+              <Button>Message !</Button>
               */}
               <Button
                 onClick={() =>

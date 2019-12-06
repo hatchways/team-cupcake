@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const PostLike = require("../models/postLike");
 const Profile = require("../models/profile");
+const Follow = require("../models/follow");
 
 // CREATE new post
 router.post("/", function(req, res) {
@@ -54,6 +55,45 @@ router.get("/discovery", function(req, res) {
     })
     .catch(err => res.status(400).send({ error: err }));
 });
+
+router.get("/following/:user_id", function(req, res) {
+  const postsPerPage = 3; // at 3 for testing Aecio suggests 20
+  const page = req.query.page;
+  const offset = page && page > 0 ? postsPerPage * (page - 1) : 0; // invalid page value return main page
+  Follow.find({ follower: req.params.user_id })
+    .populate({
+      path: "followee",
+      select: "_id"
+    })
+    .then(result => result.map(item => item.followee._id.toString()))
+    .then(function(followees) {
+      if (followees === null) {
+        res.status(400).send({ error: "Bad request" });
+      } else {
+        Post.find({ author: { $in: followees } })
+          .sort({ date: "desc" })
+          .skip(offset)
+          .limit(postsPerPage)
+          .then(result => {
+            if (result === null) {
+              res.status(400).send({ error: "Something is amiss" });
+            } else {
+              res.status(200).send(result);
+            }
+          });
+      }
+    })
+
+    .catch(err => res.status(400).send({ error: err }));
+});
+
+router.get("/fx", function(req, res) {
+  // res.send({ success: "pooong." });
+  Post.find({ author: "5dd1394a7025091ac840b579" }).then(result =>
+    res.send(result)
+  );
+});
+
 // GET Posts by username
 // used on Profile page, will need photo_url too.
 router.get("/:username", function(req, res) {

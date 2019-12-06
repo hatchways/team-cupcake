@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Post = require("../models/post");
 const Profile = require("../models/profile");
+const Follow = require("../models/follow");
 const bcrypt = require("bcrypt");
 const { upload } = require("../services/file-upload");
 
@@ -30,6 +31,47 @@ router.get("/:user", function(req, res) {
     if (err) throw err;
     res.send({ Profile });
   });
+});
+
+// GET ID from username
+router.get("/id/:username", function(req, res) {
+  User.findOne({ username: req.params.username })
+    .select("_id")
+    .then(result => {
+      if (result === null) {
+        res.status(400).send("Nope. No one here.");
+      } else {
+        res.status(200).send(result);
+      }
+    });
+});
+
+// GET all FolloweEs for a userID
+router.get("/:user_id/following", function(req, res) {
+  Follow.find({ follower: req.params.user_id })
+    .populate({
+      path: "followee",
+      select: "_id"
+    })
+    .then(result => result.map(item => item.followee._id))
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
+});
+
+// GET all FolloweRs for a userID
+router.get("/:user_id/followedBy", function(req, res) {
+  Follow.find({ followee: req.params.user_id })
+    .populate({
+      path: "follower",
+      select: "_id"
+    })
+    .then(result => result.map(item => item.follower._id))
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => res.status(400).send({ error: err }));
 });
 
 // Alternate GET Profile route

@@ -12,6 +12,9 @@ const FollowSchema = new Schema({
   }
 });
 
+// compound unique index
+FollowSchema.index({ follower: 1, followee: 1 }, { unique: true });
+
 const Follow = mongoose.model("follow", FollowSchema);
 
 module.exports = Follow;

@@ -19,7 +19,7 @@
 }
 
 .profile-header div.headshot-container img {
-  height: 100px;
+  max-width: -webkit-fill-available;
 }
 
 .name-container {
