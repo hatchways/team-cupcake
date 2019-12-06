@@ -39,9 +39,9 @@ Add additional notes about how to deploy this on a live system
 
 [comment]: <> (Not sure what to put here, if anything)
 
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+- [ThingOne](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+- [ThingTwo](https://maven.apache.org/) - Dependency Management
+- [ThingThree](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributing
 
@@ -52,7 +52,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/repo/uid) for details on o
 ## Versioning
 
 [comment]: <> (Not sure we care about this. Yet, anyway.)
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+We could use [SemVer](http://semver.org/) for versioning. But we don't yet. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## Authors
 
@@ -65,6 +65,7 @@ See also the list of [contributors](https://github.com/hatchways/team-cupcake/gr
 ## License
 
 [comment]: <> (I like MIT licensing. If you disagree let me know.)
+[comment]: <> (Will need to add license.md)
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
