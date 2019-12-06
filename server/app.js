@@ -1,25 +1,25 @@
-import createError from "http-errors";
-import express, { json, urlencoded } from "express";
-import { join } from "path";
-import cookieParser from "cookie-parser";
-import path from "path";
-import logger from "morgan";
-import mongoose from "mongoose";
-import connected from "./routes/connectedUsers";
-import indexRouter from "./routes/index";
-import pingRouter from "./routes/ping";
-import signupRouter from "./routes/signup";
-import usersRouter from "./routes/users";
-import loginRouter from "./routes/login";
-import spotifyRouter from "./routes/spotify";
-import postsRouter from "./routes/posts";
-import postLikes from "./routes/likes";
-import commentRouter from "./routes/comments";
-import profileRouter from "./routes/profiles";
-import messageRouter from "./routes/messages";
-import commentLikes from "./routes/commentLike";
-import conversationRouter from "./routes/conversations";
-import { auth } from "./middlewares/authMiddleware";
+const createError = require("http-errors");
+const express = require("express");
+const { join } = require("path");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const connected = require("./routes/connectedUsers");
+const indexRouter = require("./routes/index");
+const pingRouter = require("./routes/ping");
+const signupRouter = require("./routes/signup");
+const usersRouter = require("./routes/users");
+const loginRouter = require("./routes/login");
+const spotifyRouter = require("./routes/spotify");
+const postsRouter = require("./routes/posts");
+const postLikes = require("./routes/likes");
+const commentRouter = require("./routes/comments");
+const profileRouter = require("./routes/profiles");
+const messageRouter = require("./routes/messages");
+const commentLikes = require("./routes/commentLike");
+const conversationRouter = require("./routes/conversations");
+const { auth } = require("./middlewares/authMiddleware");
 
 //This line connects mongoose to our mongoDB database
 const mongoURL =
@@ -38,8 +38,8 @@ mongoose.connect(
 var app = express();
 
 app.use(logger("dev"));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 app.use("/", indexRouter);

@@ -4,6 +4,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const Profile = require("../models/profile");
 router.post("/", function(req, res) {
+  console.log(req.body);
   User.findOne({ email: req.body.email })
     .then(function(user) {
       if (user === null) {

@@ -6,7 +6,10 @@ const jwt = require("jsonwebtoken");
 function connectIO(io, sockets) {
   io.on("connection", socket => {
     decodeToken(socket.handshake.query.token, socket);
-    if (!socket.identity) socket.disconnect(true);
+    if (!socket.identity) {
+      socket.disconnect(true);
+      return;
+    }
     if (!sockets[socket.identity.username]) {
       socket.broadcast.emit("connection", { obj: "null" });
       sockets[socket.identity.username] = socket;
