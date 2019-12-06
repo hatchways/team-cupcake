@@ -2,6 +2,7 @@ import createError from "http-errors";
 import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
+import path from "path";
 import logger from "morgan";
 import mongoose from "mongoose";
 import connected from "./routes/connectedUsers";
@@ -21,7 +22,10 @@ import conversationRouter from "./routes/conversations";
 import { auth } from "./middlewares/authMiddleware";
 
 //This line connects mongoose to our mongoDB database
-const mongoURL = "mongodb://localhost:27017/hatchways";
+const mongoURL =
+  process.env.NODE_ENV === "production"
+    ? process.env.connectionString
+    : "mongodb://localhost:27017/hatchways";
 mongoose.connect(
   mongoURL,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
@@ -56,6 +60,12 @@ app.use("/connectedusers", auth, connected);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.redirect(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
 
 // error handler
 app.use(function(err, req, res, next) {
