@@ -15,7 +15,7 @@ const PostSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectID,
-    ref: "user",
+    ref: "profile",
     required: true,
     index: true // most queries posts by author
   },

@@ -11,7 +11,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         if (isAuthenticated())
           return (
             <Fragment>
-              <Nav {...props} />
+              <Nav {...props} socket={rest.socket} />
               <Component {...props} {...rest} />
             </Fragment>
           );

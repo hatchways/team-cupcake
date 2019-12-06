@@ -12,10 +12,12 @@ import usersRouter from "./routes/users";
 import loginRouter from "./routes/login";
 import spotifyRouter from "./routes/spotify";
 import postsRouter from "./routes/posts";
+import postLikes from "./routes/likes";
 import commentRouter from "./routes/comments";
 import followRouter from "./routes/follow";
 import profileRouter from "./routes/profiles";
 import messageRouter from "./routes/messages";
+import commentLikes from "./routes/commentLike";
 import conversationRouter from "./routes/conversations";
 import { auth } from "./middlewares/authMiddleware";
 
@@ -44,13 +46,12 @@ app.use("/users", auth, usersRouter);
 app.use("/login", loginRouter);
 app.use("/spotify", spotifyRouter);
 app.use("/posts", auth, postsRouter);
+app.use("/likes", auth, postLikes);
+app.use("/commentsLike", auth, commentLikes);
 app.use("/comments", auth, commentRouter);
 app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
-app.use("/conversation", conversationRouter);
-app.use("/follow", followRouter);
-
-
+app.use("/conversation", auth, conversationRouter);
 app.use("/connectedusers", auth, connected);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

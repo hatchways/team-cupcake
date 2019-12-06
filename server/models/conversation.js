@@ -9,13 +9,13 @@ const ConversationSchema = new Schema({
   },
   authorOne: {
     type: Schema.Types.ObjectID,
-    ref: "user",
+    ref: "profile",
     required: true,
     index: true
   },
   authorTwo: {
     type: Schema.Types.ObjectID,
-    ref: "user",
+    ref: "profile",
     required: true,
     index: true
   },

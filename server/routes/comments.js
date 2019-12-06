@@ -8,16 +8,11 @@ const CommentLike = require("../models/commentLike");
 
 // CREATE a new comment
 router.post("/", function(req, res) {
-  User.findOne({ _id: req.body.userId })
+  Profile.findOne({ profileID: req.body.username })
     .then(function(user) {
       if (user === null) {
         throw "{error: User ID not found}";
       }
-    })
-    .catch(function(err) {
-      res.status(400).send({ error: "Bad commenter ID" });
-    })
-    .then(function() {
       Post.findOne({ _id: req.body.post_id })
         .then(function(post) {
           if (post === null) {
@@ -27,8 +22,9 @@ router.post("/", function(req, res) {
         .then(function() {
           // res.send(req.body); // tester
           // do the good stuff
+          console.log(user);
           const newComment = new Comment({
-            commenter: req.body.userId,
+            commenter: user._id,
             post_id: req.body.post_id,
             description: req.body.description
           });
@@ -47,14 +43,20 @@ router.post("/", function(req, res) {
                   // post["comments"] = count;
                 }
               );
-              res.status(200).send(post);
+              post.populate("commenter", (err, doc) => {
+                res.status(200).send(doc);
+              });
             })
             .catch(function(err) {
               res.status(400).send({ error: "Error 1" });
             });
         })
         .catch(function(err) {
-          res.status(400).send({ error: "Bad Post ID" });
+          res.status(400).send({ error: "Bad commenter ID" });
+        })
+        .then(function() {})
+        .catch(function(err) {
+          res.status(400).send({ error: err });
         });
     })
     .catch(function(err) {
@@ -80,7 +82,7 @@ router.put("/:comment_id", function(req, res) {
 
 // CREATE new commentlike
 router.post("/:comment_id/likes", function(req, res) {
-  User.findOne({ _id: req.body.liker_id })
+  Profile.findOne({ profileID: req.body.username })
     .then(function(user) {
       if (user === null) {
         res.status(400).send({ error: "Bad User ID" });
@@ -94,9 +96,10 @@ router.post("/:comment_id/likes", function(req, res) {
                 .status(500)
                 .send({ error: "problem updating comment like count." });
             } else {
-              // create new like
-              req.body.comment_id = req.params.comment_id;
-              const newLike = new CommentLike(req.body);
+              const newLike = new CommentLike({
+                liker_id: user._id,
+                comment_id: req.params.comment_id
+              });
               CommentLike.create(newLike)
                 .then(function(like) {
                   res.status(200).send(like);
@@ -146,20 +149,7 @@ router.get("/:postID", function(req, res) {
     .populate("commenter")
     .exec((err, document) => {
       if (err) throw err;
-      const Profiles = {};
-      const Promises = [];
-      for (let comment of document) {
-        Promises.push(
-          Profile.findOne({ profileID: comment.commenter.username }).then(
-            doc => {
-              Profiles[comment.commenter.username] = doc;
-            }
-          )
-        );
-      }
-      Promise.all(Promises).then(() => {
-        res.json({ comments: document, profiles: Profiles });
-      });
+      res.send(document);
     });
 });
 

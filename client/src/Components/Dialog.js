@@ -30,13 +30,10 @@ function NavDialog(props) {
         props,
         "post"
       ).then(res => {
+        console.log(res);
         if (!res.err) {
           props.enqueueSnackbar("Music Shared !", { variant: "success" });
-          props.history.push(
-            `/profile/${
-              JSON.parse(sessionStorage.getItem("profile")).profileID
-            }`
-          );
+          props.history.push(props.history.location.pathname + "?update=true");
           setSong(null);
           setDescription("");
           props.close();

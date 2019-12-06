@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import "./Follow.css";
 import authFetch from "../utils/authFetch";
-import SingularPost from "./SingularPost";
+import SingularPost from "../components/SingularPost";
 import useStyles from "../styles/sharePost";
-
 const SharePost = props => {
   const classes = useStyles();
   const [data, setData] = useState([]);
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState({ author: {} });
+
   const [open, setOpen] = useState(false);
   const openPost = post => {
     setPost(post);
@@ -23,7 +24,7 @@ const SharePost = props => {
       setData(response);
     }
     fetchFollowData();
-  }, [props.user.profileID, props.history]);
+  }, [props.user.profileID, props.history, props.history.location.search]);
 
   const delPost = post => {
     authFetch("/posts/" + post._id, {}, props, "delete").then(
@@ -36,7 +37,7 @@ const SharePost = props => {
       {data.map(r => {
         return (
           <li key={r._id} className={classes.individualPost}>
-            {console.log(r)}
+
             <span onClick={event => delPost(r)} className={classes.deleteBtn}>
               &times;
             </span>
@@ -49,12 +50,8 @@ const SharePost = props => {
           </li>
         );
       })}
-      <SingularPost
-        open={open}
-        close={() => setOpen(false)}
-        post={post}
-        author={props.user}
-      />
+      <SingularPost open={open} close={() => setOpen(false)} post={post} />
+
     </ul>
   );
 };

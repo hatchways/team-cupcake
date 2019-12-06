@@ -9,7 +9,7 @@ const postLikeSchema = new Schema({
   },
   liker_id: {
     type: Schema.Types.ObjectID,
-    ref: "user",
+    ref: "profile",
     required: true
   },
   post_id: {

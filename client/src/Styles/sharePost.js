@@ -1,6 +1,4 @@
 import { makeStyles } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
-
 const useStyles = makeStyles(theme => ({
   postWrapper: {
     listStyle: "none",
@@ -14,7 +12,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "8px",
     width: "200px",
     height: "200px",
-    overflow: "hidden",
     cursor: "pointer",
     "&:hover span": {
       opacity: "1",

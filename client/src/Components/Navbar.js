@@ -13,6 +13,17 @@ function NavBar(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [song, setSong] = useState(null);
+  const [messageCount, setMessageCount] = useState(0);
+  if (Object.keys(props.socket).length > 0) {
+    props.socket.off("newmessage");
+    props.socket.on("newmessage", () => {
+      if (
+        props.match.path !== "/messages" &&
+        props.match.path !== "/messages/:username"
+      )
+        setMessageCount(messageCount + 1);
+    });
+  }
   const profile = JSON.parse(sessionStorage.getItem("profile"));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -128,49 +139,50 @@ function NavBar(props) {
           <div>
             <SearchSong limit={5} open={setOpen} song={setSong} />
           </div>
-          <div className={classes.sectionDesktop}>
-            <Button
-              variant="outlined"
-              className={classes.thebutton}
-              onClick={() => setOpen(true)}
-            >
-              Share Music
-            </Button>
-            <Button className={classes.thebutton}>Discover</Button>
-            <Button
-              className={classes.thebutton}
-              onClick={() => props.history.push("/messages")}
-            >
-              Messages
-            </Button>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-              className={classes.profileImgWrapper}
-              onClick={() =>
-                props.history.push(`/profile/${profile.profileID}`)
-              }
-            >
-              <img
-                src={profile.photo_url}
-                alt="profileimage"
-                className={classes.profileImg}
-              />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          <Button
+            variant="outlined"
+            className={classes.thebutton}
+            onClick={() => setOpen(true)}
+          >
+            Share Music
+          </Button>
+          <Button
+            className={classes.thebutton}
+            onClick={() => props.history.push("/")}
+          >
+            Discover
+          </Button>
+          <Button
+            className={classes.thebutton}
+            onClick={() => {
+              setMessageCount(0);
+              props.history.push("/messages");
+            }}
+          >
+            Messages
+            {messageCount > 0 ? (
+              <span
+                style={{
+                  display: "inline-block",
+                  boxSizing: "border-box",
+                  backgroundColor: "red",
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                  borderRadius: "100%",
+                  color: "white",
+                  marginLeft: "5px"
+                }}
+              >
+                {messageCount}
+              </span>
+            ) : null}
+          </Button>
+          <img
+            src={profile.photo_url}
+            alt="profileimage"
+            className={classes.profileImg}
+            onClick={() => props.history.push(`/profile/${profile.profileID}`)}
+          />
         </Toolbar>
       </AppBar>
       <Dialog open={open} close={() => setOpen(false)} song={song} {...props} />

@@ -4,21 +4,38 @@ import { FavoriteBorder, Favorite } from "@material-ui/icons";
 import useStyles from "../styles/singularPostStyles";
 import getTime from "../utils/getTime";
 import authFetch from "../utils/authFetch";
+import Comment from "../components/Comment";
 export default function SingularPost(props) {
   const classes = useStyles();
   const [value, setValue] = useState("");
-  const [comments, setComments] = useState({ comments: [], profiles: {} });
+  const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState(false);
+  const [likeId, setId] = useState("");
   const divScroll = document.getElementById("scrolldown");
   const fullWidth = true;
   const maxWidth = "lg";
   useEffect(() => {
-    if (props.post._id)
+    if (props.post._id) {
       authFetch(`/comments/${props.post._id}`, null, props.history).then(
         res => {
           setComments(res);
         }
       );
-  }, [props.history, props.post._id]);
+      authFetch(`/likes/${props.post._id}`, null, props.history).then(res => {
+        setLikes(false);
+        setId("");
+        if (res) {
+          setLikes(true);
+          setId(res._id);
+        }
+      });
+    }
+    return () => {
+      setComments([]);
+      setId("");
+      setValue("");
+    };
+  }, [props.history, props.post._id, props.post.likeCount]);
   return (
     <Dialog
       fullWidth={fullWidth}
@@ -33,7 +50,7 @@ export default function SingularPost(props) {
           <div className={classes.childiv}>
             <img
               src={props.post.imageUrl}
-              alt="profileImage"
+              alt="postImage"
               className={classes.songpicture}
             />
           </div>
@@ -41,50 +58,28 @@ export default function SingularPost(props) {
             <div className={classes.flexparent}>
               <div className={classes.divprofile}>
                 <img
-                  src={props.author.photo_url}
+                  src={props.post.author.photo_url}
                   alt="profileImage"
                   className={classes.songpicture2}
                 />
               </div>
               <div className={classes.divprofileinfo}>
-                <h3>{props.author.profileID}</h3>
+                <h3>{props.post.author.profileID}</h3>
                 <h4>{props.post.description}</h4>
                 <p style={{ color: "grey" }}>{getTime(props.post.date)} ago</p>
               </div>
             </div>
             <div>
               <h4 style={{ color: "lightgrey" }}>
-                Comments ({comments.comments.length}) :
+                Comments ({comments.length}) :
               </h4>
               <div className={classes.commentsDiv} id="scrolldown">
-                {comments.comments.map(comment => (
-                  <div className={classes.comments} key={comment._id}>
-                    <div className={classes.divprofile}>
-                      <img
-                        src={
-                          comments.profiles[comment.commenter.username]
-                            .photo_url
-                        }
-                        alt="profileImage"
-                        className={classes.songpicture2}
-                      />
-                    </div>
-                    <div className={classes.divprofileinfo}>
-                      <h3>
-                        {
-                          comments.profiles[comment.commenter.username]
-                            .profileID
-                        }
-                      </h3>
-                      <p>{comment.description}</p>
-                      <p style={{ color: "grey" }}>
-                        {getTime(comment.date)} ago
-                      </p>
-                    </div>
-                    <div className={classes.likeComment}>
-                      <FavoriteBorder style={{ color: "red" }} />
-                    </div>
-                  </div>
+                {comments.map(comment => (
+                  <Comment
+                    comment={comment}
+                    classes={classes}
+                    key={comment._id}
+                  />
                 ))}
               </div>
             </div>
@@ -92,13 +87,52 @@ export default function SingularPost(props) {
         </div>
         <div className={classes.bottomDiv}>
           <div className={classes.likePost}>
-            <FavoriteBorder
-              style={{
-                color: "red",
-                verticalAlign: "middle",
-                cursor: "pointer"
-              }}
-            />
+            {likes ? (
+              <Favorite
+                style={{
+                  color: "red",
+                  cursor: "pointer",
+                  verticalAlign: "middle"
+                }}
+                onClick={() => {
+                  authFetch(
+                    `/posts/likes/${likeId}`,
+                    {},
+                    props.history,
+                    "delete"
+                  );
+                  props.post.likeCount--;
+                  setLikes(false);
+                  setId("");
+                  if (props.liked) {
+                    props.liked[0](false);
+                    props.liked[1]("");
+                  }
+                }}
+              />
+            ) : (
+              <FavoriteBorder
+                style={{
+                  color: "red",
+                  cursor: "pointer",
+                  verticalAlign: "middle"
+                }}
+                onClick={() => {
+                  authFetch(
+                    `/posts/${props.post._id}/likes`,
+                    {},
+                    props.history,
+                    "post"
+                  ).then(res => {
+                    setId(res._id);
+                    if (props.liked) props.liked[1](res._id);
+                  });
+                  props.post.likeCount++;
+                  setLikes(true);
+                  if (props.liked) props.liked[0](true);
+                }}
+              />
+            )}
             <h3 style={{ display: "inline-flex", verticalAlign: "middle" }}>
               &nbsp; {props.post.likeCount} Likes
             </h3>
@@ -128,11 +162,9 @@ export default function SingularPost(props) {
                     props.history,
                     "post"
                   ).then(res => {
-                    const commentscopy = { ...comments };
-                    commentscopy.comments.unshift(res);
-                    commentscopy.profiles[
-                      JSON.parse(sessionStorage.getItem("profile")).username
-                    ] = JSON.parse(sessionStorage.getItem("profile"));
+                    const commentscopy = [...comments];
+                    commentscopy.unshift(res);
+
                     setComments(commentscopy);
                     setValue("");
                     divScroll.scrollTop = 0;

@@ -138,8 +138,7 @@ const Profile = props => {
         setUser(res.Profile);
       }
     );
-  }, [props.history, props.match.params.user]);
-
+  }, [props.history, props.match.params.user, props.history.location.search]);
   return (
     <div className={classes.profile}>
       <div className="profile-header">
@@ -150,8 +149,10 @@ const Profile = props => {
           <h3>{user.profileID}</h3>
           <h5>{user.description}</h5>
           <div>
-            <span>{followData.followedBy} Followers</span>
-            <span>{followData.following} Following</span>
+            {/*
+            <span>130K Followers</span>
+            <span>340 Following</span>
+            */}
           </div>
         </div>
         <div className="follow-container">
@@ -161,6 +162,7 @@ const Profile = props => {
             </Button>
           ) : (
             <div>
+              {/*
               <Button onClick={event => handleFollowClick()}>
                 {followData.loaded
                   ? followData.followedBy
@@ -169,6 +171,14 @@ const Profile = props => {
                   : "loading"}
               </Button>
               <Button>Message !</Button>
+              */}
+              <Button
+                onClick={() =>
+                  props.history.push(`/messages/${user.profileID}`)
+                }
+              >
+                Message !
+              </Button>
             </div>
           )}
         </div>

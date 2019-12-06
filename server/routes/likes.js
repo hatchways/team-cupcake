@@ -1,12 +1,16 @@
 var express = require("express");
 var router = express.Router();
-const Like = require("../models/like");
-const Post = require("../models/post");
-const Comment = require("../models/comment");
+const Like = require("../models/postLike");
 
 // Test route
-router.get("/", function(req, res) {
-  res.status(200).send({ success: "ping" });
+router.get("/:postId", function(req, res) {
+  Like.findOne(
+    { post_id: req.params.postId, liker_id: req.body.profileID },
+    (err, document) => {
+      if (err) return res.send({ key: req.params.postId, liked: false });
+      res.json(document);
+    }
+  );
 });
 
 // CREATE new post
