@@ -28,10 +28,6 @@ const ProfileSchema = new Schema({
   // might want date last seen/active
 });
 
-// functions
-// maybe change description?
-// maybe change url
-
 const Profile = mongoose.model("profile", ProfileSchema);
 
 module.exports = Profile;

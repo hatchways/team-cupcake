@@ -61,11 +61,10 @@ router.get("/users/:user1_id/:user2_id", function(req, res) {
 
 //  Returns a slice of a conversation, latest on page 1
 //  an array of messages ordered by time
-router.get("/:conversation_id/:page?", function(req, res) {
-  // const { conversation_id, page } = match.params;
+router.get("/:conversation_id", function(req, res) {
   const conversation_id = req.params.conversation_id;
   const page = req.params.page;
-  const messagePerPage = 20; // at 3 for testing, Aecio suggested 20
+  const messagePerPage = 20; 
   const sliceValue = page ? messagePerPage * page : 0;
   Conversation.findOne({ _id: conversation_id })
     .populate({

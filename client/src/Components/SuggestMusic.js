@@ -21,7 +21,7 @@ export default function SuggestMusic(props) {
       <div className="suggestion-content">
         <img src={suggestion.album.images[2].url} alt="albumimage" />
         <span style={{ marginLeft: "10px" }}>
-          {suggestion.name} <br /> <b>By : {getAuthors}</b>
+          {suggestion.name} <br /> <span>- {getAuthors}</span>
         </span>
       </div>
     );

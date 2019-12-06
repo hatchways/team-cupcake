@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Button } from "@material-ui/core";
+import { AppBar, Toolbar, Button, makeStyles } from "@material-ui/core";
 import SearchSong from "../components/SuggestMusic";
 import Dialog from "./Dialog";
 import "../styles/autosuggest.css";
@@ -56,6 +55,7 @@ function NavBar(props) {
     });
   }
   const profile = JSON.parse(sessionStorage.getItem("profile"));
+
   return (
     <div>
       <AppBar position="static" className={classes.appbar}>

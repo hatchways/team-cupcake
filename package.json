@@ -1,16 +1,12 @@
 {
-  "name": "team-cupcake",
-  "version": "1.0.0",
+  "name": "server",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"nodemon server/bin/www\" \"npm start --prefix client\"",
+    "devStart": "babel-node ./bin/www",
+    "dev": "concurrently \"nodemon ./bin/www\" \"npm start --prefix ./client\"",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --require @babel/register --exit --timeout 30000",
-    "start": "node server/bin/www",
-    "heroku-postbuild": "cd client && npm install && npm run build"
-  },
-  "engines": {
-    "node": "10.15.3",
-    "npm": "6.4.1"
+    "start": "node server/bin/www"
   },
   "dependencies": {
     "aws-sdk": "^2.568.0",
