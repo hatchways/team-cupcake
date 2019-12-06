@@ -6,7 +6,8 @@
     "devStart": "babel-node ./bin/www",
     "dev": "concurrently \"nodemon ./bin/www\" \"npm start --prefix ./client\"",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000",
-    "start": "node server/bin/www"
+    "start": "node server/bin/www",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "aws-sdk": "^2.568.0",
