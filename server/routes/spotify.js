@@ -54,10 +54,12 @@ router.get("/callback", function(req, res) {
     });
   });
 });
-router.use(auth);
-router.get("/login", function(req, res) {
-  res.redirect(
-    "https://accounts.spotify.com/authorize?" +
+//router.use(auth);
+router.get("/logins", function(req, res) {
+  console.log("here");
+  res.send({
+    url:
+      "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
         response_type: "code",
         state: req.body.username,
@@ -65,7 +67,7 @@ router.get("/login", function(req, res) {
         scope: "user-read-private user-read-email", // permissions we're asking for
         redirect_uri
       })
-  );
+  });
 });
 router.get("/refresh", (req, res) => {
   const authOptions = {
