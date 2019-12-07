@@ -28,7 +28,12 @@ const mongoURL =
     : "mongodb://localhost:27017/hatchways";
 mongoose.connect(
   mongoURL,
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  },
   err => {
     if (err) return console.error("Connection Failed !");
     console.log("Connection Successful");

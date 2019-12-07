@@ -176,6 +176,7 @@ function SignupForm(props) {
               container="div"
               color="primary"
               className={classes.menuButton}
+              style={{ textAlign: "center", backgroundColor: "limegreen" }}
               variant="contained"
             >
               Sign Up
