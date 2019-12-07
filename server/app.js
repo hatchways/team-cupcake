@@ -20,7 +20,7 @@ const messageRouter = require("./routes/messages");
 const commentLikes = require("./routes/commentLike");
 const conversationRouter = require("./routes/conversations");
 const { auth } = require("./middlewares/authMiddleware");
-
+const cors = require("cors");
 //This line connects mongoose to our mongoDB database
 const mongoURL =
   process.env.NODE_ENV === "production"
@@ -41,7 +41,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(join(__dirname, "public")));
+app.use(cors());
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
