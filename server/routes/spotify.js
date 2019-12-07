@@ -38,23 +38,23 @@ router.get("/callback", function(req, res) {
     let refreshToken = body.refresh_token;
     // other keys in body: token_type, expires_in, scope
     let username = authOptions.form.state;
-
+    console.log(username);
     // save refresh token to User
     User.findOneAndUpdate(
       { username: username },
       { refreshToken: refreshToken }
     ).then(function(user) {
       if (user === null) {
-        res.status(400).send({ error: err });
+        res.status(400).send({ error: user });
       } else {
         // go somewhere else with spotify access token
         let uri = process.env.FRONTEND_URI || "http://localhost:3000";
-        res.redirect("/linkspotify?accessToken=" + accessToken);
+        res.redirect(uri + "/linkspotify?accessToken=" + accessToken);
       }
     });
   });
 });
-//router.use(auth);
+router.use(auth);
 router.get("/logins", function(req, res) {
   console.log("here");
   res.send({
