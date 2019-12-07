@@ -6,9 +6,7 @@ import authFetch from "../utils/authFetch";
 function SpotifyAuth(props) {
   const classes = useStyles();
   const connectSpotify = e => {
-    authFetch("/spotify/login", null, props).then(
-      res => (window.location.href = res.spotifylink)
-    );
+    authFetch("/spotify/login", null, props);
   };
   useEffect(() => {
     if (props.location.search) {

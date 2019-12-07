@@ -5,6 +5,14 @@ const useStyles = makeStyles(theme => ({
     display: "block",
     margin: "0 auto"
   },
+  menuButton: {
+    display: "block",
+    width: "50%",
+    textAlign: "center",
+    padding: "20px 0",
+    margin: "10px auto",
+    backgroundColor: "limegreen"
+  },
   [theme.breakpoints.between("xs", "md")]: {
     typo: {
       marginTop: "20px",

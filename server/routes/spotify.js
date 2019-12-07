@@ -56,9 +56,8 @@ router.get("/callback", function(req, res) {
 });
 router.use(auth);
 router.get("/login", function(req, res) {
-  res.json({
-    spotifylink:
-      "https://accounts.spotify.com/authorize?" +
+  res.redirect(
+    "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
         response_type: "code",
         state: req.body.username,
@@ -66,7 +65,7 @@ router.get("/login", function(req, res) {
         scope: "user-read-private user-read-email", // permissions we're asking for
         redirect_uri
       })
-  });
+  );
 });
 router.get("/refresh", (req, res) => {
   const authOptions = {
