@@ -86,6 +86,14 @@ function LoginForm(props) {
               color="primary"
               container="div"
               className={classes.menuButton}
+              style={{
+                display: "block",
+                width: "50%",
+                textAlign: "center",
+                padding: "20px 0",
+                margin: "10px auto",
+                backgroundColor: "limegreen"
+              }}
             >
               Sign in
             </Button>
