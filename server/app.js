@@ -65,9 +65,7 @@ app.use("/connectedusers", auth, connected);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("/*", (req, res) => {
-    console.log(__dirname);
-    res.send({ path: req.path });
-    //res.redirect(path.join(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
   });
 }
 // catch 404 and forward to error handler
