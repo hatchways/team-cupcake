@@ -49,7 +49,8 @@ router.get("/callback", function(req, res) {
       } else {
         // go somewhere else with spotify access token
         let uri = process.env.FRONTEND_URI || "http://localhost:3000";
-        res.redirect("../linkspotify?accessToken=" + accessToken);
+        console.log(uri);
+        res.redirect(uri + "linkspotify?accessToken=" + accessToken);
       }
     });
   });

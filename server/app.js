@@ -64,7 +64,7 @@ app.use("/connectedusers", auth, connected);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
-  app.get("*", (req, res) => {
+  app.get("/*", (req, res) => {
     res.redirect(path.join(__dirname, "client", "build", "index.html"));
   });
 }
