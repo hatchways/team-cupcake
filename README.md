@@ -56,7 +56,7 @@ We could use [SemVer](http://semver.org/) for versioning. But we don't yet. For 
 
 ## Authors
 
-- **Badr Khalfaoui** - [Badr-KH](https://github.com/PurpleBooth)
+- **Badr Khalfaoui** - [Badr-KH](https://github.com/Badr-KH)
 - **Benjamin Field** - [aitchslash](https://github.com/aitchslash)
 - **Shojol Shake** - [dipshojol](https://github.com/dipshojol)
 
