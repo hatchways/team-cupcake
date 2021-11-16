@@ -19,7 +19,7 @@
   "homepage": "https://github.com/hatchways/team-cupcake#readme",
   "devDependencies": {},
   "dependencies": {
-    "aws-sdk": "^2.579.0",
+    "aws-sdk": "^2.814.0",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "notistack": "^0.9.6",
